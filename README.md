@@ -4,8 +4,6 @@ An XBlock for Empowr's course platform that allows for the input and checking of
 
 ## Installation
 
----
-
 1. Make sure you have have Python 3.8 installed on your computer.
 
 2. Clone the repo with `git clone --recurse-submodules git@github.com:EmpowrOrg/CodeEditorXblock.git`. This will give you the repo including the xblock-sdk submodule.
@@ -29,8 +27,6 @@ Run the following command to activate the virtual environment.
 `pip install -r requirements.txt`
 
 ## Run the Django development server
-
----
 
 1. Navigate to the xblock-sdk directory.
 
