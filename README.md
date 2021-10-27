@@ -32,4 +32,6 @@ Navigate to the xblock-sdk directory and run the following commands.
 
 `make install`
 
+`python manage.py migrate`
+
 `python manage.py runserver`
