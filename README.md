@@ -22,14 +22,12 @@ Run the following command to activate the virtual environment.
 
 `source venv/bin/activate`
 
-4. Run the following command to install the requirements.
+4. Navigate to the xblock-sdk directory and run the following command to install the requirements.
 
-`pip install -r requirements.txt`
+`pip install -r requirements/base.txt`
 
 ## Run the Django development server
 
-1. Navigate to the xblock-sdk directory.
+Navigate to the xblock-sdk directory and run the following command.
 
-2. Run the following command.
-
-   `python manage.py runserver`
+`python manage.py runserver`
