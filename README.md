@@ -28,6 +28,8 @@ Run the following command to activate the virtual environment.
 
 ## Run the Django development server
 
-Navigate to the xblock-sdk directory and run the following command.
+Navigate to the xblock-sdk directory and run the following commands.
+
+`make install`
 
 `python manage.py runserver`
