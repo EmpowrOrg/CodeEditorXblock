@@ -1,9 +1,0 @@
-/* CSS for SwiftPluginXBlock */
-
-.swiftplugin_block .count {
-    font-weight: bold;
-}
-
-.swiftplugin_block p {
-    cursor: pointer;
-}
