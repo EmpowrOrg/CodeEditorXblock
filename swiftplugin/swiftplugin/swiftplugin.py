@@ -1,35 +1,23 @@
-"""
-This plugin allows the students to write swift code and submit it as a problem.
-The plugin will send the code to an API that will send a correct or failure response.
-If correct, the user will see a confirmation message.
-If incorrect, the user will see the differences between their answer and the expected answer.
-The user may optionally see the solution code as well.
-
-The teacher will be able to upload what the solution code is.
-They will also be able to upload the solution answer.
-These two are both required.
-The teacher will have a toggle on whether they wish to allow the user see the solution code or not.
-"""
+"""TO-DO: Write a description of what this XBlock is."""
 
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from xblock.fields import String, Scope
+from xblock.fields import Integer, Scope
 
 
-class CodeEditorXBlock(XBlock):
+class SwiftPluginXBlock(XBlock):
     """
-    Students can write and submit code in response to a problem.
-    Teachers can upload and allow students to view solution code.
+    TO-DO: document what your XBlock does.
     """
 
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
     # TO-DO: delete count, and define your own fields.
-    placeholder_text = String(
-        default="", scope=Scope.user_state,
-        help="Some text to test as a field",
+    count = Integer(
+        default=0, scope=Scope.user_state,
+        help="A simple counter, to show something happening",
     )
 
     def resource_string(self, path):
@@ -40,14 +28,14 @@ class CodeEditorXBlock(XBlock):
     # TO-DO: change this view to display your data your own way.
     def student_view(self, context=None):
         """
-        The primary view of the CodeEditorXBlock, shown to students
+        The primary view of the SwiftPluginXBlock, shown to students
         when viewing courses.
         """
-        html = self.resource_string("static/html/codingxblock.html")
+        html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/codingxblock.css"))
-        frag.add_javascript(self.resource_string("static/js/src/codingxblock.js"))
-        frag.initialize_js('CodeEditorXBlock')
+        frag.add_css(self.resource_string("static/css/swiftplugin.css"))
+        frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
+        frag.initialize_js('SwiftPluginXBlock')
         return frag
 
     # TO-DO: change this handler to perform your own actions.  You may need more
@@ -69,14 +57,14 @@ class CodeEditorXBlock(XBlock):
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("CodeEditorXBlock",
-             """<codingxblock/>
+            ("SwiftPluginXBlock",
+             """<swiftplugin/>
              """),
-            ("Multiple CodeEditorXBlock",
+            ("Multiple SwiftPluginXBlock",
              """<vertical_demo>
-                <codingxblock/>
-                <codingxblock/>
-                <codingxblock/>
+                <swiftplugin/>
+                <swiftplugin/>
+                <swiftplugin/>
                 </vertical_demo>
              """),
         ]

@@ -1,5 +1,5 @@
-/* Javascript for CodeEditorXBlock. */
-function CodeEditorXBlock(runtime, element) {
+/* Javascript for SwiftPluginXBlock. */
+function SwiftPluginXBlock(runtime, element) {
 
     function updateCount(result) {
         $('.count', element).text(result.count);
