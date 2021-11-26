@@ -11,10 +11,9 @@ class SwiftPluginXBlock(XBlock):
     TO-DO: document what your XBlock does.
     """
 
-
     code = String(
         default=0, scope=Scope.user_state,
-        help="A simple counter, to show something happening",
+        help="User code",
     )
 
     def resource_string(self, path):
@@ -40,18 +39,45 @@ class SwiftPluginXBlock(XBlock):
 
 
     @XBlock.json_handler
-    def increment_count(self, data, suffix=''):
+    def button_handler(self, data, suffix=''):
         """
         An example handler, which increments the data.
         """
-        # Just to show data coming in...
-        # assert data['hello'] == 'world'
+        response = {}
 
-        # self.count += 1
-        return {"count": self.count}
+        if "code" not in data.keys():
+            log.error("non code data in request!")
+            response['status'] = "Empty code!"
 
-    # TO-DO: change this to create the scenarios you'd like to see in the
-    # workbench while developing your XBlock.
+        self.code = data['code']
+
+        response['code'] = self.code
+        if "type" not in data.keys():
+            log.error("non request type in request")
+            response["status"] = "Non request type"
+
+        if 'run' in  data['type']:
+            api_respo = self.handle_run_request()
+            response['status'] = "Executed code"
+            response['response'] = api_respo
+
+        elif 'submit' in data['type']:
+            api_respo = self.handle_submit_request()
+            response['status'] = "Submitted code"
+            response['response'] = api_respo
+
+        else:
+            response["status"] = "No valid type request"
+
+        return response
+
+
+    def handle_run_request(self):
+        return "ok"
+
+    def handle_submit_request(self):
+        return "Error"
+
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
