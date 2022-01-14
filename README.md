@@ -2,6 +2,8 @@
 
 An XBlock for Empowr's course platform that allows for the input and checking of any programming language.
 
+![Code Editor Screenshot](code-editor.png)
+
 ## Installation
 
 1. Make sure you have have Python 3.8 installed on your computer.
