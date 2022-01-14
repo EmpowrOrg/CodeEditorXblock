@@ -12,12 +12,12 @@ class SwiftPluginXBlock(XBlock):
     """
 
     code = String(
-        default=0,
+        default="",
 		scope=Scope.user_state,
         help="User code",
     )
     problem_id = String(
-        default=0,
+        default="",
         scope=Scope.content,
         help="Problem id used by the Api to checkcode"
 	)
