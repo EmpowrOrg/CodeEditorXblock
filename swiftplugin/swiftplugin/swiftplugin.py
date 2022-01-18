@@ -47,10 +47,7 @@ class SwiftPluginXBlock(XBlock):
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
-        frag.add_css(self.resource_string("static/js/codemirror/lib/codemirror.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
-        frag.add_javascript(self.resource_string("static/js/codemirror/lib/codemirror.js"))
-        frag.add_javascript(self.resource_string("static/js/codemirror/mode/swift/swift.js"))
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
