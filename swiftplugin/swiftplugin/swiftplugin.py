@@ -17,10 +17,15 @@ class SwiftPluginXBlock(XBlock):
         help="User code",
     )
     problem_id = String(
-        default="",
+        default="0",
         scope=Scope.content,
         help="Problem id used by the Api to checkcode"
 	)
+    problem_description = String(
+        default= "# Problem description here!",
+        scope=Scope.content,
+        help="Problem description in Markdown Language"
+    )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -77,7 +82,13 @@ class SwiftPluginXBlock(XBlock):
 
         return response
 
-
+    @XBlock.json_handler
+    def get_problem_description(self,data,suffix=''):
+        return {
+            'problem_id':self.problem_id,
+            'problem_description':self.problem_description
+        }
+        
     def handle_run_request(self):
         return "ok"
 
