@@ -57,6 +57,9 @@ function SwiftPluginXBlock(runtime, element) {
         });
     }
 
+    const solution_btn = document.getElementById('btn-solution')
+    solution_btn.onclick = function (eventObject){init_solution();}
+
     function init_description(){
         $.ajax({
             type: "POST",
@@ -82,7 +85,6 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         init_description();
-        init_solution();
     });
 }
 
