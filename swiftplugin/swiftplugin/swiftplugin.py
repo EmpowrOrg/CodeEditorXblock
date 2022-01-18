@@ -26,6 +26,12 @@ class SwiftPluginXBlock(XBlock):
         scope=Scope.content,
         help="Problem description in Markdown Language"
     )
+    
+    problem_solution = String(
+        default="print('Hello, World!')",
+        scope=Scope.content,
+        help="Problem solution in code"
+    )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -41,10 +47,7 @@ class SwiftPluginXBlock(XBlock):
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
-        frag.add_css(self.resource_string("static/js/codemirror/lib/codemirror.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
-        frag.add_javascript(self.resource_string("static/js/codemirror/lib/codemirror.js"))
-        frag.add_javascript(self.resource_string("static/js/codemirror/mode/swift/swift.js"))
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
@@ -87,6 +90,13 @@ class SwiftPluginXBlock(XBlock):
         return {
             'problem_id':self.problem_id,
             'problem_description':self.problem_description
+        }
+        
+    @XBlock.json_handler
+    def get_problem_solution(self,data,suffix=''):
+        return {
+            'problem_id':self.problem_id,
+            'problem_solution':self.problem_solution
         }
         
     def handle_run_request(self):

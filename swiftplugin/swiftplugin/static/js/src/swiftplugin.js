@@ -10,9 +10,22 @@ function SwiftPluginXBlock(runtime, element) {
         html = converter.makeHtml(response.problem_description);
         myAssigmentTextArea.innerHTML = html;
     }
-
+    function updateProblemSolution(response){
+        var myTextArea = document.getElementById("code-solution-area");
+        myCodeMirror = CodeMirror(function (elt) {
+            myTextArea.parentNode.replaceChild(elt, myTextArea);
+        }, {
+            value: response.problem_solution,
+            lineNumbers: true,
+            mode: "swift",
+            lineWrapping: true,
+            readOnly : true
+        });
+    }
     var handlerUrl = runtime.handlerUrl(element, 'button_handler');
     var handlerUrlDescription = runtime.handlerUrl(element,'get_problem_description');
+    var handlerUrlSolution = runtime.handlerUrl(element,'get_problem_solution');
+
     var myCodeMirror = null;
 
     codemirror_config = {
@@ -52,6 +65,16 @@ function SwiftPluginXBlock(runtime, element) {
             success: updateProblemDescription
         });
     }
+
+    function init_solution(){
+        $.ajax({
+            type: "POST",
+            url: handlerUrlSolution,
+            data: JSON.stringify({}),
+            success: updateProblemSolution
+        });
+    }
+
     $(function ($) {
         /* Here's where you'd do things on page load. */
         var myTextArea = document.getElementById("code-area");
@@ -59,6 +82,7 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         init_description();
+        init_solution();
     });
 }
 

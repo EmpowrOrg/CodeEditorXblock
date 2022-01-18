@@ -7,17 +7,35 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js" integrity="sha512-JpMCZgesTWh1iu/8ujURbwkJBgbgFWe3sTNCHdIuEvPwZuuN0nTUr2yawXahpgdEK7FOZUlW254Rp7AyDYJdjg==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/swift/swift.min.js" integrity="sha512-g0PUzGiEc/9nMop4v+bOs4+29eyUgOEiOCwxLSi9oqpiUoppw1K6c0O5qjn4+MHSjZRx5Xk0EZyVP1A+r+bwXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
 
         
 <div class="container code-container">
     <div class="row code-row">
         <div class="col-md-4 code-instructions-background">
-            <h1 class="code-instructions">Challenge/Problem</h1>
             <div id = "assigment-instructions-text" class="code-instructions"></div>
         </div>
         <div class="col-md-8 code-input">
-            <textarea class="code-area" id="code-area"></textarea>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#codetab" role="tab">Your answer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#solution" role="tab">The solution</a>
+                </li>
+            </ul><!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="codetab" role="tabpanel">
+                    <!--h1 class="code-instructions">Challenge/Problem</h1-->
+                    <textarea class="code-area" id="code-area"></textarea>
+                </div>
+                <div class="tab-pane" id="solution" role="tabpanel">
+                    <textarea readonly class="code-area" id="code-solution-area"></textarea>
+                </div>
+            </div>
             <div class="code-bottom">
                 <div class="button-row" id="button-row">
                     <button class="submit-btn" id="submit-btn">
