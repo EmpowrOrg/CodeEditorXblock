@@ -4,9 +4,15 @@ function SwiftPluginXBlock(runtime, element) {
     function updateResponse(response) {
         document.getElementById('response-txt').innerHTML = response.response;
     }
+    function updateProblemDescription(response) {
+        var myAssigmentTextArea = document.getElementById("assigment-instructions-text");
+        converter = new showdown.Converter();
+        html = converter.makeHtml(response.problem_description);
+        myAssigmentTextArea.innerHTML = html;
+    }
 
     var handlerUrl = runtime.handlerUrl(element, 'button_handler');
-
+    var handlerUrlDescription = runtime.handlerUrl(element,'get_problem_description');
     var myCodeMirror = null;
 
     codemirror_config = {
@@ -38,12 +44,21 @@ function SwiftPluginXBlock(runtime, element) {
         });
     }
 
+    function init_description(){
+        $.ajax({
+            type: "POST",
+            url: handlerUrlDescription,
+            data: JSON.stringify({}),
+            success: updateProblemDescription
+        });
+    }
     $(function ($) {
         /* Here's where you'd do things on page load. */
         var myTextArea = document.getElementById("code-area");
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
+        init_description();
     });
 }
 
