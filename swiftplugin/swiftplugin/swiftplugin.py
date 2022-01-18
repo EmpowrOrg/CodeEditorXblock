@@ -26,6 +26,12 @@ class SwiftPluginXBlock(XBlock):
         scope=Scope.content,
         help="Problem description in Markdown Language"
     )
+    
+    problem_solution = String(
+        default="print('Hello, World!')",
+        scope=Scope.content,
+        help="Problem solution in code"
+    )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -87,6 +93,13 @@ class SwiftPluginXBlock(XBlock):
         return {
             'problem_id':self.problem_id,
             'problem_description':self.problem_description
+        }
+        
+    @XBlock.json_handler
+    def get_problem_solution(self,data,suffix=''):
+        return {
+            'problem_id':self.problem_id,
+            'problem_solution':self.problem_solution
         }
         
     def handle_run_request(self):

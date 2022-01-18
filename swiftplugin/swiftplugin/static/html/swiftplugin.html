@@ -13,8 +13,23 @@
 <div class="container code-container">
     <div class="row code-row">
         <div class="col-md-4 code-instructions-background">
-            <h1 class="code-instructions">Challenge/Problem</h1>
-            <div id = "assigment-instructions-text" class="code-instructions"></div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#problem_statement" role="tab">Problem description</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#solution" role="tab">Problem solution</a>
+                </li>
+            </ul><!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="problem_statement" role="tabpanel">
+                    <!--h1 class="code-instructions">Challenge/Problem</h1-->
+                    <div id = "assigment-instructions-text" class="code-instructions"></div>
+                </div>
+                <div class="tab-pane" id="solution" role="tabpanel">
+                    <textarea readonly class="code-area" id="code-solution-area"></textarea>
+                </div>
+            </div>
         </div>
         <div class="col-md-8 code-input">
             <textarea class="code-area" id="code-area"></textarea>
