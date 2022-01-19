@@ -93,3 +93,8 @@
     display: flex;
 
 }
+
+.tab-pane {
+    height: 100%;
+}
+
