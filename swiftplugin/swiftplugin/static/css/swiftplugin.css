@@ -27,6 +27,9 @@
     padding: 16px;
 }
 
+.tab-content {
+    height: 64.5%;
+}
 .code-input {
     height: 100vh;
     padding-left: 0;
@@ -38,7 +41,6 @@
     resize: none;
     border: none;
     display: flex;
-    height: 66vh;
     padding-right: 0;
     padding-left: 0;
     outline: none;
@@ -87,7 +89,12 @@
 
 .code-bottom {
     background: #313131;
-    height: 34vh;
+    height: 30vh;
     display: flex;
 
 }
+
+.tab-pane {
+    height: 100%;
+}
+
