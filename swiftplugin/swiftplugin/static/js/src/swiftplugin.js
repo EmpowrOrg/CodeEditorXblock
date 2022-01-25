@@ -26,6 +26,7 @@ function SwiftPluginXBlock(runtime, element) {
     var handlerUrl = runtime.handlerUrl(element, 'button_handler');
     var handlerUrlDescription = runtime.handlerUrl(element,'get_problem_description');
     var handlerUrlSolution = runtime.handlerUrl(element,'get_problem_solution');
+    var handlerUrlHasSolution = runtime.handlerUrl(element,'has_problem_solution');
 
     var myCodeMirror = null;
 
@@ -59,7 +60,6 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     const solution_btn = document.getElementById('btn-solution')
-    solution_btn.onclick = function (eventObject){init_solution();}
 
     function init_description(){
         $.ajax({
@@ -69,6 +69,25 @@ function SwiftPluginXBlock(runtime, element) {
             success: updateProblemDescription
         });
     }
+    
+    function on_init(){
+        init_description();
+        $.ajax({
+            type: "POST",
+            url: handlerUrlHasSolution,
+            data: JSON.stringify({}),
+            success: function(data){
+                if (data.has_solution_defined){
+                    solution_btn.onclick = function (eventObject){
+                        init_solution();
+                    }
+                }else{
+                    solution_btn.remove()
+                }
+            }
+        })
+    }
+
 
     function init_solution(){
         $.ajax({
@@ -79,6 +98,7 @@ function SwiftPluginXBlock(runtime, element) {
         });
     }
 
+
     $(function ($) {
         /* Here's where you'd do things on page load. */
         var myTextArea = document.getElementById("code-area");
@@ -86,7 +106,7 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         myCodeMirror.setSize('100%','100%');
-        init_description();
+        on_init()
     });
 }
 
