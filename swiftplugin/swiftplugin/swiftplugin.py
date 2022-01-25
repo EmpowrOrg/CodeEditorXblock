@@ -99,6 +99,13 @@ class SwiftPluginXBlock(XBlock):
             'problem_solution':self.problem_solution
         }
         
+    @XBlock.json_handler
+    def has_problem_solution(self,data,suffix=''):
+        return {
+            'problem_id':self.problem_id,
+            'has_solution_defined':self.problem_solution and self.problem_solution.strip() 
+        }
+        
     def handle_run_request(self):
         return "ok"
 
