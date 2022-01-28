@@ -5,7 +5,7 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import String, Scope
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-import difflib, sys
+import difflib
 from io import StringIO
 import logging
 import requests
@@ -56,7 +56,7 @@ class SwiftPluginXBlock(
     )
 
     problem_solution = String(
-        default="print('Hello, World!')",
+        default="",
         scope=Scope.settings,
         help="Problem solution in code",
         multiline_editor=True
@@ -125,7 +125,6 @@ class SwiftPluginXBlock(
         frag.add_css_url(
             "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap")
         frag.initialize_js('SwiftPluginXBlock')
-
         return frag
 
     @XBlock.json_handler
