@@ -1,10 +1,12 @@
 """TO-DO: Write a description of what this XBlock is."""
 
+from unittest import expectedFailure
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import String, Scope
-
+import difflib, sys
+from io import StringIO
 
 class SwiftPluginXBlock(XBlock):
     """
@@ -78,7 +80,9 @@ class SwiftPluginXBlock(XBlock):
         elif 'submit' in data['type']:
             api_respo = self.handle_submit_request()
             response['status'] = "Submitted code"
-            response['response'] = api_respo
+            response['response'] = api_respo['message']
+            response['diff'] = self.calculate_diff(expected_output = api_respo['expected_output'],
+                                                   actual_output=api_respo['user_output'])
 
         else:
             response["status"] = "No valid type request"
@@ -103,7 +107,11 @@ class SwiftPluginXBlock(XBlock):
         return "ok"
 
     def handle_submit_request(self):
-        return "Error"
+        return {
+            'message':"Error",
+            'expected_output':"Hello world!",
+            'user_output':"Hello World!\nMy name is Ivan!!!"
+        }
 
     @staticmethod
     def workbench_scenarios():
@@ -120,3 +128,14 @@ class SwiftPluginXBlock(XBlock):
                 </vertical_demo>
              """),
         ]
+
+    def calculate_diff(self,expected_output:str, actual_output:str):
+        # To redirect std output
+        mystdout = StringIO()
+        d = difflib.Differ()
+        mystdout.writelines(list(d.compare(expected_output.splitlines(keepends=True),
+                                            actual_output.splitlines(keepends=True))))
+        # Read from mystdout output
+        diff =  mystdout.getvalue()
+        return diff
+        

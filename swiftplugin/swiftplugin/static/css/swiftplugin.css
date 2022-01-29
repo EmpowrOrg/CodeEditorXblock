@@ -48,6 +48,7 @@
 
 .response-txt {
     color: white;
+    white-space: pre-wrap;
 }
 
 .code-row {
@@ -91,10 +92,9 @@
     background: #313131;
     height: 30vh;
     display: flex;
-
+    flex-direction: column;
 }
 
 .tab-pane {
     height: 100%;
 }
-

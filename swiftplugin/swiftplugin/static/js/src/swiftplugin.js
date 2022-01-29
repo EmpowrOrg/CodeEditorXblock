@@ -2,7 +2,10 @@
 
 function SwiftPluginXBlock(runtime, element) {
     function updateResponse(response) {
-        document.getElementById('response-txt').innerHTML = response.response;
+        compilation_response = response.response
+        diff_response = response.diff
+        output_response = compilation_response + '</br>'+ diff_response
+        document.getElementById('response-txt').innerHTML = output_response;
     }
     function updateProblemDescription(response) {
         var myAssigmentTextArea = document.getElementById("assigment-instructions-text");
