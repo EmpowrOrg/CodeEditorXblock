@@ -36,7 +36,8 @@ class SwiftPluginXBlock(
     problem_solution = String(
         default="print('Hello, World!')",
         scope=Scope.settings,
-        help="Problem solution in code"
+        help="Problem solution in code",
+        multiline_editor = True
     )
 
     editable_fields = [
