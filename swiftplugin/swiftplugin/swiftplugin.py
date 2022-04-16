@@ -31,7 +31,7 @@ class SwiftPluginXBlock(XBlock):
     
     problem_solution = String(
         default="print('Hello, World!')",
-        scope=Scope.content,
+        scope=Scope.settings,
         help="Problem solution in code"
     )
 
