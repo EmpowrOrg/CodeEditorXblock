@@ -5,10 +5,13 @@ import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import String, Scope
+from xblockutils.studio_editable import StudioEditableXBlockMixin
 import difflib, sys
 from io import StringIO
 
-class SwiftPluginXBlock(XBlock):
+class SwiftPluginXBlock(
+    StudioEditableXBlockMixin,
+    XBlock):
     """
     TO-DO: document what your XBlock does.
     """
@@ -35,6 +38,10 @@ class SwiftPluginXBlock(XBlock):
         help="Problem solution in code"
     )
 
+    editable_fields = [
+        'problem_id',
+        'problem_description'
+    ]
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
