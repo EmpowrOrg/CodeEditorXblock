@@ -22,14 +22,15 @@ class SwiftPluginXBlock(
         help="User code",
     )
     problem_id = String(
-        default="0",
-        scope=Scope.content,
+        default="Example problem id",
+        scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
 	)
     problem_description = String(
         default= "# Problem description here!",
-        scope=Scope.content,
-        help="Problem description in Markdown Language"
+        scope=Scope.settings,
+        help="Problem description in Markdown Language",
+        multiline_editor = True
     )
     
     problem_solution = String(
@@ -40,14 +41,15 @@ class SwiftPluginXBlock(
 
     editable_fields = [
         'problem_id',
-        'problem_description'
+        'problem_description',
+        'problem_solution'
     ]
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-
+    @XBlock.supports('multi_device')
     def student_view(self, context=None):
         """
         The primary view of the SwiftPluginXBlock, shown to students
