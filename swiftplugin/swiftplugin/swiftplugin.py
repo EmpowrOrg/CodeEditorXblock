@@ -1,6 +1,5 @@
 """TO-DO: Write a description of what this XBlock is."""
 
-from unittest import expectedFailure
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock

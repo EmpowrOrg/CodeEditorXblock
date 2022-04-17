@@ -1,6 +1,5 @@
 /* Javascript for SwiftPluginXBlock. */
 
-import {CodeMirror} from "../../../../build/lib/swiftplugin/static/js/codemirror/src/edit/main";
 
 function SwiftPluginXBlock(runtime, element) {
     function updateResponse(response) {
