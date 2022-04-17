@@ -8,6 +8,7 @@ from xblock.fields import String, Scope
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 import difflib, sys
 from io import StringIO
+import logging
 
 class SwiftPluginXBlock(
     StudioEditableXBlockMixin,
@@ -72,14 +73,14 @@ class SwiftPluginXBlock(
         response = {}
 
         if "code" not in data.keys():
-            log.error("non code data in request!")
+            logging.error("non code data in request!")
             response['status'] = "Empty code!"
 
         self.code = data['code']
 
         response['code'] = self.code
         if "type" not in data.keys():
-            log.error("non request type in request")
+            logging.error("non request type in request")
             response["status"] = "Non request type"
 
         if 'run' in  data['type']:
