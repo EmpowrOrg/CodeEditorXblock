@@ -76,6 +76,7 @@ function SwiftPluginXBlock(runtime, element) {
     
     function on_init(){
         init_description();
+        
         $.ajax({
             type: "POST",
             url: handlerUrlHasSolution,

@@ -56,8 +56,15 @@ class SwiftPluginXBlock(
         The primary view of the SwiftPluginXBlock, shown to students
         when viewing courses.
         """
+        
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
+        frag.add_javascript_url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js")
+        frag.add_javascript_url("https://code.jquery.com/jquery-3.6.0.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.initialize_js('SwiftPluginXBlock')
