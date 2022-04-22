@@ -1,6 +1,5 @@
 """TO-DO: Write a description of what this XBlock is."""
 
-from unittest import expectedFailure
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
@@ -8,6 +7,8 @@ from xblock.fields import String, Scope
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 import difflib, sys
 from io import StringIO
+import logging
+
 
 class SwiftPluginXBlock(
     StudioEditableXBlockMixin,
@@ -18,26 +19,26 @@ class SwiftPluginXBlock(
 
     code = String(
         default="",
-		scope=Scope.user_state,
+        scope=Scope.user_state,
         help="User code",
     )
     problem_id = String(
         default="Example problem id",
         scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
-	)
+    )
     problem_description = String(
-        default= "# Problem description here!",
+        default="# Problem description here!",
         scope=Scope.settings,
         help="Problem description in Markdown Language",
-        multiline_editor = True
+        multiline_editor=True
     )
-    
+
     problem_solution = String(
         default="print('Hello, World!')",
         scope=Scope.settings,
         help="Problem solution in code",
-        multiline_editor = True
+        multiline_editor=True
     )
 
     editable_fields = [
@@ -45,6 +46,7 @@ class SwiftPluginXBlock(
         'problem_description',
         'problem_solution'
     ]
+
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
@@ -56,13 +58,27 @@ class SwiftPluginXBlock(
         The primary view of the SwiftPluginXBlock, shown to students
         when viewing courses.
         """
+
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
+        frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
+        frag.add_javascript_url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/search.js")
+        frag.add_javascript_url("https://codemirror.net/addon/edit/closebrackets.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/searchcursor.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/jump-to-line.js")
+        frag.add_javascript_url("https://codemirror.net/addon/dialog/dialog.js")
+        frag.add_javascript_url("https://codemirror.net/addon/fold/foldcode.js")
+        frag.add_css_url("https://codemirror.net/addon/dialog/dialog.css")
         frag.initialize_js('SwiftPluginXBlock')
         return frag
-
 
     @XBlock.json_handler
     def button_handler(self, data, suffix=''):
@@ -72,17 +88,17 @@ class SwiftPluginXBlock(
         response = {}
 
         if "code" not in data.keys():
-            log.error("non code data in request!")
+            logging.error("non code data in request!")
             response['status'] = "Empty code!"
 
         self.code = data['code']
 
         response['code'] = self.code
         if "type" not in data.keys():
-            log.error("non request type in request")
+            logging.error("non request type in request")
             response["status"] = "Non request type"
 
-        if 'run' in  data['type']:
+        if 'run' in data['type']:
             api_respo = self.handle_run_request()
             response['status'] = "Executed code"
             response['response'] = api_respo
@@ -91,7 +107,7 @@ class SwiftPluginXBlock(
             api_respo = self.handle_submit_request()
             response['status'] = "Submitted code"
             response['response'] = api_respo['message']
-            response['diff'] = self.calculate_diff(expected_output = api_respo['expected_output'],
+            response['diff'] = self.calculate_diff(expected_output=api_respo['expected_output'],
                                                    actual_output=api_respo['user_output'])
 
         else:
@@ -100,34 +116,34 @@ class SwiftPluginXBlock(
         return response
 
     @XBlock.json_handler
-    def get_problem_description(self,data,suffix=''):
+    def get_problem_description(self, data, suffix=''):
         return {
-            'problem_id':self.problem_id,
-            'problem_description':self.problem_description
+            'problem_id': self.problem_id,
+            'problem_description': self.problem_description
         }
-        
+
     @XBlock.json_handler
-    def get_problem_solution(self,data,suffix=''):
+    def get_problem_solution(self, data, suffix=''):
         return {
-            'problem_id':self.problem_id,
-            'problem_solution':self.problem_solution
+            'problem_id': self.problem_id,
+            'problem_solution': self.problem_solution
         }
-        
+
     @XBlock.json_handler
-    def has_problem_solution(self,data,suffix=''):
+    def has_problem_solution(self, data, suffix=''):
         return {
-            'problem_id':self.problem_id,
-            'has_solution_defined':self.problem_solution and self.problem_solution.strip() 
+            'problem_id': self.problem_id,
+            'has_solution_defined': self.problem_solution and self.problem_solution.strip()
         }
-        
+
     def handle_run_request(self):
         return "ok"
 
     def handle_submit_request(self):
         return {
-            'message':"Error",
-            'expected_output':"Hello world!",
-            'user_output':"Hello World!\nMy name is Ivan!!!"
+            'message': "Error",
+            'expected_output': "Hello world!",
+            'user_output': "Hello World!\nMy name is Ivan!!!"
         }
 
     @staticmethod
@@ -146,13 +162,12 @@ class SwiftPluginXBlock(
              """),
         ]
 
-    def calculate_diff(self,expected_output:str, actual_output:str):
+    def calculate_diff(self, expected_output: str, actual_output: str):
         # To redirect std output
         mystdout = StringIO()
         d = difflib.Differ()
         mystdout.writelines(list(d.compare(expected_output.splitlines(keepends=True),
-                                            actual_output.splitlines(keepends=True))))
+                                           actual_output.splitlines(keepends=True))))
         # Read from mystdout output
-        diff =  mystdout.getvalue()
+        diff = mystdout.getvalue()
         return diff
-        

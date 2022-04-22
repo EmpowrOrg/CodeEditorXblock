@@ -24,14 +24,12 @@
 
 .code-instructions {
     color: white;
-    padding: 16px;
 }
 
 .tab-content {
-    height: 64.5%;
 }
 .code-input {
-    height: 100vh;
+    height: 100%;
     padding-left: 0;
     padding-right: 0;
 }
@@ -60,11 +58,9 @@
 
 .code-container {
     max-width: 100%;
-    width: 100%;
+    width: auto;
     display: flex;
-    height: 100vh;
-    padding-right: 0;
-    padding-left: 0;
+    height: inherit;
 }
 
 .submit-btn {
@@ -97,4 +93,6 @@
 
 .tab-pane {
     height: 100%;
+    min-height: 100px;
+
 }
