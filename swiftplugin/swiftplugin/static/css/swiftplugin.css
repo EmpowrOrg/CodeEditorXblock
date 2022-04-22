@@ -24,11 +24,9 @@
 
 .code-instructions {
     color: white;
-    padding: 16px;
 }
 
 .tab-content {
-    height: 64.5%;
 }
 .code-input {
     height: 100%;
@@ -95,4 +93,6 @@
 
 .tab-pane {
     height: 100%;
+    min-height: 100px;
+
 }

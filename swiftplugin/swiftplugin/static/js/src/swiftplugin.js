@@ -25,7 +25,7 @@ function SwiftPluginXBlock(runtime, element) {
             lineWrapping: true,
             readOnly : true,
         });
-        myCodeMirror.setSize('100%','100%');
+        myCodeMirror.setSize('100%');
     }
     const handlerUrl = runtime.handlerUrl(element, 'button_handler');
     const handlerUrlDescription = runtime.handlerUrl(element,'get_problem_description');
@@ -110,7 +110,7 @@ function SwiftPluginXBlock(runtime, element) {
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
-        myCodeMirror.setSize('100%','100%');
+        myCodeMirror.setSize('100%');
         on_init()
     });
 }
