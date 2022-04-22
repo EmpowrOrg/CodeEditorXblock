@@ -38,7 +38,11 @@ function SwiftPluginXBlock(runtime, element) {
         value: "// Your code here.",
         lineNumbers: true,
         mode: "swift",
-        lineWrapping: true
+        lineWrapping: true,
+        indentWithTabs: true,
+        lineWiseCopyCut: true,
+        autoCloseBrackets: true,
+
     }
 
     const run_btn = document.getElementById('run-btn');

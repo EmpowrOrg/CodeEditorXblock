@@ -68,6 +68,13 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_javascript_url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/search.js")
+        frag.add_javascript_url("https://codemirror.net/addon/edit/closebrackets.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/searchcursor.js")
+        frag.add_javascript_url("https://codemirror.net/addon/search/jump-to-line.js")
+        frag.add_javascript_url("https://codemirror.net/addon/dialog/dialog.js")
+        frag.add_javascript_url("https://codemirror.net/addon/fold/foldcode.js")
+        frag.add_css_url("https://codemirror.net/addon/dialog/dialog.css")
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
