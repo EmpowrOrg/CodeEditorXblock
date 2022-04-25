@@ -8,6 +8,7 @@ from xblockutils.studio_editable import StudioEditableXBlockMixin
 import difflib, sys
 from io import StringIO
 import logging
+import requests
 
 
 class SwiftPluginXBlock(
@@ -22,11 +23,25 @@ class SwiftPluginXBlock(
         scope=Scope.user_state,
         help="User code",
     )
+    
     problem_id = String(
         default="Example problem id",
         scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
-    )
+	)
+    
+    api_url_submit = String(
+        default="Example api url",
+        scope=Scope.settings,
+        help="URL api used to check the code (submit final response)"
+	)
+    
+    api_url_run = String(
+        default="Example api url",
+        scope=Scope.settings,
+        help="URL api used to run the code (run code by api)"
+	)
+    
     problem_description = String(
         default="# Problem description here!",
         scope=Scope.settings,
@@ -44,7 +59,9 @@ class SwiftPluginXBlock(
     editable_fields = [
         'problem_id',
         'problem_description',
-        'problem_solution'
+        'problem_solution',
+        'api_url_run',
+        'api_url_submit'
     ]
 
     def resource_string(self, path):
@@ -137,15 +154,13 @@ class SwiftPluginXBlock(
         }
 
     def handle_run_request(self):
-        return "ok"
+        r = requests.post(self.api_url_run,data=self.code)
+        return r.json()
 
     def handle_submit_request(self):
-        return {
-            'message': "Error",
-            'expected_output': "Hello world!",
-            'user_output': "Hello World!\nMy name is Ivan!!!"
-        }
-
+        r = requests.post(self.api_url_submit,data=self.code)
+        return r.json()
+        
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
