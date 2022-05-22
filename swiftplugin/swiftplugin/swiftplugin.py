@@ -80,7 +80,7 @@ class SwiftPluginXBlock(
         frag = Fragment(html.format(self=self))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
-        frag.add_css(self.resource_string("static/css/swiftplugin.css"))
+      #  frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
         frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css")
@@ -94,7 +94,31 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/addon/dialog/dialog.css")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js")
+        frag.add_javascript_url("https://d2l03dhf2zcc6i.cloudfront.net/js/theme.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js")
+        frag.add_javascript_url(
+            "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.6/countUp.umd.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.10.1/mapbox-gl.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.9/swiper-bundle.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js")
+        frag.add_javascript_url(
+            "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css")
+        frag.add_css_url("https://fonts.googleapis.com/icon?family=Material+Icons")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.1.4/swiper-bundle.min.css")
+        frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/custom.css")
+        frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/style.css")
+        frag.add_css_url(
+            "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap")
         frag.initialize_js('SwiftPluginXBlock')
+
         return frag
 
     @XBlock.json_handler

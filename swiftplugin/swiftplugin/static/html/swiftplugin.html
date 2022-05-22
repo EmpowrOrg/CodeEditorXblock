@@ -1,43 +1,60 @@
-<div class="code-container">
-    <div class="row code-row">
-        <div class="col-md-4 code-instructions-background">
-            <div id="assigment-instructions-text" class="code-instructions"></div>
-        </div>
-        <div class="col-md-8 code-input" style="padding-left: 0;padding-right: 0;">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#codetab" role="tab"
-                       style="background: #3D9C06;border-color: #3D9C06;color: white;border-radius: 0;margin-left: 0;margin-right: 0;">Your answer</a>
+<section class="col-md-12">
+    <div class="container">
+        <div class="col-12">
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="yoursolution2-tab" data-bs-toggle="tab"
+                            data-bs-target="#yoursolution2"
+                            type="button" role="tab" aria-controls="yoursolution2" aria-selected="true">Your Solution
+                        Layout 2
+                    </button>
                 </li>
-                <li class="nav-item" id="btn-solution">
-                    <a class="nav-link" data-toggle="tab" href="#solution" role="tab" style="border-color: rgba(0, 0, 0, 0.5);margin-left: 0;margin-right: 0;background: rgba(0, 0, 0, 0.5);color: white;border-radius: 0;">The solution</a>
+                <li id="btn-solution" class="nav-item" role="presentation">
+                    <button class="nav-link" id="empowrsolution-tab" data-bs-toggle="tab"
+                            data-bs-target="#empowrsolution" type="button" role="tab" aria-controls="empowrsolution"
+                            aria-selected="false">Empowr's Solution
+                    </button>
                 </li>
-            </ul><!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="codetab" role="tabpanel">
-                    <!--h1 class="code-instructions">Challenge/Problem</h1-->
-                    <textarea class="code-area" id="code-area"></textarea>
+
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
+                     aria-labelledby="yoursolution2-tab">
+                    <div class="row">
+                        <textarea id="code-area" rows="25" class="col-md-6">Layout 2</textarea>
+                        <div class="col-md-6">
+                            <div class="mt-40px">
+                                <h1 class="mb-20px">Instructions</h1>
+                                <p id="assigment-instructions-text"></p>
+                                <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
+                                   href="javascript:void(0);">Run
+                                    Code</a>
+                                <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
+                                   href="javascript:void(0);">Run
+                                    Code</a>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-pane" id="solution" role="tabpanel">
-                    <textarea readonly class="code-area" id="code-solution-area"></textarea>
-                </div>
+
+                <div class="tab-pane fade" id="empowrsolution" role="tabpanel" aria-labelledby="empowrsolution-tab">
+                    <textarea readonly id="code-solution-area" rows="25" class="col-md-12"></textarea><br></div>
             </div>
+
+            <h1 class="mt-40px mb-20px">Answer</h1>
+
             <div class="code-bottom">
-                <div class="button-row" id="button-row">
-                    <button class="submit-btn" id="submit-btn">
-                        Submit
-                    </button>
-                    <button class="run-btn" id="run-btn">
-                        Run
-                    </button>
-                </div>
                 <div id="response-area">
                     <p class="response-txt" id="response-txt" readonly></p>
                 </div>
 
             </div>
-        </div>
-    </div>
-</div>
 
+
+        </div><!-- end col -->
+    </div><!-- end container-lg -->
+</section>
 
