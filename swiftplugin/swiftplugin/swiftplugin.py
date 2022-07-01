@@ -43,7 +43,7 @@ class SwiftPluginXBlock(
 	)
 
     problem_description = String(
-        default="# Problem description here!",
+        default="Problem description here!",
         scope=Scope.settings,
         help="Problem description in Markdown Language",
         multiline_editor=True
