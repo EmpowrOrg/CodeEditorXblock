@@ -2,58 +2,76 @@
     <div class="container">
         <div class="col-12">
 
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="yoursolution2-tab" data-bs-toggle="tab"
-                            data-bs-target="#yoursolution2"
-                            type="button" role="tab" aria-controls="yoursolution2" aria-selected="true">Your Solution
-                        Layout 2
-                    </button>
-                </li>
-                <li id="btn-solution" class="nav-item" role="presentation">
-                    <button class="nav-link" id="empowrsolution-tab" data-bs-toggle="tab"
-                            data-bs-target="#empowrsolution" type="button" role="tab" aria-controls="empowrsolution"
-                            aria-selected="false">Empowr's Solution
-                    </button>
-                </li>
+            <h1 class="mb-20px">Solution to Question 1</h1>
+            <div id="code-container-area">
+                <ul class="nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="yoursolution2-tab" data-bs-toggle="tab"
+                                data-bs-target="#yoursolution2"
+                                type="button" role="tab" aria-controls="yoursolution2" aria-selected="true">Your
+                            Solution
+                        </button>
+                    </li>
+                    <li id="btn-solution" class="nav-item" role="presentation">
+                        <button class="nav-link" id="empowrsolution-tab" data-bs-toggle="tab"
+                                data-bs-target="#empowrsolution" type="button" role="tab" aria-controls="empowrsolution"
+                                aria-selected="false">Empowr's Solution
+                        </button>
+                    </li>
 
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
-                     aria-labelledby="yoursolution2-tab">
-                    <div class="row">
-                        <textarea id="code-area" rows="25" class="col-md-6">Layout 2</textarea>
-                        <div class="col-md-6">
-                            <div class="mt-40px">
-                                <h1 class="mb-20px">Instructions</h1>
-                                <p id="assigment-instructions-text"></p>
-                                <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
-                                   href="javascript:void(0);">Run
-                                    Code</a>
-                                <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
-                                   href="javascript:void(0);">Run
-                                    Code</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
+                         aria-labelledby="yoursolution2-tab">
+                        <div class="row code-solution-row">
+                            <textarea id="code-area" rows="25" class="col-md-6">Layout 2</textarea>
+                            <div class="col-md-6 instructions-container">
+                                <div class="mt-40px">
+                                    <h1 class="mb-20px">Instructions</h1>
+                                    <p id="assigment-instructions-text"></p>
+                                    <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
+                                       href="javascript:void(0);">Run
+                                        Code</a>
+                                    <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
+                                       href="javascript:void(0);">Submit
+                                        Code</a>
+                                </div>
+                                <h1 class="mt-20px mb-20px">Output</h1>
+
+                                <div class="code-bottom mb-40px">
+                                    <div id="response-area">
+                                        <p class="response-txt" id="response-txt" readonly></p>
+                                    </div>
+
+                                </div>
+                                <br>
                             </div>
-                            <br>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade hidden active" id="empowrsolution" role="tabpanel"
+                         aria-labelledby="empowrsolution-tab">
+                        <div class="row code-solution-row">
+                            <textarea id="code-solution-area" rows="25" class="col-md-6" readonly></textarea>
+                            <div class="col-md-6 instructions-container">
+                                <div class="mt-40px">
+                                    <h1 class="mb-20px">Instructions</h1>
+                                    <p class="assigment-instructions-text"></p>
+                                </div>
+                                <h1 class="mt-20px mb-20px">Expected Output</h1>
+
+                                <div class="code-bottom mb-40px">
+                                    <div class="response-area">
+                                        <p class="response-txt" class="response-txt" readonly></p>
+                                    </div>
+
+                                </div>
+                                <br>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="tab-pane fade" id="empowrsolution" role="tabpanel" aria-labelledby="empowrsolution-tab">
-                    <textarea readonly id="code-solution-area" rows="25" class="col-md-12"></textarea><br></div>
             </div>
-
-            <h1 class="mt-40px mb-20px">Answer</h1>
-
-            <div class="code-bottom">
-                <div id="response-area">
-                    <p class="response-txt" id="response-txt" readonly></p>
-                </div>
-
-            </div>
-
-
         </div><!-- end col -->
     </div><!-- end container-lg -->
 </section>
