@@ -80,7 +80,7 @@ class SwiftPluginXBlock(
         frag = Fragment(html.format(self=self))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
-      #  frag.add_css(self.resource_string("static/css/swiftplugin.css"))
+        frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
         frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css")
