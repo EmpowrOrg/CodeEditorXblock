@@ -17,7 +17,7 @@ function SwiftPluginXBlock(runtime, element) {
     function updateProblemSolution(response){
         const myTextArea = document.getElementById("code-solution-area");
         myCodeMirror = CodeMirror(function (elt) {
-            myTextArea.parentNode.replaceChild(elt, myTextArea);
+            myTextArea?.parentNode.replaceChild(elt, myTextArea);
         }, {
             value: response.problem_solution,
             lineNumbers: true,
