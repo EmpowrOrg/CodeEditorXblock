@@ -23,24 +23,30 @@ class SwiftPluginXBlock(
         scope=Scope.user_state,
         help="User code",
     )
-    
+
     problem_id = String(
         default="Example problem id",
         scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
-	)
-    
+    )
+
     api_url_submit = String(
         default="Example api url",
         scope=Scope.settings,
         help="URL api used to check the code (submit final response)"
-	)
-    
+    )
+
     api_url_run = String(
         default="Example api url",
         scope=Scope.settings,
         help="URL api used to run the code (run code by api)"
-	)
+    )
+
+    problem_title = String(
+        default="Programming Exercise",
+        scope=Scope.settings,
+        help="Problem title",
+    )
 
     problem_description = String(
         default="Problem description here!",
@@ -59,6 +65,7 @@ class SwiftPluginXBlock(
     editable_fields = [
         'problem_id',
         'problem_description',
+        'problem_title',
         'problem_solution',
         'api_url_run',
         'api_url_submit'
@@ -164,6 +171,13 @@ class SwiftPluginXBlock(
         }
 
     @XBlock.json_handler
+    def get_problem_title(self, data, suffix=''):
+        return {
+            'problem_id': self.problem_id,
+            'problem_title': self.problem_title
+        }
+
+    @XBlock.json_handler
     def get_problem_solution(self, data, suffix=''):
         return {
             'problem_id': self.problem_id,
@@ -178,11 +192,11 @@ class SwiftPluginXBlock(
         }
 
     def handle_run_request(self):
-        r = requests.post(self.api_url_run,data=self.code)
+        r = requests.post(self.api_url_run, data=self.code)
         return r.json()
 
     def handle_submit_request(self):
-        r = requests.post(self.api_url_submit,data=self.code)
+        r = requests.post(self.api_url_submit, data=self.code)
         return r.json()
 
     @staticmethod
