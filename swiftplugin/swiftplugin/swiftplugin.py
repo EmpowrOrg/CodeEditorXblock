@@ -25,19 +25,19 @@ class SwiftPluginXBlock(
     )
 
     problem_id = String(
-        default="Example problem id",
+        default="",
         scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
     )
 
     api_url_submit = String(
-        default="Example api url",
+        default="",
         scope=Scope.settings,
         help="URL api used to check the code (submit final response)"
     )
 
     api_url_run = String(
-        default="Example api url",
+        default="",
         scope=Scope.settings,
         help="URL api used to run the code (run code by api)"
     )
