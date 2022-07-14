@@ -8,6 +8,7 @@ function SwiftPluginXBlock(runtime, element) {
         const output_response = compilation_response + '</br>' + diff_response
         document.getElementById('response-txt').innerHTML = output_response;
     }
+
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter();
@@ -16,7 +17,7 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblemTitle(response) {
-        const myAssigmentTextArea = document.getElementById("assigment-title");
+        const myAssigmentTextArea = document.getElementById("assignment-title");
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_title);
         myAssigmentTextArea.innerHTML = html;
@@ -24,7 +25,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemSolution(response) {
         const myTextArea = document.getElementById("code-solution-area");
-        myCodeMirror = CodeMirror(function (elt) {
+        solutionCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, {
             value: response.problem_solution,
@@ -33,26 +34,18 @@ function SwiftPluginXBlock(runtime, element) {
             lineWrapping: true,
             readOnly: true,
         });
-        myCodeMirror.setSize('100%');
+        solutionCodeMirror.setSize('100%');
     }
+
     const handlerUrl = runtime.handlerUrl(element, 'button_handler');
     const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
     const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
     const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
     const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
+    const handlerUrlLanguage = runtime.handlerUrl(element, 'get_problem_language');
 
     var myCodeMirror = null;
-
-    const codemirror_config = {
-        value: "// Your code here.",
-        lineNumbers: true,
-        mode: "swift",
-        lineWrapping: true,
-        indentWithTabs: true,
-        lineWiseCopyCut: true,
-        autoCloseBrackets: true,
-
-    }
+    var solutionCodeMirror  = null;
 
     const run_btn = document.getElementById('run-btn');
     run_btn.onclick = function (eventObject) {
@@ -99,6 +92,7 @@ function SwiftPluginXBlock(runtime, element) {
     function on_init() {
         init_description();
         init_title();
+        init_language();
 
         $.ajax({
             type: "POST",
@@ -116,6 +110,40 @@ function SwiftPluginXBlock(runtime, element) {
         })
     }
 
+    function init_language() {
+        $.ajax({
+            type: "POST",
+            url: handlerUrlLanguage,
+            data: JSON.stringify({}),
+            success: function (data) {
+                console.log(data)
+                init_code_mirror(data.problem_language)
+            }
+        });
+    }
+
+    function init_code_mirror(mode) {
+        const codemirror_config = {
+            value: "// Your code here.",
+            lineNumbers: true,
+            mode: mode,
+            lineWrapping: true,
+            indentWithTabs: true,
+            lineWiseCopyCut: true,
+            autoCloseBrackets: true,
+        }
+        console.log(codemirror_config)
+        var myTextArea = document.getElementById("code-area");
+        myCodeMirror = CodeMirror(function (elt) {
+            myTextArea.parentNode.replaceChild(elt, myTextArea);
+        }, codemirror_config);
+        myCodeMirror.setSize('100%');
+        const solutionTextArea = document.getElementById("code-solution-area");
+        solutionCodeMirror = CodeMirror(function (elt) {
+            solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
+        }, codemirror_config);
+        solutionCodeMirror.setSize('100%');
+    }
 
     function init_solution() {
         $.ajax({
@@ -129,11 +157,6 @@ function SwiftPluginXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
-        var myTextArea = document.getElementById("code-area");
-        myCodeMirror = CodeMirror(function (elt) {
-            myTextArea.parentNode.replaceChild(elt, myTextArea);
-        }, codemirror_config);
-        myCodeMirror.setSize('100%');
         on_init()
     });
 }
