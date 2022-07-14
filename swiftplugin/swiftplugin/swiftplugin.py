@@ -63,11 +63,18 @@ class SwiftPluginXBlock(
         multiline_editor=True
     )
 
+    problem_language = String(
+        default="text/x-python",
+        scope=Scope.settings,
+        help="Example: text/x-kotlin. Supported languages can be found at https://codemirror.net/5/mode/"
+    )
+
     editable_fields = [
         'problem_id',
         'problem_description',
         'problem_title',
         'problem_solution',
+        'problem_language',
         'api_url_run',
         'api_url_submit'
     ]
@@ -83,11 +90,12 @@ class SwiftPluginXBlock(
         The primary view of the SwiftPluginXBlock, shown to students
         when viewing courses.
         """
-
+        print(self.problem_language)
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
+        frag.add_javascript_url(self.get_mode_url(self.problem_language))
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
@@ -172,6 +180,13 @@ class SwiftPluginXBlock(
         }
 
     @XBlock.json_handler
+    def get_problem_language(self, data, suffix=''):
+        return {
+            'problem_id': self.problem_id,
+            'problem_language': self.problem_language
+        }
+
+    @XBlock.json_handler
     def has_problem_solution(self, data, suffix=''):
         return {
             'problem_id': self.problem_id,
@@ -217,3 +232,22 @@ class SwiftPluginXBlock(
         # Read from mystdout output
         diff = mystdout.getvalue()
         return diff
+
+    _modeUrl = {
+        "text/x-swift": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js",
+        "text/x-csrc": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/x-c++src": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/x-csharp": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/x-java": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/x-objectivec": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/x-scala": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/scala.js",
+        "text/x-squirrel": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/apl": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/apl/apl.js",
+        "text/x-ttcn-asn": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js",
+        "text/x-python": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js",
+        "text/x-kotlin": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+    }
+
+    def get_mode_url(self, mode):
+        normalized_mode = mode.strip().lower()
+        return self._modeUrl[normalized_mode]
