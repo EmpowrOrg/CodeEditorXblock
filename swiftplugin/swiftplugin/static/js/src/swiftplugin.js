@@ -5,7 +5,7 @@ function SwiftPluginXBlock(runtime, element) {
     function updateResponse(response) {
         const compilation_response = response.response
         const diff_response = response.diff
-        const output_response = compilation_response + '</br>'+ diff_response
+        const output_response = compilation_response + '</br>' + diff_response
         document.getElementById('response-txt').innerHTML = output_response;
     }
     function updateProblemDescription(response) {
@@ -14,7 +14,15 @@ function SwiftPluginXBlock(runtime, element) {
         const html = converter.makeHtml(response.problem_description);
         myAssigmentTextArea.innerHTML = html;
     }
-    function updateProblemSolution(response){
+
+    function updateProblemTitle(response) {
+        const myAssigmentTextArea = document.getElementById("assigment-title");
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(response.problem_title);
+        myAssigmentTextArea.innerHTML = html;
+    }
+
+    function updateProblemSolution(response) {
         const myTextArea = document.getElementById("code-solution-area");
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
@@ -23,14 +31,15 @@ function SwiftPluginXBlock(runtime, element) {
             lineNumbers: true,
             mode: "swift",
             lineWrapping: true,
-            readOnly : true,
+            readOnly: true,
         });
         myCodeMirror.setSize('100%');
     }
     const handlerUrl = runtime.handlerUrl(element, 'button_handler');
-    const handlerUrlDescription = runtime.handlerUrl(element,'get_problem_description');
-    const handlerUrlSolution = runtime.handlerUrl(element,'get_problem_solution');
-    const handlerUrlHasSolution = runtime.handlerUrl(element,'has_problem_solution');
+    const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
+    const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
+    const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
+    const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
 
     var myCodeMirror = null;
 
@@ -69,7 +78,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     const solution_btn = document.getElementById('btn-solution')
 
-    function init_description(){
+    function init_description() {
         $.ajax({
             type: "POST",
             url: handlerUrlDescription,
@@ -77,20 +86,30 @@ function SwiftPluginXBlock(runtime, element) {
             success: updateProblemDescription
         });
     }
-    
-    function on_init(){
+
+    function init_title() {
+        $.ajax({
+            type: "POST",
+            url: handlerUrlTitle,
+            data: JSON.stringify({}),
+            success: updateProblemTitle
+        });
+    }
+
+    function on_init() {
         init_description();
-        
+        init_title();
+
         $.ajax({
             type: "POST",
             url: handlerUrlHasSolution,
             data: JSON.stringify({}),
-            success: function(data){
-                if (data.has_solution_defined){
-                    solution_btn.onclick = function (eventObject){
+            success: function (data) {
+                if (data.has_solution_defined) {
+                    solution_btn.onclick = function (eventObject) {
                         init_solution();
                     }
-                }else{
+                } else {
                     solution_btn.remove()
                 }
             }
@@ -98,7 +117,7 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
 
-    function init_solution(){
+    function init_solution() {
         $.ajax({
             type: "POST",
             url: handlerUrlSolution,
