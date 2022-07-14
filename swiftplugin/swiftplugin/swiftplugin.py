@@ -9,6 +9,7 @@ import difflib, sys
 from io import StringIO
 import logging
 import requests
+import json
 
 
 class SwiftPluginXBlock(
@@ -192,12 +193,18 @@ class SwiftPluginXBlock(
         }
 
     def handle_run_request(self):
-        r = requests.post(self.api_url_run, data=self.code)
+        r = requests.post(self.api_url_run, json=self.build_request_body())
         return r.json()
 
     def handle_submit_request(self):
-        r = requests.post(self.api_url_submit, data=self.code)
+        r = requests.post(self.api_url_submit, json=self.build_request_body())
         return r.json()
+
+    def build_request_body(self):
+        body = {
+            "code": self.code
+        }
+        return json.dumps(body)
 
     @staticmethod
     def workbench_scenarios():
