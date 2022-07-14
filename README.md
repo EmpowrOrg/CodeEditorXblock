@@ -24,6 +24,10 @@ Run the following command to activate the virtual environment.
 
 `source venv/bin/activate`
 
+Install the plugin with 
+
+`pip install -e swiftplugin`
+
 4. Navigate to the xblock-sdk directory and run the following command to install the requirements.
 
 `pip install -r requirements/base.txt`

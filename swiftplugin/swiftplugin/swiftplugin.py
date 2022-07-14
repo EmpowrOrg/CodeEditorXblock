@@ -23,27 +23,33 @@ class SwiftPluginXBlock(
         scope=Scope.user_state,
         help="User code",
     )
-    
+
     problem_id = String(
         default="Example problem id",
         scope=Scope.settings,
         help="Problem id used by the Api to checkcode"
-	)
-    
+    )
+
     api_url_submit = String(
         default="Example api url",
         scope=Scope.settings,
         help="URL api used to check the code (submit final response)"
-	)
-    
+    )
+
     api_url_run = String(
         default="Example api url",
         scope=Scope.settings,
         help="URL api used to run the code (run code by api)"
-	)
-    
+    )
+
+    problem_title = String(
+        default="Programming Exercise",
+        scope=Scope.settings,
+        help="Problem title",
+    )
+
     problem_description = String(
-        default="# Problem description here!",
+        default="Problem description here!",
         scope=Scope.settings,
         help="Problem description in Markdown Language",
         multiline_editor=True
@@ -59,6 +65,7 @@ class SwiftPluginXBlock(
     editable_fields = [
         'problem_id',
         'problem_description',
+        'problem_title',
         'problem_solution',
         'api_url_run',
         'api_url_submit'
@@ -80,20 +87,20 @@ class SwiftPluginXBlock(
         frag = Fragment(html.format(self=self))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js")
-      #  frag.add_css(self.resource_string("static/css/swiftplugin.css"))
+        frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
         frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_javascript_url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js")
-        frag.add_javascript_url("https://codemirror.net/addon/search/search.js")
-        frag.add_javascript_url("https://codemirror.net/addon/edit/closebrackets.js")
-        frag.add_javascript_url("https://codemirror.net/addon/search/searchcursor.js")
-        frag.add_javascript_url("https://codemirror.net/addon/search/jump-to-line.js")
-        frag.add_javascript_url("https://codemirror.net/addon/dialog/dialog.js")
-        frag.add_javascript_url("https://codemirror.net/addon/fold/foldcode.js")
-        frag.add_css_url("https://codemirror.net/addon/dialog/dialog.css")
+        frag.add_javascript_url("https://codemirror.net/5/addon/search/search.js")
+        frag.add_javascript_url("https://codemirror.net/5/addon/edit/closebrackets.js")
+        frag.add_javascript_url("https://codemirror.net/5/addon/search/searchcursor.js")
+        frag.add_javascript_url("https://codemirror.net/5/addon/search/jump-to-line.js")
+        frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
+        frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
+        frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js")
         frag.add_javascript_url("https://d2l03dhf2zcc6i.cloudfront.net/js/theme.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js")
@@ -164,6 +171,13 @@ class SwiftPluginXBlock(
         }
 
     @XBlock.json_handler
+    def get_problem_title(self, data, suffix=''):
+        return {
+            'problem_id': self.problem_id,
+            'problem_title': self.problem_title
+        }
+
+    @XBlock.json_handler
     def get_problem_solution(self, data, suffix=''):
         return {
             'problem_id': self.problem_id,
@@ -178,13 +192,13 @@ class SwiftPluginXBlock(
         }
 
     def handle_run_request(self):
-        r = requests.post(self.api_url_run,data=self.code)
+        r = requests.post(self.api_url_run, data=self.code)
         return r.json()
 
     def handle_submit_request(self):
-        r = requests.post(self.api_url_submit,data=self.code)
+        r = requests.post(self.api_url_submit, data=self.code)
         return r.json()
-        
+
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
