@@ -50,13 +50,24 @@ Navigate to the xblock-sdk directory and run the following commands.
 When specifying a language you must put in the correct mime-type for the plugin. Here all the supported languages and
 their mime-types
 
-| Language Name | Mime-Type |
-|---------------|-----------|
-| Header        | Title     |
-| Paragraph     | Text      |
+| Language Name | Mime-Type         |
+|---------------|-------------------|
+| APL           | text/apl          |
+| ASN.1         | text/x-ttcn-asn   |
+| C             | text/x-csrc       |
+| C++           | text/x-c++src     |
+| C#            | text/x-csharp     |
+| Java          | text/x-java       |
+| Kotlin        | text/x-kotlin     |
+| Python        | text/x-python     |
+| Scala         | text/x-java       |
+| Squirrel      | text/x-squirrel   |
+| Swift         | text/x-scala      |
+| Objective-C   | text/x-objectivec |
 
-Code Mirror supports many more languages. If you would do not see your language supported just check out the
-doc [here](https://codemirror.net/5/mode/).
+
+Code Mirror supports many more languages. If you do not see your language supported just check out the
+[doc](https://codemirror.net/5/mode/).
 
 ### Adding support for a language
 
@@ -65,17 +76,29 @@ any [language already supported by CodeMirror](https://codemirror.net/5/mode/).
 Open ![swiftplugin.py](/swiftplugin/swiftplugin/swiftplugin.py) and scroll down to the dictionary of mime-types and
 urls.
 
+To add support you need both the mime-type and the url.
+
+#### To find the mime-type
 Add the mime-type you wish to add support for. You can find this by looking at the list of supported languages, clicking
-on the langauge you want, and then scrolling to the bottom fo the page.
+on the langauge you want, and then scrolling to the bottom of the page.
+Ex: `text/x-kotlin`
+
+#### To find the url
 You can find the url needed by going to
 the [CodeMirror git folder for their supported modes](https://github.com/codemirror/codemirror5/blob/master/mode/index.html)
+
 Look for the folder name of the language you wish to support.
+
 Ex: If you want to add Kotlin, then you search for Kotlin in the file, and see it's folder name
-is `clike` `<li><a href="clike/index.html">Kotlin</a></li>`
+is `clike`.
+Ex:`<li><a href="clike/index.html">Kotlin</a></li>`
+
 Go [here](https://github.com/codemirror/codemirror5/tree/master/mode) and click into the folder name you just discovered
 of the language you wish to support.
+
 Notice the name of the `.js` file in this folder.
 Ex: If you were adding Kotlin, the js is `clike.js`
+
 Now just append the folder name and the .js name to this
 path `https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/`
 
