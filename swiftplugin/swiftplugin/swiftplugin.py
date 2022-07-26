@@ -108,11 +108,8 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/search/jump-to-line.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
+
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        frag.add_javascript_url("https://d2l03dhf2zcc6i.cloudfront.net/js/theme.js")
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js")
-        frag.add_javascript_url(
-            "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js")
         frag.add_javascript_url(
             "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js")
