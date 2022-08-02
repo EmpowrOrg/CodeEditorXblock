@@ -112,7 +112,6 @@ class SwiftPluginXBlock(
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
         frag.add_javascript_url(
             "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js")
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js")
         frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/custom.css")
         frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/style.css")
         frag.add_css_url(
