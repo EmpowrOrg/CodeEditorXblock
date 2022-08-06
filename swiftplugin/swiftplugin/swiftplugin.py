@@ -56,12 +56,12 @@ class SwiftPluginXBlock(
         multiline_editor=True
     )
 
-    problem_solution = String(
-        default="",
-        scope=Scope.settings,
-        help="Problem solution in code",
-        multiline_editor=True
-    )
+    # problem_solution = String(
+    #     default="",
+    #     scope=Scope.settings,
+    #     help="Problem solution in code",
+    #     multiline_editor=True
+    # )
 
     problem_language = String(
         default="text/x-python",
@@ -73,7 +73,7 @@ class SwiftPluginXBlock(
         'problem_id',
         'problem_description',
         'problem_title',
-        'problem_solution',
+        # 'problem_solution',
         'problem_language',
         'api_url_run',
         'api_url_submit'
@@ -168,12 +168,12 @@ class SwiftPluginXBlock(
             'problem_title': self.problem_title
         }
 
-    @XBlock.json_handler
-    def get_problem_solution(self, data, suffix=''):
-        return {
-            'problem_id': self.problem_id,
-            'problem_solution': self.problem_solution
-        }
+    # @XBlock.json_handler
+    # def get_problem_solution(self, data, suffix=''):
+    #     return {
+    #         'problem_id': self.problem_id,
+    #         'problem_solution': self.problem_solution
+    #     }
 
     @XBlock.json_handler
     def get_problem_language(self, data, suffix=''):
@@ -182,12 +182,12 @@ class SwiftPluginXBlock(
             'problem_language': self.problem_language
         }
 
-    @XBlock.json_handler
-    def has_problem_solution(self, data, suffix=''):
-        return {
-            'problem_id': self.problem_id,
-            'has_solution_defined': self.problem_solution and self.problem_solution.strip()
-        }
+    # @XBlock.json_handler
+    # def has_problem_solution(self, data, suffix=''):
+    #     return {
+    #         'problem_id': self.problem_id,
+    #         'has_solution_defined': self.problem_solution and self.problem_solution.strip()
+    #     }
 
     def handle_run_request(self):
         r = requests.post(self.api_url_run, json=self.build_request_body())
