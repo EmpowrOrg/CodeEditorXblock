@@ -1,4 +1,4 @@
-"""Setup for codingxblock XBlock."""
+"""Setup for swiftplugin XBlock."""
 
 
 import os
@@ -23,20 +23,21 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='codingxblock-xblock',
+    name='swiftplugin-xblock',
     version='0.1',
-    description='codingxblock XBlock',   # TODO: write a better description.
+    description='swiftplugin XBlock',   # TODO: write a better description.
     license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     packages=[
-        'codingxblock',
+        'swiftplugin',
     ],
     install_requires=[
         'XBlock',
+        'xblock-utils'
     ],
     entry_points={
         'xblock.v1': [
-            'codingxblock = codingxblock:CodeEditorXBlock',
+            'swiftplugin = swiftplugin:SwiftPluginXBlock',
         ]
     },
-    package_data=package_data("codingxblock", ["static", "public"]),
+    package_data=package_data("swiftplugin", ["static", "public"]),
 )

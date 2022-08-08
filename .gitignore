@@ -115,7 +115,7 @@ venv.bak/
 .spyproject
 
 # Rope project settings
-.ropeproject
+.ropeprojectig
 
 # mkdocs documentation
 /site
@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 .DS_Store
+.idea/
