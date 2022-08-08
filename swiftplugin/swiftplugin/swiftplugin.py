@@ -120,7 +120,7 @@ class SwiftPluginXBlock(
         return frag
 
     @XBlock.json_handler
-    def button_handler(self, data, suffix=''):
+    def get_button_handler(self, data, suffix=''):
         """
         An example handler, which increments the data.
         """
@@ -129,6 +129,7 @@ class SwiftPluginXBlock(
         if "code" not in data.keys():
             logging.error("non code data in request!")
             response['status'] = "Empty code!"
+            return response
 
         self.code = data['code']
 
@@ -136,6 +137,7 @@ class SwiftPluginXBlock(
         if "type" not in data.keys():
             logging.error("non request type in request")
             response["status"] = "Non request type"
+            return response
 
         if 'run' in data['type']:
             api_respo = self.handle_run_request()
