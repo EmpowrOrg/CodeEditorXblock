@@ -207,7 +207,8 @@ class SwiftPluginXBlock(
 
     def build_request_body(self):
         body = {
-            "code": self.code
+            "code": self.code,
+            "language": self.problem_language
         }
         return json.dumps(body)
 
