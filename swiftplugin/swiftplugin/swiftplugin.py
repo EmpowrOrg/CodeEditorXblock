@@ -192,8 +192,14 @@ class SwiftPluginXBlock(
     #     }
 
     def handle_run_request(self):
-        r = requests.post(self.api_url_run, json=self.build_request_body())
+        r = requests.post(self.get_server_run_url(), json=self.build_request_body())
         return r.json()
+
+    def get_server_run_url(self):
+        if self.api_url_run.startswith("http"):
+            return self.api_url_run
+        else:
+            return "http://" + self.api_url_run
 
     def handle_submit_request(self):
         r = requests.post(self.api_url_submit, json=self.build_request_body())
