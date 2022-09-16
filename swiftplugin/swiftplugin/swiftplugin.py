@@ -12,6 +12,13 @@ import requests
 import json
 
 
+def get_server_url(url: str):
+    if url.startswith("http"):
+        return url
+    else:
+        return "https://" + url
+
+
 class SwiftPluginXBlock(
     StudioEditableXBlockMixin,
     XBlock):
@@ -191,18 +198,21 @@ class SwiftPluginXBlock(
     #         'has_solution_defined': self.problem_solution and self.problem_solution.strip()
     #     }
 
+    @XBlock.json_handler
+    def show_buttons(self, data, suffix=''):
+        show_run_button = bool(self.api_url_run and self.api_url_run.isspace())
+        show_submit_button = bool(self.api_url_submit and self.api_url_submit.isspace())
+        return {
+            'show_run_button': show_run_button,
+            'show_submit_button': show_submit_button,
+        }
+
     def handle_run_request(self):
-        r = requests.post(self.get_server_run_url(), json=self.build_request_body())
+        r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body())
         return r.json()
 
-    def get_server_run_url(self):
-        if self.api_url_run.startswith("http"):
-            return self.api_url_run
-        else:
-            return "http://" + self.api_url_run
-
     def handle_submit_request(self):
-        r = requests.post(self.api_url_submit, json=self.build_request_body())
+        r = requests.post(get_server_url(self.api_url_submit), json=self.build_request_body())
         return r.json()
 
     def build_request_body(self):

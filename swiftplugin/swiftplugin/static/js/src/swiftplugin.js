@@ -2,55 +2,13 @@
 
 
 function SwiftPluginXBlock(runtime, element) {
-    function updateResponse(response) {
-        if (response.response.output) {
-            const compilation_response = response.response.output
-            let output_response;
-            if (response.diff) {
-                const diff_response = response.diff
-                output_response = compilation_response + '</br>' + diff_response
-            } else {
-                output_response = compilation_response
-            }
-            document.getElementById('response-txt').innerHTML = output_response;
-        } else if (response.response.error) {
-            document.getElementById('response-txt').innerHTML = response.response.error;
-        }
-    }
-
-    function handleError(response) {
-        console.log("error")
-        console.log(response)
-        const compilation_response = response.response
-        const diff_response = response.diff
-        const output_response = compilation_response + '</br>' + diff_response
-        document.getElementById('response-txt').innerHTML = output_response;
-    }
-
-    function updateProblemDescription(response) {
-        const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
-        const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
-    }
-
-    function updateProblemTitle(response) {
-        const myAssigmentTextArea = document.getElementById("assignment-title");
-        const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_title);
-        myAssigmentTextArea.innerHTML = html;
-    }
-
-    function updateProblemSolution(response) {
-        solutionCodeMirror.setValue(response.problem_solution)
-    }
-
     const handlerUrl = runtime.handlerUrl(element, 'get_button_handler');
     const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
     //const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
     //const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
     const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
     const handlerUrlLanguage = runtime.handlerUrl(element, 'get_problem_language');
+    const showButtonsUrl = runtime.handlerUrl(element, 'show_buttons');
 
     var myCodeMirror = null;
     //var solutionCodeMirror  = null;
@@ -79,6 +37,8 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     const solution_btn = document.getElementById('btn-solution')
+
+    const response_title = document.getElementById('response-title')
 
     function init_description() {
         $.ajax({
@@ -119,6 +79,23 @@ function SwiftPluginXBlock(runtime, element) {
         init_description();
         init_title();
         init_language();
+        init_buttons();
+    }
+
+    function init_buttons() {
+        $.ajax({
+            type: "POST",
+            url: showButtonsUrl,
+            data: JSON.stringify({}),
+            success: function (data) {
+                console.log(data)
+                const is_run_hidden = data.show_run_button === false
+                const is_submit_hidden = data.show_submit_button === false
+                run_btn.hidden = is_run_hidden
+                submit_btn.hidden = is_submit_hidden
+                response_title.hidden = is_submit_hidden && is_run_hidden
+            }
+        });
     }
 
     function init_language() {
@@ -168,6 +145,49 @@ function SwiftPluginXBlock(runtime, element) {
             });
         }*/
 
+
+        function updateResponse(response) {
+        if (response.response.output) {
+            const compilation_response = response.response.output
+            let output_response;
+            if (response.diff) {
+                const diff_response = response.diff
+                output_response = compilation_response + '</br>' + diff_response
+            } else {
+                output_response = compilation_response
+            }
+            document.getElementById('response-txt').innerHTML = output_response;
+        } else if (response.response.error) {
+            document.getElementById('response-txt').innerHTML = response.response.error;
+        }
+    }
+
+    function handleError(response) {
+        console.log("error")
+        console.log(response)
+        const compilation_response = response.response
+        const diff_response = response.diff
+        const output_response = compilation_response + '</br>' + diff_response
+        document.getElementById('response-txt').innerHTML = output_response;
+    }
+
+    function updateProblemDescription(response) {
+        const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(response.problem_description);
+        myAssigmentTextArea.innerHTML = html;
+    }
+
+    function updateProblemTitle(response) {
+        const myAssigmentTextArea = document.getElementById("assignment-title");
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(response.problem_title);
+        myAssigmentTextArea.innerHTML = html;
+    }
+
+    function updateProblemSolution(response) {
+        solutionCodeMirror.setValue(response.problem_solution)
+    }
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
