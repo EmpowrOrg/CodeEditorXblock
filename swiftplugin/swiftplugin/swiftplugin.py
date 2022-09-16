@@ -198,6 +198,15 @@ class SwiftPluginXBlock(
     #         'has_solution_defined': self.problem_solution and self.problem_solution.strip()
     #     }
 
+    @XBlock.json_handler
+    def show_buttons(self, data, suffix=''):
+        show_run_button = bool(self.api_url_run and self.api_url_run.isspace())
+        show_submit_button = bool(self.api_url_submit and self.api_url_submit.isspace())
+        return {
+            'show_run_button': show_run_button,
+            'show_submit_button': show_submit_button,
+        }
+
     def handle_run_request(self):
         r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body())
         return r.json()

@@ -51,6 +51,7 @@ function SwiftPluginXBlock(runtime, element) {
     //const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
     const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
     const handlerUrlLanguage = runtime.handlerUrl(element, 'get_problem_language');
+    const showButtonsUrl = runtime.handlerUrl(element, 'show_buttons');
 
     var myCodeMirror = null;
     //var solutionCodeMirror  = null;
@@ -119,6 +120,20 @@ function SwiftPluginXBlock(runtime, element) {
         init_description();
         init_title();
         init_language();
+        init_buttons();
+    }
+
+    function init_buttons() {
+        $.ajax({
+            type: "POST",
+            url: showButtonsUrl,
+            data: JSON.stringify({}),
+            success: function (data) {
+                console.log(data)
+                run_btn.hidden = data.show_run_button === false
+                submit_btn.hidden = data.show_submit_button === false
+            }
+        });
     }
 
     function init_language() {
