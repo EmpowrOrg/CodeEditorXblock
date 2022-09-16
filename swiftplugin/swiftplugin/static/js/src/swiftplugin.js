@@ -38,6 +38,8 @@ function SwiftPluginXBlock(runtime, element) {
 
     const solution_btn = document.getElementById('btn-solution')
 
+    const response_title = document.getElementById('response-title')
+
     function init_description() {
         $.ajax({
             type: "POST",
@@ -87,8 +89,11 @@ function SwiftPluginXBlock(runtime, element) {
             data: JSON.stringify({}),
             success: function (data) {
                 console.log(data)
-                run_btn.hidden = data.show_run_button === false
-                submit_btn.hidden = data.show_submit_button === false
+                const is_run_hidden = data.show_run_button === false
+                const is_submit_hidden = data.show_submit_button === false
+                run_btn.hidden = is_run_hidden
+                submit_btn.hidden = is_submit_hidden
+                response_title.hidden = is_submit_hidden && is_run_hidden
             }
         });
     }
