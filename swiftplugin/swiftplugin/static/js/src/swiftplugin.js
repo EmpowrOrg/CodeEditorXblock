@@ -2,49 +2,6 @@
 
 
 function SwiftPluginXBlock(runtime, element) {
-    function updateResponse(response) {
-        if (response.response.output) {
-            const compilation_response = response.response.output
-            let output_response;
-            if (response.diff) {
-                const diff_response = response.diff
-                output_response = compilation_response + '</br>' + diff_response
-            } else {
-                output_response = compilation_response
-            }
-            document.getElementById('response-txt').innerHTML = output_response;
-        } else if (response.response.error) {
-            document.getElementById('response-txt').innerHTML = response.response.error;
-        }
-    }
-
-    function handleError(response) {
-        console.log("error")
-        console.log(response)
-        const compilation_response = response.response
-        const diff_response = response.diff
-        const output_response = compilation_response + '</br>' + diff_response
-        document.getElementById('response-txt').innerHTML = output_response;
-    }
-
-    function updateProblemDescription(response) {
-        const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
-        const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
-    }
-
-    function updateProblemTitle(response) {
-        const myAssigmentTextArea = document.getElementById("assignment-title");
-        const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_title);
-        myAssigmentTextArea.innerHTML = html;
-    }
-
-    function updateProblemSolution(response) {
-        solutionCodeMirror.setValue(response.problem_solution)
-    }
-
     const handlerUrl = runtime.handlerUrl(element, 'get_button_handler');
     const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
     //const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
@@ -183,6 +140,49 @@ function SwiftPluginXBlock(runtime, element) {
             });
         }*/
 
+
+        function updateResponse(response) {
+        if (response.response.output) {
+            const compilation_response = response.response.output
+            let output_response;
+            if (response.diff) {
+                const diff_response = response.diff
+                output_response = compilation_response + '</br>' + diff_response
+            } else {
+                output_response = compilation_response
+            }
+            document.getElementById('response-txt').innerHTML = output_response;
+        } else if (response.response.error) {
+            document.getElementById('response-txt').innerHTML = response.response.error;
+        }
+    }
+
+    function handleError(response) {
+        console.log("error")
+        console.log(response)
+        const compilation_response = response.response
+        const diff_response = response.diff
+        const output_response = compilation_response + '</br>' + diff_response
+        document.getElementById('response-txt').innerHTML = output_response;
+    }
+
+    function updateProblemDescription(response) {
+        const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(response.problem_description);
+        myAssigmentTextArea.innerHTML = html;
+    }
+
+    function updateProblemTitle(response) {
+        const myAssigmentTextArea = document.getElementById("assignment-title");
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(response.problem_title);
+        myAssigmentTextArea.innerHTML = html;
+    }
+
+    function updateProblemSolution(response) {
+        solutionCodeMirror.setValue(response.problem_solution)
+    }
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
