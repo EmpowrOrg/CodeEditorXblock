@@ -239,10 +239,10 @@ class SwiftPluginXBlock(
 
     def build_request_body(self):
         body = {
-            "code": self.code,
-            "language": self.problem_language
+            'code': self.code,
+            'language': self.problem_language
         }
-        return json.dumps(body)
+        return body
 
     @staticmethod
     def workbench_scenarios():
