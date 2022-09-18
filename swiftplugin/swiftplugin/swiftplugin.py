@@ -212,8 +212,8 @@ class SwiftPluginXBlock(
 
     @XBlock.json_handler
     def show_buttons(self, data, suffix=''):
-        show_run_button = bool(self.api_url_run and self.api_url_run.isspace())
-        show_submit_button = bool(self.api_url_submit and self.api_url_submit.isspace())
+        show_run_button = bool(self.api_url_run and not self.api_url_run.isspace())
+        show_submit_button = bool(self.api_url_submit and not self.api_url_submit.isspace())
         return {
             'show_run_button': show_run_button,
             'show_submit_button': show_submit_button,
