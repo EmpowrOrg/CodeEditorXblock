@@ -77,7 +77,7 @@ class SwiftPluginXBlock(
     # )
 
     problem_language = String(
-        default="text/x-kotlin",
+        default="text/x-swift",
         scope=Scope.settings,
         help="Example: text/x-kotlin. Supported languages can be found at https://codemirror.net/5/mode/"
     )
