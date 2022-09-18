@@ -183,6 +183,12 @@ class SwiftPluginXBlock(
             'problem_title': self.problem_title
         }
 
+    @XBlock.json_handler
+    def get_api_key(self, data, suffix=''):
+        return {
+            'api_key': self.api_key,
+        }
+
     # @XBlock.json_handler
     # def get_problem_solution(self, data, suffix=''):
     #     return {
@@ -214,12 +220,22 @@ class SwiftPluginXBlock(
         }
 
     def handle_run_request(self):
-        r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body())
+        r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body(),
+                          headers=self.build_headers())
         return r.json()
 
     def handle_submit_request(self):
-        r = requests.post(get_server_url(self.api_url_submit), json=self.build_request_body())
+        r = requests.post(get_server_url(self.api_url_submit), json=self.build_request_body(),
+                          headers=self.build_headers())
         return r.json()
+
+    def build_headers(self):
+        headers = {
+            'Authorization': 'Bearer {}'.format(self.api_key),
+            'Content-Type': "application/json",
+            'Accept': 'application/json'
+        }
+        return headers
 
     def build_request_body(self):
         body = {
