@@ -56,6 +56,12 @@ class SwiftPluginXBlock(
         help="Problem title",
     )
 
+    api_key = String(
+        default="password",
+        scope=Scope.preferences,
+        help="Key to send to API",
+    )
+
     problem_description = String(
         default="Problem description here!",
         scope=Scope.settings,
