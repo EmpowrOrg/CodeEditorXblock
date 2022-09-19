@@ -146,29 +146,38 @@ function SwiftPluginXBlock(runtime, element) {
         }*/
 
 
-        function updateResponse(response) {
+    function setOutput(response) {
+        const compilation_response = response.response.output
+        let output_response;
+        if (response.diff) {
+            const diff_response = response.diff
+            output_response = compilation_response + '</br>' + diff_response
+        } else {
+            output_response = compilation_response
+        }
+        document.getElementById('response-txt').innerHTML = output_response;
+        document.getElementById('response-title').style.color = "#33691E";
+    }
+
+    function updateResponse(response) {
+        console.log(response)
         if (response.response.output) {
-            const compilation_response = response.response.output
-            let output_response;
-            if (response.diff) {
-                const diff_response = response.diff
-                output_response = compilation_response + '</br>' + diff_response
-            } else {
-                output_response = compilation_response
-            }
-            document.getElementById('response-txt').innerHTML = output_response;
+            setOutput(response);
         } else if (response.response.error) {
-            document.getElementById('response-txt').innerHTML = response.response.error;
+            setError(response.response.error)
         }
     }
 
+    function setError(error) {
+        document.getElementById('response-txt').innerHTML = error;
+        document.getElementById('response-title').style.color = "#B00020";
+    }
+
     function handleError(response) {
-        console.log("error")
-        console.log(response)
         const compilation_response = response.response
         const diff_response = response.diff
         const output_response = compilation_response + '</br>' + diff_response
-        document.getElementById('response-txt').innerHTML = output_response;
+        setError(output_response)
     }
 
     function updateProblemDescription(response) {
