@@ -40,13 +40,13 @@ class SwiftPluginXBlock(
     )
 
     api_url_submit = String(
-        default="",
+        default="http://127.0.0.1:8080/submit",
         scope=Scope.settings,
         help="URL api used to check the code (submit final response)"
     )
 
     api_url_run = String(
-        default="",
+        default="http://127.0.0.1:8080/run",
         scope=Scope.settings,
         help="URL api used to run the code (run code by api)"
     )
@@ -110,12 +110,19 @@ class SwiftPluginXBlock(
         print(self.problem_language)
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
+
         frag.add_javascript_url(self.get_mode_url(self.problem_language))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
+        frag.add_javascript_url(
+            "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js")
+        frag.add_css_url(
+            "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap")
+
+        # Code Mirror
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
         frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css")
         frag.add_javascript_url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js")
@@ -125,14 +132,7 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/search/jump-to-line.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
-
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        frag.add_javascript_url(
-            "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js")
-        frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/custom.css")
-        frag.add_css_url("https://d2l03dhf2zcc6i.cloudfront.net/css/style.css")
-        frag.add_css_url(
-            "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap")
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
