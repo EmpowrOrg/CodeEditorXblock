@@ -69,6 +69,9 @@ class SwiftPluginXBlock(
         multiline_editor=True
     )
 
+    has_score = True
+    attempt = 1
+
     # problem_solution = String(
     #     default="",
     #     scope=Scope.settings,
@@ -159,10 +162,22 @@ class SwiftPluginXBlock(
 
         elif 'submit' in data['type']:
             api_respo = self.handle_submit_request()
-            response['status'] = "Submitted code"
-            response['response'] = api_respo['message']
-            response['diff'] = self.calculate_diff(expected_output=api_respo['expected_output'],
-                                                   actual_output=api_respo['user_output'])
+            response['response'] = api_respo
+            if api_respo['error']:
+                return response
+            response['diff'] = self.calculate_diff(expected_output=api_respo['expectedOutput'],
+                                                   actual_output=api_respo['output'])
+            is_final_attempt = api_respo['finalAttempt'] == 'true'
+            success = api_respo['success'] == 'true'
+            if success:
+                self.runtime.publish(self, "grade",
+                                     {'value': 1.0,
+                                      'max_value': 1.0})
+            elif is_final_attempt:
+                self.runtime.publish(self, "grade",
+                                     {'value': 0.0,
+                                      'max_value': 1.0})
+
 
         else:
             response["status"] = "No valid type request"
