@@ -19,6 +19,7 @@ def get_server_url(url: str):
         return "https://" + url
 
 
+@XBlock.wants('user')
 class SwiftPluginXBlock(
     StudioEditableXBlockMixin,
     XBlock):
@@ -253,9 +254,15 @@ class SwiftPluginXBlock(
         return headers
 
     def build_request_body(self):
+        user_service = self.runtime.service(self, 'user')
+        xb_user = user_service.get_current_user()
+        email = xb_user.emails[0]
         body = {
             'code': self.code,
-            'language': self.problem_language
+            'language': self.problem_language,
+            'attempt': self.attempt,
+            'referenceId': self.problem_id,
+            'email': email,
         }
         return body
 
