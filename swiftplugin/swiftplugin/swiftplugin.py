@@ -158,7 +158,6 @@ class SwiftPluginXBlock(
 
         if 'run' in data['type']:
             api_respo = self.handle_run_request()
-            response['status'] = "Executed code"
             response['response'] = api_respo
 
         elif 'submit' in data['type']:
