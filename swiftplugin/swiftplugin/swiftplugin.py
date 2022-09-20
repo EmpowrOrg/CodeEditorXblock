@@ -159,6 +159,8 @@ class SwiftPluginXBlock(
         if 'run' in data['type']:
             api_respo = self.handle_run_request()
             response['response'] = api_respo
+            response['diff'] = self.calculate_diff(expected_output=api_respo['expectedOutput'],
+                                                   actual_output=api_respo['output'])
 
         elif 'submit' in data['type']:
             api_respo = self.handle_submit_request()
