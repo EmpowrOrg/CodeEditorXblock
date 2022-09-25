@@ -88,7 +88,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: showButtonsUrl,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 const is_run_hidden = data.show_run_button === false
                 const is_submit_hidden = data.show_submit_button === false
                 run_btn.hidden = is_run_hidden
@@ -104,7 +103,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: handlerUrlLanguage,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 init_code_mirror(data.problem_language)
             }
         });
@@ -120,7 +118,6 @@ function SwiftPluginXBlock(runtime, element) {
             lineWiseCopyCut: true,
             autoCloseBrackets: true,
         }
-        console.log(codemirror_config)
         var myTextArea = document.getElementById("code-area");
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
