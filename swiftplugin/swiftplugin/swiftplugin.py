@@ -163,6 +163,7 @@ class SwiftPluginXBlock(
                                                    actual_output=api_respo['output'])
 
         elif 'submit' in data['type']:
+            self.attempt = self.attempt + 1
             api_respo = self.handle_submit_request()
             response['response'] = api_respo
             if api_respo['error']:
