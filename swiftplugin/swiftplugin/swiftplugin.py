@@ -111,7 +111,6 @@ class SwiftPluginXBlock(
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
 
-        frag.add_javascript_url(self.get_mode_url(self.problem_language))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
@@ -133,6 +132,7 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
+        frag.add_javascript_url(self.get_mode_url(self.problem_language))
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
