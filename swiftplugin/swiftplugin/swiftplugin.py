@@ -306,6 +306,7 @@ class SwiftPluginXBlock(
         "text/x-ttcn-asn": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js",
         "text/x-python": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js",
         "text/x-kotlin": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
+        "text/javascript": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js",
     }
 
     def get_mode_url(self, mode):
