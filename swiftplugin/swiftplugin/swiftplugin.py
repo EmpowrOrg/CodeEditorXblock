@@ -144,23 +144,25 @@ class SwiftPluginXBlock(
         response = {}
 
         if "code" not in data.keys():
-            logging.error("non code data in request!")
-            response['status'] = "Empty code!"
+            response['error'] = "Empty code!"
             return response
 
         self.code = data['code']
-
-        response['code'] = self.code
         if "type" not in data.keys():
-            logging.error("non request type in request")
-            response["status"] = "Non request type"
+            response["error"] = "Invalid request type"
             return response
 
         if 'run' in data['type']:
-            api_respo = self.handle_run_request()
+            api_respo = self.handle_request(self.api_url_run)
             response['response'] = api_respo
-            response['diff'] = self.calculate_diff(expected_output=api_respo['expectedOutput'],
-                                                   actual_output=api_respo['output'])
+            print(response)
+            if 'error' in api_respo:
+                response['error'] = api_respo['error']
+                return response
+            response['response']['success'] = True
+            diff = self.get_diff(api_respo)
+            if diff is not None:
+                response['diff'] = diff
 
         elif 'submit' in data['type']:
             self.attempt = self.attempt + 1
@@ -241,6 +243,23 @@ class SwiftPluginXBlock(
         r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body(),
                           headers=self.build_headers())
         return r.json()
+
+    def get_diff(self, resp):
+        if "expectedOutput" in resp and "output" in resp:
+            return self.calculate_diff(expected_output=resp['expectedOutput'],
+                                                   actual_output=resp['output'])
+        else:
+            return None
+
+    def handle_request(self, url):
+        try:
+            r = requests.post(get_server_url(url), json=self.build_request_body(), headers=self.build_headers())
+            return r.json()
+        except requests.exceptions.RequestException as e:
+            return json.dumps({
+                'error': e
+            })
+
 
     def handle_submit_request(self):
         r = requests.post(get_server_url(self.api_url_submit), json=self.build_request_body(),
