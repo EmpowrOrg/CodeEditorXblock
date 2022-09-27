@@ -31,7 +31,7 @@ class SwiftPluginXBlock(
     )
 
     reference_id = String(
-        default="",
+        default="assignment-2",
         scope=Scope.settings,
         help="Problem id used by the Api to check the code"
     )
@@ -55,7 +55,7 @@ class SwiftPluginXBlock(
     )
 
     api_key = String(
-        default="",
+        default="password",
         scope=Scope.preferences,
         help="Key to send to API",
     )
@@ -175,9 +175,6 @@ class SwiftPluginXBlock(
                 self.runtime.publish(self, "grade",
                                      {'value': 0.0,
                                       'max_value': 1.0})
-            else:
-                response['error'] = api_respo['output']
-                response.pop('output', None)
 
 
         else:
@@ -235,12 +232,6 @@ class SwiftPluginXBlock(
             'show_submit_button': show_submit_button,
         }
 
-    def check_run_success(self, resp):
-        if "expectedOutput" in resp and "output" in resp:
-            return resp['expectedOutput'] == resp['output']
-        else:
-            return False
-
     def handle_request(self, url):
         try:
             r = requests.post(get_server_url(url), json=self.build_request_body(), headers=self.build_headers())
@@ -249,7 +240,6 @@ class SwiftPluginXBlock(
             return json.dumps({
                 'error': e
             })
-
 
     def build_headers(self):
         headers = {
