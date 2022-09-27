@@ -144,19 +144,16 @@ function SwiftPluginXBlock(runtime, element) {
 
 
     function setOutput(response) {
-        console.log(response)
         const compilation_response = response.response.output
-        let output_response;
         let color = response.response.success ? "#33691E" : "#B00020"
         if (response.response.success) {
-            output_response = compilation_response
-        } else if (response.diff) {
-            const diff_response = response.diff
-            output_response = compilation_response + '</br>' + diff_response
+            document.getElementById('response-txt').innerHTML = compilation_response;
+        } else if (response.response.diff) {
+            document.getElementById('response-txt').innerHTML = response.response.diff;
         } else {
-            output_response = compilation_response
+            document.getElementById('response-txt').innerHTML = compilation_response;
         }
-        document.getElementById('response-txt').innerHTML = output_response;
+
         document.getElementById('response-title').style.color = color;
     }
 
