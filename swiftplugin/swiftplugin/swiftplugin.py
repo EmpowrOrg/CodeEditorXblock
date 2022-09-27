@@ -165,8 +165,8 @@ class SwiftPluginXBlock(
                 response['error'] = api_respo['error']
                 return response
             self.attempt = self.attempt + 1
-            is_final_attempt = api_respo['finalAttempt'] == 'true'
-            success = api_respo['success'] == 'true'
+            is_final_attempt = api_respo['finalAttempt']
+            success = api_respo['success']
             if success:
                 self.runtime.publish(self, "grade",
                                      {'value': 1.0,
