@@ -31,7 +31,7 @@ class SwiftPluginXBlock(
     )
 
     reference_id = String(
-        default="assignment-2",
+        default="",
         scope=Scope.settings,
         help="Problem id used by the Api to check the code"
     )
@@ -55,7 +55,7 @@ class SwiftPluginXBlock(
     )
 
     api_key = String(
-        default="password",
+        default="",
         scope=Scope.preferences,
         help="Key to send to API",
     )
