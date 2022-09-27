@@ -34,16 +34,6 @@ div#code-container-area {
     overflow:hidden;
 }
 
-/*.code-area {
-    width: 100%;
-    resize: none;
-    border: none;
-    display: flex;
-    padding-right: 0;
-    padding-left: 0;
-    outline: none;
-}*/
-
 .response-txt {
     color: black;
     white-space: pre-wrap;

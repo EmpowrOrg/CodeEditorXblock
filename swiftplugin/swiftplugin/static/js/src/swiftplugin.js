@@ -88,7 +88,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: showButtonsUrl,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 const is_run_hidden = data.show_run_button === false
                 const is_submit_hidden = data.show_submit_button === false
                 run_btn.hidden = is_run_hidden
@@ -104,7 +103,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: handlerUrlLanguage,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 init_code_mirror(data.problem_language)
             }
         });
@@ -120,7 +118,6 @@ function SwiftPluginXBlock(runtime, element) {
             lineWiseCopyCut: true,
             autoCloseBrackets: true,
         }
-        console.log(codemirror_config)
         var myTextArea = document.getElementById("code-area");
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
@@ -148,23 +145,23 @@ function SwiftPluginXBlock(runtime, element) {
 
     function setOutput(response) {
         const compilation_response = response.response.output
-        let output_response;
-        if (response.diff) {
-            const diff_response = response.diff
-            output_response = compilation_response + '</br>' + diff_response
+        let color = response.response.success ? "#33691E" : "#B00020"
+        if (response.response.success) {
+            document.getElementById('response-txt').innerHTML = compilation_response;
+        } else if (response.response.diff) {
+            document.getElementById('response-txt').innerHTML = response.response.diff;
         } else {
-            output_response = compilation_response
+            document.getElementById('response-txt').innerHTML = compilation_response;
         }
-        document.getElementById('response-txt').innerHTML = output_response;
-        document.getElementById('response-title').style.color = "#33691E";
+
+        document.getElementById('response-title').style.color = color;
     }
 
     function updateResponse(response) {
-        console.log(response)
-        if (response.response.output) {
-            setOutput(response);
-        } else if (response.response.error) {
-            setError(response.response.error)
+        if (response.error) {
+            setError(response.error)
+        } else {
+            setOutput(response)
         }
     }
 

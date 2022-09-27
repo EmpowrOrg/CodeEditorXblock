@@ -5,9 +5,6 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import String, Scope
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-import difflib
-from io import StringIO
-import logging
 import requests
 import json
 
@@ -33,10 +30,10 @@ class SwiftPluginXBlock(
         help="User code",
     )
 
-    problem_id = String(
+    reference_id = String(
         default="",
         scope=Scope.settings,
-        help="Problem id used by the Api to checkcode"
+        help="Problem id used by the Api to check the code"
     )
 
     api_url_submit = String(
@@ -58,7 +55,7 @@ class SwiftPluginXBlock(
     )
 
     api_key = String(
-        default="password",
+        default="",
         scope=Scope.preferences,
         help="Key to send to API",
     )
@@ -87,7 +84,7 @@ class SwiftPluginXBlock(
     )
 
     editable_fields = [
-        'problem_id',
+        'reference_id',
         'problem_description',
         'problem_title',
         # 'problem_solution',
@@ -111,7 +108,6 @@ class SwiftPluginXBlock(
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
 
-        frag.add_javascript_url(self.get_mode_url(self.problem_language))
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
@@ -133,6 +129,7 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
+        frag.add_javascript_url(self.get_mode_url(self.problem_language))
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
@@ -144,32 +141,30 @@ class SwiftPluginXBlock(
         response = {}
 
         if "code" not in data.keys():
-            logging.error("non code data in request!")
-            response['status'] = "Empty code!"
+            response['error'] = "Empty code!"
             return response
 
         self.code = data['code']
-
-        response['code'] = self.code
         if "type" not in data.keys():
-            logging.error("non request type in request")
-            response["status"] = "Non request type"
+            response["error"] = "Invalid request type"
             return response
 
         if 'run' in data['type']:
-            api_respo = self.handle_run_request()
+            api_respo = self.handle_request(self.api_url_run)
             response['response'] = api_respo
-            response['diff'] = self.calculate_diff(expected_output=api_respo['expectedOutput'],
-                                                   actual_output=api_respo['output'])
+            print(response)
+            if 'error' in api_respo:
+                response['error'] = api_respo['error']
+                return response
+            response['response']['success'] = self.check_run_success(api_respo)
 
         elif 'submit' in data['type']:
-            self.attempt = self.attempt + 1
-            api_respo = self.handle_submit_request()
+            api_respo = self.handle_request(self.api_url_submit)
             response['response'] = api_respo
-            if api_respo['error']:
+            if 'error' in api_respo:
+                response['error'] = api_respo['error']
                 return response
-            response['diff'] = self.calculate_diff(expected_output=api_respo['expectedOutput'],
-                                                   actual_output=api_respo['output'])
+            self.attempt = self.attempt + 1
             is_final_attempt = api_respo['finalAttempt'] == 'true'
             success = api_respo['success'] == 'true'
             if success:
@@ -180,6 +175,9 @@ class SwiftPluginXBlock(
                 self.runtime.publish(self, "grade",
                                      {'value': 0.0,
                                       'max_value': 1.0})
+            else:
+                response['error'] = api_respo['output']
+                response.pop('output', None)
 
 
         else:
@@ -190,14 +188,14 @@ class SwiftPluginXBlock(
     @XBlock.json_handler
     def get_problem_description(self, data, suffix=''):
         return {
-            'problem_id': self.problem_id,
+            'problem_id': self.reference_id,
             'problem_description': self.problem_description
         }
 
     @XBlock.json_handler
     def get_problem_title(self, data, suffix=''):
         return {
-            'problem_id': self.problem_id,
+            'problem_id': self.reference_id,
             'problem_title': self.problem_title
         }
 
@@ -217,7 +215,7 @@ class SwiftPluginXBlock(
     @XBlock.json_handler
     def get_problem_language(self, data, suffix=''):
         return {
-            'problem_id': self.problem_id,
+            'problem_id': self.reference_id,
             'problem_language': self.problem_language
         }
 
@@ -237,15 +235,21 @@ class SwiftPluginXBlock(
             'show_submit_button': show_submit_button,
         }
 
-    def handle_run_request(self):
-        r = requests.post(get_server_url(self.api_url_run), json=self.build_request_body(),
-                          headers=self.build_headers())
-        return r.json()
+    def check_run_success(self, resp):
+        if "expectedOutput" in resp and "output" in resp:
+            return resp['expectedOutput'] == resp['output']
+        else:
+            return False
 
-    def handle_submit_request(self):
-        r = requests.post(get_server_url(self.api_url_submit), json=self.build_request_body(),
-                          headers=self.build_headers())
-        return r.json()
+    def handle_request(self, url):
+        try:
+            r = requests.post(get_server_url(url), json=self.build_request_body(), headers=self.build_headers())
+            return r.json()
+        except requests.exceptions.RequestException as e:
+            return json.dumps({
+                'error': e
+            })
+
 
     def build_headers(self):
         headers = {
@@ -263,7 +267,7 @@ class SwiftPluginXBlock(
             'code': self.code,
             'language': self.problem_language,
             'attempt': self.attempt,
-            'referenceId': self.problem_id,
+            'referenceId': self.reference_id,
             'email': email,
         }
         return body
@@ -283,16 +287,6 @@ class SwiftPluginXBlock(
                 </vertical_demo>
              """),
         ]
-
-    def calculate_diff(self, expected_output: str, actual_output: str):
-        # To redirect std output
-        mystdout = StringIO()
-        d = difflib.Differ()
-        mystdout.writelines(list(d.compare(expected_output.splitlines(keepends=True),
-                                           actual_output.splitlines(keepends=True))))
-        # Read from mystdout output
-        diff = mystdout.getvalue()
-        return diff
 
     _modeUrl = {
         "text/x-swift": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js",
