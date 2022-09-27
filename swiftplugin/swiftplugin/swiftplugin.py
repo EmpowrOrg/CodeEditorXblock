@@ -70,12 +70,12 @@ class SwiftPluginXBlock(
     has_score = True
     attempt = 1
 
-    # problem_solution = String(
-    #     default="",
-    #     scope=Scope.settings,
-    #     help="Problem solution in code",
-    #     multiline_editor=True
-    # )
+    problem_solution = String(
+        default="print(\"Hello, World\")",
+        scope=Scope.settings,
+        help="Problem solution in code",
+        multiline_editor=True
+    )
 
     problem_language = String(
         default="text/x-swift",
@@ -87,7 +87,7 @@ class SwiftPluginXBlock(
         'reference_id',
         'problem_description',
         'problem_title',
-        # 'problem_solution',
+        'problem_solution',
         'problem_language',
         'api_url_run',
         'api_url_submit'
@@ -183,14 +183,14 @@ class SwiftPluginXBlock(
     @XBlock.json_handler
     def get_problem_description(self, data, suffix=''):
         return {
-            'problem_id': self.reference_id,
+            'reference_id': self.reference_id,
             'problem_description': self.problem_description
         }
 
     @XBlock.json_handler
     def get_problem_title(self, data, suffix=''):
         return {
-            'problem_id': self.reference_id,
+            'reference_id': self.reference_id,
             'problem_title': self.problem_title
         }
 
@@ -200,26 +200,27 @@ class SwiftPluginXBlock(
             'api_key': self.api_key,
         }
 
-    # @XBlock.json_handler
-    # def get_problem_solution(self, data, suffix=''):
-    #     return {
-    #         'problem_id': self.problem_id,
-    #         'problem_solution': self.problem_solution
-    #     }
+    @XBlock.json_handler
+    def get_problem_solution(self, data, suffix=''):
+        return {
+            'reference_id': self.reference_id,
+            'problem_solution': self.problem_solution
+        }
 
     @XBlock.json_handler
     def get_problem_language(self, data, suffix=''):
         return {
-            'problem_id': self.reference_id,
+            'reference_id': self.reference_id,
             'problem_language': self.problem_language
         }
 
-    # @XBlock.json_handler
-    # def has_problem_solution(self, data, suffix=''):
-    #     return {
-    #         'problem_id': self.problem_id,
-    #         'has_solution_defined': self.problem_solution and self.problem_solution.strip()
-    #     }
+    @XBlock.json_handler
+    def has_problem_solution(self, data, suffix=''):
+
+        return {
+            'reference_id': self.reference_id,
+            'has_solution_defined': bool(self.problem_solution.strip())
+        }
 
     @XBlock.json_handler
     def show_buttons(self, data, suffix=''):

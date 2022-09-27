@@ -87,9 +87,8 @@ div#code-container-area {
 
     }
     
-    textarea#code-solution-area {
-        border: 1px solid #e6e6e6;
-        width: 100%;
-        min-height: 400px;
+    div#code-solution-area {
+        height:100vh;
+        overflow:hidden;
     }
 }

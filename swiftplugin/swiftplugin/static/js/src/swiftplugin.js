@@ -4,14 +4,14 @@
 function SwiftPluginXBlock(runtime, element) {
     const handlerUrl = runtime.handlerUrl(element, 'get_button_handler');
     const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
-    //const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
-    //const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
+    const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
+    const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
     const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
     const handlerUrlLanguage = runtime.handlerUrl(element, 'get_problem_language');
     const showButtonsUrl = runtime.handlerUrl(element, 'show_buttons');
 
     var myCodeMirror = null;
-    //var solutionCodeMirror  = null;
+    var solutionCodeMirror = null;
 
     const run_btn = document.getElementById('run-btn');
     run_btn.onclick = function (eventObject) {
@@ -58,22 +58,23 @@ function SwiftPluginXBlock(runtime, element) {
         });
     }
 
-    /*    function init_solution() {
-            $.ajax({
-                type: "POST",
-                url: handlerUrlHasSolution,
-                data: JSON.stringify({}),
-                success: function (data) {
-                    if (data.has_solution_defined) {
-                        solution_btn.onclick = function (eventObject) {
-                            init_solution();
-                        }
-                    } else {
-                        solution_btn.remove()
-                    }
+    function init_solution() {
+        $.ajax({
+            type: "POST",
+            url: handlerUrlHasSolution,
+            data: JSON.stringify({}),
+            success: function (data) {
+                console.log('solution')
+                console.log(data)
+                if (data.has_solution_defined) {
+                    solution_btn.hidden = false
+                    get_solution()
+                } else {
+                    solution_btn.hidden = true
                 }
-            })
-        }*/
+            }
+        })
+    }
 
     function on_init() {
         init_description();
@@ -123,24 +124,23 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         myCodeMirror.setSize('100%');
-        solution_btn.remove()
-        /*        const solutionTextArea = document.getElementById("code-solution-area");
-                solutionCodeMirror = CodeMirror(function (elt) {
-                    solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
-                }, codemirror_config);
-                solutionCodeMirror.setSize('100%');
-                init_solution()*/
+        const solutionTextArea = document.getElementById("code-solution-area");
+        solutionCodeMirror = CodeMirror(function (elt) {
+            solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
+        }, codemirror_config);
+        solutionCodeMirror.setSize('100%');
+        init_solution()
     }
 
-    /*
-        function init_solution() {
-            $.ajax({
-                type: "POST",
-                url: handlerUrlSolution,
-                data: JSON.stringify({}),
-                success: updateProblemSolution
-            });
-        }*/
+
+    function get_solution() {
+        $.ajax({
+            type: "POST",
+            url: handlerUrlSolution,
+            data: JSON.stringify({}),
+            success: updateProblemSolution
+        });
+    }
 
 
     function setOutput(response) {
