@@ -75,6 +75,7 @@ their mime-types
 | C++           | text/x-c++src     |
 | C#            | text/x-csharp     |
 | Java          | text/x-java       |
+| JavaScript    | text/javascript   |
 | Kotlin        | text/x-kotlin     |
 | Python        | text/x-python     |
 | Scala         | text/x-scala      |

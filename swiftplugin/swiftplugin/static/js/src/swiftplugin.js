@@ -88,7 +88,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: showButtonsUrl,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 const is_run_hidden = data.show_run_button === false
                 const is_submit_hidden = data.show_submit_button === false
                 run_btn.hidden = is_run_hidden
@@ -104,7 +103,6 @@ function SwiftPluginXBlock(runtime, element) {
             url: handlerUrlLanguage,
             data: JSON.stringify({}),
             success: function (data) {
-                console.log(data)
                 init_code_mirror(data.problem_language)
             }
         });
@@ -120,7 +118,6 @@ function SwiftPluginXBlock(runtime, element) {
             lineWiseCopyCut: true,
             autoCloseBrackets: true,
         }
-        console.log(codemirror_config)
         var myTextArea = document.getElementById("code-area");
         myCodeMirror = CodeMirror(function (elt) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
@@ -146,29 +143,38 @@ function SwiftPluginXBlock(runtime, element) {
         }*/
 
 
-        function updateResponse(response) {
-        if (response.response.output) {
-            const compilation_response = response.response.output
-            let output_response;
-            if (response.diff) {
-                const diff_response = response.diff
-                output_response = compilation_response + '</br>' + diff_response
-            } else {
-                output_response = compilation_response
-            }
-            document.getElementById('response-txt').innerHTML = output_response;
-        } else if (response.response.error) {
-            document.getElementById('response-txt').innerHTML = response.response.error;
+    function setOutput(response) {
+        const compilation_response = response.response.output
+        let color = response.response.success ? "#33691E" : "#B00020"
+        if (response.response.success) {
+            document.getElementById('response-txt').innerHTML = compilation_response;
+        } else if (response.response.diff) {
+            document.getElementById('response-txt').innerHTML = response.response.diff;
+        } else {
+            document.getElementById('response-txt').innerHTML = compilation_response;
+        }
+
+        document.getElementById('response-title').style.color = color;
+    }
+
+    function updateResponse(response) {
+        if (response.error) {
+            setError(response.error)
+        } else {
+            setOutput(response)
         }
     }
 
+    function setError(error) {
+        document.getElementById('response-txt').innerHTML = error;
+        document.getElementById('response-title').style.color = "#B00020";
+    }
+
     function handleError(response) {
-        console.log("error")
-        console.log(response)
         const compilation_response = response.response
         const diff_response = response.diff
         const output_response = compilation_response + '</br>' + diff_response
-        document.getElementById('response-txt').innerHTML = output_response;
+        setError(output_response)
     }
 
     function updateProblemDescription(response) {
