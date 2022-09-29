@@ -19,7 +19,8 @@
 .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     display: block;
     padding: .5rem 1rem;
-    color: white;
+    /* color: white; */
+    color: #424242!important;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
@@ -30,7 +31,7 @@ div#code-container-area {
     border-style: solid;
     border-radius: 16px;
     border-color: rgb(132, 132, 132)!important;
-    height:80vh;
+    /* height:80vh; */
     overflow:hidden;
 }
 
@@ -41,7 +42,7 @@ div#code-container-area {
 
 .code-bottom {
     background: none;
-    height: 30vh;
+    /* height: 30vh; */
     display: flex;
     flex-direction: column;
 }
@@ -74,7 +75,16 @@ div#code-container-area {
     border-color: #7730b0 !important;
 }
 
+.btn-primary#select-lang-btn, .btn-primary#submit-btn {
+    color: #fff !important;
+    background-color: #5c0e81 !important;
+    border-color: #5c0e81 !important;
+}
 
+.btn-primary#select-lang-btn:hover, .btn-primary#submit-btn:hover {
+    background-color: #7730b0 !important;
+    border-color: #7730b0 !important;
+}
 
 @media (max-width: 768px){
     .CodeMirror-wrap{
@@ -82,7 +92,7 @@ div#code-container-area {
         min-height: 400px;
 	}
     div#code-container-area {
-        height:100vh;
+        /* height:100vh; */
         overflow:hidden;
 
     }
@@ -90,5 +100,19 @@ div#code-container-area {
     div#code-solution-area {
         height:100vh;
         overflow:hidden;
+    }
+}
+
+
+.heading-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 992px) {
+    .heading-dropdown-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
