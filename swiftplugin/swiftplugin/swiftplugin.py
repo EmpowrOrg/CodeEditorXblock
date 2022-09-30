@@ -231,9 +231,9 @@ That's it! The computer will do the math. Feel free to run the program with diff
             r = requests.post(get_server_url(url), json=self.build_request_body(), headers=self.build_headers())
             return r.json()
         except requests.exceptions.RequestException as e:
-            return json.dumps({
-                'error': e
-            })
+            return json.loads(json.dumps({
+                'error': str(e)
+            }))
 
     def build_headers(self):
         headers = {
