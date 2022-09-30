@@ -3,7 +3,7 @@
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from xblock.fields import String, Scope
+from xblock.fields import String, Scope, Boolean
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 import requests
 import json
@@ -65,6 +65,12 @@ class SwiftPluginXBlock(
         scope=Scope.settings,
         help="Problem description in Markdown Language",
         multiline_editor=True
+    )
+
+    allow_any_language = Boolean(
+        default=True,
+        scope=Scope.settings,
+        help="Allow users to complete the problem with any supported language",
     )
 
     has_score = True
@@ -129,7 +135,7 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        frag.add_javascript_url(self.get_mode_url(self.problem_language))
+        frag.add_javascript_url(self.get_mode_url())
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
@@ -181,54 +187,21 @@ class SwiftPluginXBlock(
         return response
 
     @XBlock.json_handler
-    def get_problem_description(self, data, suffix=''):
-        return {
-            'reference_id': self.reference_id,
-            'problem_description': self.problem_description
-        }
-
-    @XBlock.json_handler
-    def get_problem_title(self, data, suffix=''):
-        return {
-            'reference_id': self.reference_id,
-            'problem_title': self.problem_title
-        }
-
-    @XBlock.json_handler
-    def get_api_key(self, data, suffix=''):
-        return {
-            'api_key': self.api_key,
-        }
-
-    @XBlock.json_handler
-    def get_problem_solution(self, data, suffix=''):
-        return {
-            'reference_id': self.reference_id,
-            'problem_solution': self.problem_solution
-        }
-
-    @XBlock.json_handler
-    def get_problem_language(self, data, suffix=''):
-        return {
-            'reference_id': self.reference_id,
-            'problem_language': self.problem_language
-        }
-
-    @XBlock.json_handler
-    def has_problem_solution(self, data, suffix=''):
-
-        return {
-            'reference_id': self.reference_id,
-            'has_solution_defined': bool(self.problem_solution.strip())
-        }
-
-    @XBlock.json_handler
-    def show_buttons(self, data, suffix=''):
+    def get_problem_info(self, data, suffix=''):
         show_run_button = bool(self.api_url_run and not self.api_url_run.isspace())
         show_submit_button = bool(self.api_url_submit and not self.api_url_submit.isspace())
         return {
+            'reference_id': self.reference_id,
+            'problem_description': self.problem_description,
+            'problem_title': self.problem_title,
+            'problem_language': self.problem_language,
+            'has_solution_defined': bool(self.problem_solution.strip()),
+            'problem_solution': self.problem_solution,
             'show_run_button': show_run_button,
             'show_submit_button': show_submit_button,
+            'display_language': self.get_mode_display_language(),
+            'allowed_languages': self.get_allowed_languages(),
+
         }
 
     def handle_request(self, url):
@@ -278,21 +251,32 @@ class SwiftPluginXBlock(
         ]
 
     _modeUrl = {
-        "text/x-swift": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js",
-        "text/x-csrc": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/x-c++src": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/x-csharp": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/x-java": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/x-objectivec": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/x-scala": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/scala.js",
-        "text/x-squirrel": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/apl": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/apl/apl.js",
-        "text/x-ttcn-asn": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js",
-        "text/x-python": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js",
-        "text/x-kotlin": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-        "text/javascript": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js",
+        "text/x-swift": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js", "Swift"],
+        "text/x-csrc": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C"],
+        "text/x-c++src": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C++"],
+        "text/x-csharp": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C#"],
+        "text/x-java": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Java"],
+        "text/x-objectivec": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Objective-C"],
+        "text/x-scala": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/scala.js", "Scala"],
+        "text/x-squirrel": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Squirrel"],
+        "text/apl": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/apl/apl.js", "APL"],
+        "text/x-ttcn-asn": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js", "ASN"],
+        "text/x-python": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js", "Python"],
+        "text/x-kotlin": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Kotlin"],
+        "text/javascript": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js", "Javascript"],
     }
 
-    def get_mode_url(self, mode):
-        normalized_mode = mode.strip().lower()
-        return self._modeUrl[normalized_mode]
+    def get_mode_url(self):
+        normalized_mode = self.problem_language.strip().lower()
+        return self._modeUrl[normalized_mode][0]
+
+    def get_mode_display_language(self):
+        normalized_mode = self.problem_language.strip().lower()
+        return self._modeUrl[normalized_mode][1]
+
+    def get_allowed_languages(self):
+        if self.allow_any_language:
+            values = self._modeUrl.values()
+            return list(map(lambda x: x[1], values))
+        else:
+            return []
