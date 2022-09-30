@@ -148,7 +148,7 @@ function SwiftPluginXBlock(runtime, element) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_description);
-        // myAssigmentTextArea.innerHTML = html;
+        myAssigmentTextArea.innerHTML = html;
     }
 
     function updateProblemTitle(response) {
