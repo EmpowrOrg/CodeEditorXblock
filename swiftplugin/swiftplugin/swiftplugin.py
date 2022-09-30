@@ -299,6 +299,8 @@ That's it! The computer will do the math. Feel free to run the program with diff
     def get_allowed_languages(self):
         if self.allow_any_language:
             values = self._modeUrl.values()
-            return list(map(lambda x: x[1], values))
+            names = list(map(lambda x: x[1], values))
+            names.sort()
+            return names
         else:
             return []
