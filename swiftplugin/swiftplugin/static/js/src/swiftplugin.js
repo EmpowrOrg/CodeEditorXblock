@@ -105,8 +105,29 @@ function SwiftPluginXBlock(runtime, element) {
         setError(output_response)
     }
 
+    function updateValues(response,buttonChildIds) {
+        if(!response?.allowed_languages?.length){
+            $(`#select-lang-btn`).text(response.display_language);
+            $(`#select-lang-btn-2`).text(response.display_language);
+        }
+        $.each(response.allowed_languages, function (key, value) {
+            $(`#${buttonChildIds}`).append($('<li>', {
+                class: "dropdown-item",
+                value: value,
+                text: value,
+                'data-mark': key,
+                'click': function() { 
+                    $(`#select-lang-btn`).text(value)
+                    $(`#select-lang-btn-2`).text(value)
+                 }
+            }))
+        })
+    }
+
     function updateProblem(response) {
         console.log(response)
+        updateValues(response,'ul-1')
+        updateValues(response,'ul-2')
         init_code_mirror(response.problem_language)
         updateProblemDescription(response)
         updateProblemTitle(response)
@@ -127,7 +148,7 @@ function SwiftPluginXBlock(runtime, element) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
+        // myAssigmentTextArea.innerHTML = html;
     }
 
     function updateProblemTitle(response) {
