@@ -111,11 +111,12 @@ function SwiftPluginXBlock(runtime, element) {
         $.each(response.allowed_languages, function (key, value) {
             $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
-                value: value,
-                text: value,
+                value: value[1],
+                text: value[1],
                 'data-mark': key,
                 'click': function() { 
-                    $(`#select-lang-btn`).text(value)
+                    $(`#select-lang-btn`).text(value[1])
+                    myCodeMirror.setOption("mode", value[2])
                  }
             }))
         })

@@ -156,9 +156,17 @@ That's it! The computer will do the math. Feel free to run the program with diff
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        frag.add_javascript_url(self.get_mode_url())
+        self.initLanguages(frag)
         frag.initialize_js('SwiftPluginXBlock')
         return frag
+
+    def initLanguages(self, frag):
+        if self.allow_any_language:
+            values = list(self._modeUrl.values())
+            for value in values:
+                frag.add_javascript_url(value[0])
+        else:
+            frag.add_javascript_url(self.get_mode_url())
 
     @XBlock.json_handler
     def get_button_handler(self, data, suffix=''):
@@ -284,7 +292,8 @@ That's it! The computer will do the math. Feel free to run the program with diff
         "text/x-ttcn-asn": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js", "ASN"],
         "text/x-python": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js", "Python"],
         "text/x-kotlin": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Kotlin"],
-        "text/javascript": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js", "Javascript"],
+        "text/javascript": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js",
+                            "Javascript"],
     }
 
     def get_mode_url(self):
@@ -297,9 +306,16 @@ That's it! The computer will do the math. Feel free to run the program with diff
 
     def get_allowed_languages(self):
         if self.allow_any_language:
-            values = self._modeUrl.values()
-            names = list(map(lambda x: x[1], values))
-            names.sort()
-            return names
+            keys = list(self._modeUrl.keys())
+            values = []
+            for key in keys:
+                key_values = self._modeUrl[key]
+                key_values.append(key)
+                values.append(key_values)
+            values.sort(key=self.myFunc)
+            return values
         else:
             return []
+
+    def myFunc(self, e):
+        return e[1]
