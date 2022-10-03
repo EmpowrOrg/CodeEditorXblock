@@ -37,13 +37,13 @@ class SwiftPluginXBlock(
     )
 
     api_url_submit = String(
-        default="http://127.0.0.1:8080/submit",
+        default="",
         scope=Scope.settings,
         help="URL api used to check the code (submit final response)"
     )
 
     api_url_run = String(
-        default="http://127.0.0.1:8080/run",
+        default="",
         scope=Scope.settings,
         help="URL api used to run the code (run code by api)"
     )
@@ -61,36 +61,14 @@ class SwiftPluginXBlock(
     )
 
     problem_description = String(
-        default="""
-        #### What's better than a brand new Benz?
-![Fresh Prince dancing next to new car](https://thumbs.gfycat.com/MeatyDirtyDegu-max-1mb.gif)
-Money in the bank. Don't be like every other person in ATL. Driving a nice car on 24s while sleepin on a broken futon.
-
-To ensure our priorities are straight, let's find out exactly how much you should spend on your car.
-
-***You should only spend 20% of your salary on transportation.***
-###### Let's do the math
-If you complete this program, you should earn at least $100,000 by the time you are **21**.
-That'll be one wild 21st birthday.
-![Drake and Cudi poppin' bottles](https://thumbs.gfycat.com/AdmirableAdventurousFrilledlizard-size_restricted.gif)
-To treat yourself, you will purchase a new car. However, you are trying to figure out how much your car budget is.
-
-So we want to know, what is 20% of $100,000?
-We don't have to know the math ourselves. We can use the computer.
-1. Create a variable named `salary` whose type is double and value is `100000.00`
-2. Create another variable, `carPercentage`, whose type is double and value is `0.20`
-3. Create a variable named result whose value is `salary * carPercentage`
-4. Print out `result`
-
-That's it! The computer will do the math. Feel free to run the program with different numbers to play around. Submit the program and find your budget.
-        """,
+        default="",
         scope=Scope.settings,
         help="Problem description in Markdown Language",
         multiline_editor=True
     )
 
     allow_any_language = Boolean(
-        default=True,
+        default=False,
         scope=Scope.settings,
         help="Allow users to complete the problem with any supported language",
     )
