@@ -10,11 +10,13 @@ function SwiftPluginXBlock(runtime, element) {
 
     const run_btn = document.getElementById('run-btn');
     run_btn.onclick = function (eventObject) {
-        var user_code = myCodeMirror.getValue();
+        var user_code = myCodeMirror.getValue()
+        var code_mode  = myCodeMirror.getMode()
+        var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'run', code: user_code}),
+            data: JSON.stringify({type: 'run', code: user_code, language: mode}),
             success: updateResponse,
             error: handleError
         });

@@ -162,15 +162,21 @@ class SwiftPluginXBlock(
             response["error"] = "Invalid request type"
             return response
 
+        if "language" not in data.keys():
+            response["error"] = "No language specified"
+            return response
+
+        language = data["language"]
+
         if 'run' in data['type']:
-            api_respo = self.handle_request(self.api_url_run)
+            api_respo = self.handle_request(self.api_url_run, language)
             response['response'] = api_respo
             if 'error' in api_respo:
                 response['error'] = api_respo['error']
                 return response
 
         elif 'submit' in data['type']:
-            api_respo = self.handle_request(self.api_url_submit)
+            api_respo = self.handle_request(self.api_url_submit, language)
             response['response'] = api_respo
             if 'error' in api_respo:
                 response['error'] = api_respo['error']
@@ -211,9 +217,9 @@ class SwiftPluginXBlock(
 
         }
 
-    def handle_request(self, url):
+    def handle_request(self, url, language):
         try:
-            r = requests.post(get_server_url(url), json=self.build_request_body(), headers=self.build_headers())
+            r = requests.post(get_server_url(url), json=self.build_request_body(language), headers=self.build_headers())
             return r.json()
         except requests.exceptions.RequestException as e:
             return json.loads(json.dumps({
@@ -228,13 +234,13 @@ class SwiftPluginXBlock(
         }
         return headers
 
-    def build_request_body(self):
+    def build_request_body(self, language):
         user_service = self.runtime.service(self, 'user')
         xb_user = user_service.get_current_user()
         email = xb_user.emails[0]
         body = {
             'code': self.code,
-            'language': self.problem_language,
+            'language': language,
             'attempt': self.attempt,
             'referenceId': self.reference_id,
             'email': email,
