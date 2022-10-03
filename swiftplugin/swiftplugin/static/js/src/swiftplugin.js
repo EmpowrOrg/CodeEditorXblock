@@ -64,10 +64,12 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         myCodeMirror.setSize('100%');
+        const solutionmirror_config = codemirror_config
+        solutionmirror_config.readOnly = true
         const solutionTextArea = document.getElementById("code-solution-area");
         solutionCodeMirror = CodeMirror(function (elt) {
             solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
-        }, codemirror_config);
+        }, solutionmirror_config);
         solutionCodeMirror.setSize('100%');
     }
 
