@@ -132,7 +132,6 @@ That's it! The computer will do the math. Feel free to run the program with diff
         The primary view of the SwiftPluginXBlock, shown to students
         when viewing courses.
         """
-        print(self.problem_language)
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
 
