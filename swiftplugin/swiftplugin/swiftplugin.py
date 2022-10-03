@@ -99,7 +99,7 @@ That's it! The computer will do the math. Feel free to run the program with diff
     attempt = 1
 
     problem_solution = String(
-        default="print(\"Hello, World\")",
+        default="",
         scope=Scope.settings,
         help="Problem solution in code",
         multiline_editor=True
