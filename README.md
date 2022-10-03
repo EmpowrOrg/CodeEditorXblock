@@ -17,8 +17,6 @@ An XBlock for Empowr's course platform that allows for the input and checking of
 
 
 ## TODO
-
- - Fix Solution Tab. Most work for a solution tab is done, however it doesn't properly display.
  - Add support for all CodeMirror languages. This is an easy task, just tedious.
 
 ## Installation
