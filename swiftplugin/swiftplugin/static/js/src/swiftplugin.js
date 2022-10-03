@@ -3,23 +3,20 @@
 
 function SwiftPluginXBlock(runtime, element) {
     const handlerUrl = runtime.handlerUrl(element, 'get_button_handler');
-    const handlerUrlDescription = runtime.handlerUrl(element, 'get_problem_description');
-    //const handlerUrlSolution = runtime.handlerUrl(element, 'get_problem_solution');
-    //const handlerUrlHasSolution = runtime.handlerUrl(element, 'has_problem_solution');
-    const handlerUrlTitle = runtime.handlerUrl(element, 'get_problem_title');
-    const handlerUrlLanguage = runtime.handlerUrl(element, 'get_problem_language');
-    const showButtonsUrl = runtime.handlerUrl(element, 'show_buttons');
+    const handlerProblemUrl = runtime.handlerUrl(element, 'get_problem_info')
 
     var myCodeMirror = null;
-    //var solutionCodeMirror  = null;
+    var solutionCodeMirror = null;
 
     const run_btn = document.getElementById('run-btn');
     run_btn.onclick = function (eventObject) {
-        var user_code = myCodeMirror.getValue();
+        var user_code = myCodeMirror.getValue()
+        var code_mode  = myCodeMirror.getMode()
+        var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'run', code: user_code}),
+            data: JSON.stringify({type: 'run', code: user_code, language: mode}),
             success: updateResponse,
             error: handleError
         });
@@ -40,72 +37,18 @@ function SwiftPluginXBlock(runtime, element) {
 
     const response_title = document.getElementById('response-title')
 
-    function init_description() {
+    function init_problem() {
         $.ajax({
             type: "POST",
-            url: handlerUrlDescription,
+            url: handlerProblemUrl,
             data: JSON.stringify({}),
-            success: updateProblemDescription
-        });
+            success: updateProblem
+        })
     }
 
-    function init_title() {
-        $.ajax({
-            type: "POST",
-            url: handlerUrlTitle,
-            data: JSON.stringify({}),
-            success: updateProblemTitle
-        });
-    }
-
-    /*    function init_solution() {
-            $.ajax({
-                type: "POST",
-                url: handlerUrlHasSolution,
-                data: JSON.stringify({}),
-                success: function (data) {
-                    if (data.has_solution_defined) {
-                        solution_btn.onclick = function (eventObject) {
-                            init_solution();
-                        }
-                    } else {
-                        solution_btn.remove()
-                    }
-                }
-            })
-        }*/
 
     function on_init() {
-        init_description();
-        init_title();
-        init_language();
-        init_buttons();
-    }
-
-    function init_buttons() {
-        $.ajax({
-            type: "POST",
-            url: showButtonsUrl,
-            data: JSON.stringify({}),
-            success: function (data) {
-                const is_run_hidden = data.show_run_button === false
-                const is_submit_hidden = data.show_submit_button === false
-                run_btn.hidden = is_run_hidden
-                submit_btn.hidden = is_submit_hidden
-                response_title.hidden = is_submit_hidden && is_run_hidden
-            }
-        });
-    }
-
-    function init_language() {
-        $.ajax({
-            type: "POST",
-            url: handlerUrlLanguage,
-            data: JSON.stringify({}),
-            success: function (data) {
-                init_code_mirror(data.problem_language)
-            }
-        });
+        init_problem()
     }
 
     function init_code_mirror(mode) {
@@ -123,25 +66,14 @@ function SwiftPluginXBlock(runtime, element) {
             myTextArea.parentNode.replaceChild(elt, myTextArea);
         }, codemirror_config);
         myCodeMirror.setSize('100%');
-        solution_btn.remove()
-        /*        const solutionTextArea = document.getElementById("code-solution-area");
-                solutionCodeMirror = CodeMirror(function (elt) {
-                    solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
-                }, codemirror_config);
-                solutionCodeMirror.setSize('100%');
-                init_solution()*/
+        const solutionmirror_config = codemirror_config
+        solutionmirror_config.readOnly = true
+        const solutionTextArea = document.getElementById("code-solution-area");
+        solutionCodeMirror = CodeMirror(function (elt) {
+            solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
+        }, solutionmirror_config);
+        solutionCodeMirror.setSize('100%');
     }
-
-    /*
-        function init_solution() {
-            $.ajax({
-                type: "POST",
-                url: handlerUrlSolution,
-                data: JSON.stringify({}),
-                success: updateProblemSolution
-            });
-        }*/
-
 
     function setOutput(response) {
         const compilation_response = response.response.output
@@ -175,6 +107,41 @@ function SwiftPluginXBlock(runtime, element) {
         const diff_response = response.diff
         const output_response = compilation_response + '</br>' + diff_response
         setError(output_response)
+    }
+
+    function updateValues(response) {
+        $(`#select-lang-btn`).text(response.display_language);
+        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
+        $.each(response.allowed_languages, function (key, value) {
+            $(`#ul-1`).append($('<li>', {
+                class: "dropdown-item",
+                value: value[1],
+                text: value[1],
+                'data-mark': key,
+                'click': function() { 
+                    $(`#select-lang-btn`).text(value[1])
+                    myCodeMirror.setOption("mode", value[2])
+                 }
+            }))
+        })
+    }
+
+    function updateProblem(response) {
+        updateValues(response)
+        init_code_mirror(response.problem_language)
+        updateProblemDescription(response)
+        updateProblemTitle(response)
+        if (response.has_solution_defined) {
+            solution_btn.hidden = false
+            updateProblemSolution(response)
+        } else {
+            solution_btn.hidden = true
+        }
+        const is_run_hidden = response.show_run_button === false
+        const is_submit_hidden = response.show_submit_button === false
+        run_btn.hidden = is_run_hidden
+        submit_btn.hidden = is_submit_hidden
+        response_title.hidden = is_submit_hidden && is_run_hidden
     }
 
     function updateProblemDescription(response) {

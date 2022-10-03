@@ -19,7 +19,8 @@
 .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     display: block;
     padding: .5rem 1rem;
-    color: white;
+    /* color: white; */
+    color: #424242!important;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
@@ -30,7 +31,7 @@ div#code-container-area {
     border-style: solid;
     border-radius: 16px;
     border-color: rgb(132, 132, 132)!important;
-    height:80vh;
+    height: calc(70vmin + 40px);
     overflow:hidden;
 }
 
@@ -41,7 +42,7 @@ div#code-container-area {
 
 .code-bottom {
     background: none;
-    height: 30vh;
+    /* height: 30vh; */
     display: flex;
     flex-direction: column;
 }
@@ -58,7 +59,7 @@ div#code-container-area {
 .CodeMirror-wrap {
     width: 50% !important;
     border-right: 1px solid #e6e6e6;
-    min-height: 600px;
+    /* min-height: 600px; */
     border-radius: 16px 0 0 16px;
 
 }
@@ -74,22 +75,64 @@ div#code-container-area {
     border-color: #7730b0 !important;
 }
 
+.btn-primary#select-lang-btn, .btn-primary#submit-btn {
+    color: #fff !important;
+    background-color: #5c0e81 !important;
+    border-color: #5c0e81 !important;
+}
 
+.btn-primary#select-lang-btn:hover, .btn-primary#submit-btn:hover {
+    background-color: #7730b0 !important;
+    border-color: #7730b0 !important;
+}
+
+.CodeMirror{
+    height: auto !important;
+}
+
+.instructions-container, .CodeMirror-wrap{
+    height: 70vmin !important;
+    overflow-y: scroll;
+}
+
+.heading-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tab-pane.fade.show.active + .tab-pane.fade.hidden.active{
+    margin-bottom: -70vmin;
+}
+
+.CodeMirror.cm-s-default.CodeMirror-wrap{
+    width: 100% !important;
+}
+
+.tab-content-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 
 @media (max-width: 768px){
     .CodeMirror-wrap{
         width: 100% !important;
-        min-height: 400px;
+        /* min-height: 400px; */
 	}
     div#code-container-area {
-        height:100vh;
+        /* height:100vh; */
         overflow:hidden;
-
     }
     
-    textarea#code-solution-area {
-        border: 1px solid #e6e6e6;
-        width: 100%;
-        min-height: 400px;
+    div#code-solution-area {
+        height:100vh;
+        overflow:hidden;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .heading-dropdown-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
