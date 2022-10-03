@@ -123,7 +123,6 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblem(response) {
-        console.log(response)
         updateValues(response)
         init_code_mirror(response.problem_language)
         updateProblemDescription(response)
