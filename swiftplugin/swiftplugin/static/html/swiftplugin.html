@@ -1,7 +1,6 @@
 <section class="col-md-12">
     <div class="container">
         <div class="col-12">
-
             <h1 class="mb-2" id="assignment-title">Title</h1>
             <div id="code-container-area">
                 <ul class="nav nav-pills" id="myTab" role="tablist">
@@ -18,77 +17,52 @@
                         </button>
                     </li>
                 </ul>
-                <div class="tab-content " id="myTabContent">
-                    <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
-                         aria-labelledby="yoursolution2-tab">
-                        <div class="row code-solution-row">
-                            <textarea id="code-area" rows="25" class="col-sm-12 col-md-6 col-lg-12">Layout 2</textarea>
-                            <div class="col-md-6 instructions-container">
-                                <div>
-                                    <div class="heading-dropdown-wrapper">
-                                        <h1 class="mb-2">Instructions</h1>
-                                        <div class="dropdown">
-                                            <a class="btn btn-primary dropdown-toggle" id="select-lang-btn" href="#" role="button"
-                                                id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Select Language
-                                            </a>
-                                            <ul id="ul-1" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p id="assigment-instructions-text"></p>
-                                    <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
-                                       href="javascript:void(0);">Run Code
-                                    </a>
-                                    <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
-                                       href="javascript:void(0);">Submit Code
-                                    </a>
-                                </div>
-                                <h1 id="response-title" class="mt-2 mb-2">Output</h1>
-                                <div class="code-bottom mb-4">
-                                    <div id="response-area">
-                                        <p class="response-txt" id="response-txt" readonly></p>
-                                    </div>
-                                </div>
-                                <br>
+                <div class="tab-content-wrapper">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
+                            aria-labelledby="yoursolution2-tab">
+                            <div class="row code-solution-row">
+                                <textarea id="code-area" rows="25"
+                                    class="col-sm-12 col-md-6 col-lg-12">Layout 2</textarea>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade hidden active" id="empowrsolution" role="tabpanel"
+                            aria-labelledby="empowrsolution-tab">
+                            <div class="row code-solution-row">
+                                <textarea id="code-solution-area" rows="25" class="col-sm-12 col-md-6"
+                                    readonly></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade hidden active" id="empowrsolution" role="tabpanel"
-                         aria-labelledby="empowrsolution-tab">
-                        <div class="row code-solution-row">
-                            <textarea id="code-solution-area" rows="25" class="col-sm-12 col-md-6" readonly></textarea>
-                            <div class="col-md-6 instructions-container">
-                                <div>
-                                    <div class="heading-dropdown-wrapper">
-                                        <h1 class="mb-2">Instructions</h1>
-                                        <div class="dropdown">
-                                            <a class="btn btn-primary dropdown-toggle" id="select-lang-btn-2" href="#" role="button"
-                                                id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Select Language
-                                            </a>
-                    
-                                            <ul id="ul-2" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <p id="assigment-instructions-text"></p>
-                                    <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
-                                       href="javascript:void(0);">Run Code
+                    <div class="instructions-container">
+                        <div>
+                            <div class="heading-dropdown-wrapper">
+                                <h1 class="mb-2">Instructions</h1>
+                                <div class="dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" id="select-lang-btn" href="#"
+                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Select Language
                                     </a>
-                                    <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
-                                       href="javascript:void(0);">Submit Code
-                                    </a>
+                                    <ul id="ul-1" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    </ul>
                                 </div>
-                                <h1 id="response-title" class="mt-2 mb-2">Output</h1>
-                                <div class="code-bottom mb-4">
-                                    <div id="response-area">
-                                        <p class="response-txt" id="response-txt" readonly></p>
-                                    </div>
-                                </div>
-                                <br>
+                            </div>
+                            <p id="assigment-instructions-text"></p>
+                            <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
+                                href="javascript:void(0);">Run Code
+                            </a>
+                            <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
+                                href="javascript:void(0);">Submit Code
+                            </a>
+                        </div>
+                        <h1 id="response-title" class="mt-2 mb-2">Output</h1>
+                        <div class="code-bottom mb-4">
+                            <div id="response-area">
+                                <p class="response-txt" id="response-txt" readonly></p>
                             </div>
                         </div>
+                        <br>
                     </div>
                 </div>
             </div>

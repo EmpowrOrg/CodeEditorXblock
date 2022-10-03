@@ -31,7 +31,7 @@ div#code-container-area {
     border-style: solid;
     border-radius: 16px;
     border-color: rgb(132, 132, 132)!important;
-    /* height:80vh; */
+    height: calc(70vmin + 40px);
     overflow:hidden;
 }
 
@@ -75,15 +75,13 @@ div#code-container-area {
     border-color: #7730b0 !important;
 }
 
-.btn-primary#select-lang-btn,
-.btn-primary#select-lang-btn-2, .btn-primary#submit-btn {
+.btn-primary#select-lang-btn, .btn-primary#submit-btn {
     color: #fff !important;
     background-color: #5c0e81 !important;
     border-color: #5c0e81 !important;
 }
 
-.btn-primary#select-lang-btn:hover,
-.btn-primary#select-lang-btn-2:hover, .btn-primary#submit-btn:hover {
+.btn-primary#select-lang-btn:hover, .btn-primary#submit-btn:hover {
     background-color: #7730b0 !important;
     border-color: #7730b0 !important;
 }
@@ -104,7 +102,16 @@ div#code-container-area {
 }
 
 .tab-pane.fade.show.active + .tab-pane.fade.hidden.active{
-    margin-bottom: -70vh;
+    margin-bottom: -70vmin;
+}
+
+.CodeMirror.cm-s-default.CodeMirror-wrap{
+    width: 100% !important;
+}
+
+.tab-content-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 @media (max-width: 768px){
@@ -115,7 +122,6 @@ div#code-container-area {
     div#code-container-area {
         /* height:100vh; */
         overflow:hidden;
-
     }
     
     div#code-solution-area {

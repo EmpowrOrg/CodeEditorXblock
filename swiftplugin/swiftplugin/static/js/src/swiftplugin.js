@@ -105,20 +105,17 @@ function SwiftPluginXBlock(runtime, element) {
         setError(output_response)
     }
 
-    function updateValues(response,buttonChildIds) {
-        if(!response?.allowed_languages?.length){
-            $(`#select-lang-btn`).text(response.display_language);
-            $(`#select-lang-btn-2`).text(response.display_language);
-        }
+    function updateValues(response) {
+        $(`#select-lang-btn`).text(response.display_language);
+        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
         $.each(response.allowed_languages, function (key, value) {
-            $(`#${buttonChildIds}`).append($('<li>', {
+            $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
                 value: value,
                 text: value,
                 'data-mark': key,
                 'click': function() { 
                     $(`#select-lang-btn`).text(value)
-                    $(`#select-lang-btn-2`).text(value)
                  }
             }))
         })
@@ -126,8 +123,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblem(response) {
         console.log(response)
-        updateValues(response,'ul-1')
-        updateValues(response,'ul-2')
+        updateValues(response)
         init_code_mirror(response.problem_language)
         updateProblemDescription(response)
         updateProblemTitle(response)
