@@ -51,11 +51,11 @@ function SwiftPluginXBlock(runtime, element) {
         init_problem()
     }
 
-    function init_code_mirror(mode) {
+    function init_code_mirror(response) {
         const codemirror_config = {
-            value: "// Your code here.",
+            value: response.starter_code,
             lineNumbers: true,
-            mode: mode,
+            mode: response.problem_language,
             lineWrapping: true,
             indentWithTabs: true,
             lineWiseCopyCut: true,
@@ -128,7 +128,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblem(response) {
         updateValues(response)
-        init_code_mirror(response.problem_language)
+        init_code_mirror(response)
         updateProblemDescription(response)
         updateProblemTitle(response)
         if (response.has_solution_defined) {

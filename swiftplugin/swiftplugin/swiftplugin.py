@@ -30,6 +30,12 @@ class SwiftPluginXBlock(
         help="User code",
     )
 
+    starter_code = String(
+        default="",
+        scope=Scope.settings,
+        help="Starter code for user"
+    )
+
     reference_id = String(
         default="",
         scope=Scope.settings,
@@ -214,7 +220,7 @@ class SwiftPluginXBlock(
             'show_submit_button': show_submit_button,
             'display_language': self.get_mode_display_language(),
             'allowed_languages': self.get_allowed_languages(),
-
+            'starter_code': self.starter_code,
         }
 
     def handle_request(self, url, language):
