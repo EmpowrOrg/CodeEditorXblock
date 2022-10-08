@@ -97,7 +97,8 @@ class SwiftPluginXBlock(
         'problem_solution',
         'problem_language',
         'api_url_run',
-        'api_url_submit'
+        'api_url_submit',
+        'api_key'
     ]
 
     def resource_string(self, path):
