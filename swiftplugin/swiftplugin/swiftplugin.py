@@ -24,12 +24,6 @@ class SwiftPluginXBlock(
     TO-DO: document what your XBlock does.
     """
 
-    code = String(
-        default="",
-        scope=Scope.user_state,
-        help="User code",
-    )
-
     starter_code = String(
         default="",
         scope=Scope.settings,
@@ -44,13 +38,13 @@ class SwiftPluginXBlock(
 
     api_url_submit = String(
         default="",
-        scope=Scope.settings,
+        scope=Scope.content,
         help="URL api used to check the code (submit final response)"
     )
 
     api_url_run = String(
         default="",
-        scope=Scope.settings,
+        scope=Scope.content,
         help="URL api used to run the code (run code by api)"
     )
 
@@ -62,7 +56,7 @@ class SwiftPluginXBlock(
 
     api_key = String(
         default="",
-        scope=Scope.preferences,
+        scope=Scope.content,
         help="Key to send to API",
     )
 
@@ -81,6 +75,7 @@ class SwiftPluginXBlock(
 
     has_score = True
     attempt = 1
+    code = ""
 
     problem_solution = String(
         default="",
@@ -102,7 +97,8 @@ class SwiftPluginXBlock(
         'problem_solution',
         'problem_language',
         'api_url_run',
-        'api_url_submit'
+        'api_url_submit',
+        'api_key'
     ]
 
     def resource_string(self, path):
