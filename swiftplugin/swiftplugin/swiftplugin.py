@@ -56,7 +56,7 @@ class SwiftPluginXBlock(
 
     api_key = String(
         default="",
-        scope=Scope.preferences,
+        scope=Scope.content,
         help="Key to send to API",
     )
 
