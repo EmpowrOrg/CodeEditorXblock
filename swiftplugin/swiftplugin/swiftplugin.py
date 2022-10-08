@@ -24,12 +24,6 @@ class SwiftPluginXBlock(
     TO-DO: document what your XBlock does.
     """
 
-    code = String(
-        default="",
-        scope=Scope.user_state,
-        help="User code",
-    )
-
     starter_code = String(
         default="",
         scope=Scope.settings,
@@ -81,6 +75,7 @@ class SwiftPluginXBlock(
 
     has_score = True
     attempt = 1
+    code = ""
 
     problem_solution = String(
         default="",
