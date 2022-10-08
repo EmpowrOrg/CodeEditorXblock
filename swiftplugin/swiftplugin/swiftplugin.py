@@ -38,13 +38,13 @@ class SwiftPluginXBlock(
 
     api_url_submit = String(
         default="",
-        scope=Scope.settings,
+        scope=Scope.content,
         help="URL api used to check the code (submit final response)"
     )
 
     api_url_run = String(
         default="",
-        scope=Scope.settings,
+        scope=Scope.content,
         help="URL api used to run the code (run code by api)"
     )
 
