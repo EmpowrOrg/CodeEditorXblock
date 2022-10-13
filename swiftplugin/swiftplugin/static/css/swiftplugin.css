@@ -1,11 +1,6 @@
 /* CSS for SwiftPluginXBlock */
 
-.nav-tabs .nav-link {
-    margin-bottom: -1px;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.nav-link {
+.nav-tabs .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     padding: 8px 16px;
     color: #9E9E9E!important;
 }
@@ -14,22 +9,18 @@
     --bs-gutter-x: 0!important;
 }
 
-.nav-pills .nav-link.active {
+.nav-pills#myTab, .nav-link.active#yoursolution2-tab, .nav-link.active#empowrsolution-tab {
     background-color: transparent!important;
     border-radius: 16px 16px 0 0!important;
     font-weight: bold;
     color: #424242!important;
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #fff;
-    background-color: #3D9C06;
-}
-
-.nav-link {
+.nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     display: block;
     padding: .5rem 1rem;
-    color: white;
+    /* color: white; */
+    color: #424242!important;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
@@ -40,34 +31,8 @@ div#code-container-area {
     border-style: solid;
     border-radius: 16px;
     border-color: rgb(132, 132, 132)!important;
-    height:80vh;
+    height: calc(70vmin + 40px);
     overflow:hidden;
-}
-
-.code-instructions-background {
-    background: #3A3A3A;
-}
-
-.code-instructions {
-    color: white;
-}
-
-.tab-content {
-}
-.code-input {
-    height: 100%;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.code-area {
-    width: 100%;
-    resize: none;
-    border: none;
-    display: flex;
-    padding-right: 0;
-    padding-left: 0;
-    outline: none;
 }
 
 .response-txt {
@@ -75,51 +40,15 @@ div#code-container-area {
     white-space: pre-wrap;
 }
 
-.code-row {
-    width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-    display: flex;
-}
-
-.code-container {
-    max-width: 100%;
-    width: auto;
-    display: flex;
-    height: inherit;
-}
-
-.submit-btn {
-    background: #3D9C06;
-    border-radius: 6px;
-    color: white;
-    min-width: 100px;
-    border: 0;
-}
-
-.button-row {
-    padding: 8px;
-}
-
-.run-btn {
-    background: #2F75EC;
-    border-radius: 6px;
-    margin-left: 16px;
-    color: white;
-    border: 0;
-    min-width: 100px;
-}
-
 .code-bottom {
     background: none;
-    height: 30vh;
+    /* height: 30vh; */
     display: flex;
     flex-direction: column;
 }
 
 .tab-pane {
     min-height: 100px;
-
 }
 
 .instructions-container {
@@ -130,38 +59,80 @@ div#code-container-area {
 .CodeMirror-wrap {
     width: 50% !important;
     border-right: 1px solid #e6e6e6;
-    min-height: 600px;
+    /* min-height: 600px; */
     border-radius: 16px 0 0 16px;
 
 }
 
-.btn-primary {
+.btn-primary#run-btn, .btn-primary#submit-btn {
     color: #fff !important;
     background-color: #5c0e81 !important;
     border-color: #5c0e81 !important;
 }
 
-.btn-primary:hover {
+.btn-primary#run-btn:hover, .btn-primary#submit-btn:hover {
     background-color: #7730b0 !important;
     border-color: #7730b0 !important;
 }
 
+.btn-primary#select-lang-btn, .btn-primary#submit-btn {
+    color: #fff !important;
+    background-color: #5c0e81 !important;
+    border-color: #5c0e81 !important;
+}
 
+.btn-primary#select-lang-btn:hover, .btn-primary#submit-btn:hover {
+    background-color: #7730b0 !important;
+    border-color: #7730b0 !important;
+}
+
+.CodeMirror{
+    height: auto !important;
+}
+
+.instructions-container, .CodeMirror-wrap{
+    height: 70vmin !important;
+    overflow-y: scroll;
+}
+
+.heading-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tab-pane.fade.show.active + .tab-pane.fade.hidden.active{
+    margin-bottom: -70vmin;
+}
+
+.CodeMirror.cm-s-default.CodeMirror-wrap{
+    width: 100% !important;
+}
+
+.tab-content-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 
 @media (max-width: 768px){
     .CodeMirror-wrap{
         width: 100% !important;
-        min-height: 400px;
+        /* min-height: 400px; */
 	}
     div#code-container-area {
-        height:100vh;
+        /* height:100vh; */
         overflow:hidden;
-
     }
     
-    textarea#code-solution-area {
-        border: 1px solid #e6e6e6;
-        width: 100%;
-        min-height: 400px;
+    div#code-solution-area {
+        height:100vh;
+        overflow:hidden;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .heading-dropdown-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

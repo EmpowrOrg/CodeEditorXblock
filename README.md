@@ -17,9 +17,8 @@ An XBlock for Empowr's course platform that allows for the input and checking of
 
 
 ## TODO
-
- - Fix Solution Tab. Most work for a solution tab is done, however it doesn't properly display.
  - Add support for all CodeMirror languages. This is an easy task, just tedious.
+ - Fix CSS. The Bootstrap css interferes with Open Edx CSS. This causes weird styling on pages that show the plugin.
 
 ## Installation
 
@@ -75,6 +74,7 @@ their mime-types
 | C++           | text/x-c++src     |
 | C#            | text/x-csharp     |
 | Java          | text/x-java       |
+| JavaScript    | text/javascript   |
 | Kotlin        | text/x-kotlin     |
 | Python        | text/x-python     |
 | Scala         | text/x-scala      |
