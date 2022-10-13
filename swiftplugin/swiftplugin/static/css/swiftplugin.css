@@ -1,5 +1,10 @@
 /* CSS for SwiftPluginXBlock */
-
+.container {
+    min-height: 950px;
+}
+.swiftplugin>div{
+    border: 0 !important;
+}
 .nav-tabs .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     padding: 8px 16px;
     color: #9E9E9E!important;
@@ -15,7 +20,9 @@
     font-weight: bold;
     color: #424242!important;
 }
-
+.nav-link.active#yoursolution2-tab:hover{
+    background: none !important;
+}
 .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     display: block;
     padding: .5rem 1rem;
@@ -34,7 +41,9 @@ div#code-container-area {
     height: calc(70vmin + 40px);
     overflow:hidden;
 }
-
+div#code-container-area ul {
+    list-style: none;
+}
 .response-txt {
     color: black;
     white-space: pre-wrap;
