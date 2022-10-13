@@ -9,10 +9,16 @@ function SwiftPluginXBlock(runtime, element) {
     var solutionCodeMirror = null;
 
     const run_btn = document.getElementById('run-btn');
-    run_btn.onclick = function (eventObject) {
+
+    function getCodeAndMode() {
         var user_code = myCodeMirror.getValue()
-        var code_mode  = myCodeMirror.getMode()
+        var code_mode = myCodeMirror.getMode()
         var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
+        return {user_code, mode};
+    }
+
+    run_btn.onclick = function (eventObject) {
+        const {user_code, mode} = getCodeAndMode();
         $.ajax({
             type: "POST",
             url: handlerUrl,
@@ -24,11 +30,11 @@ function SwiftPluginXBlock(runtime, element) {
 
     const submit_btn = document.getElementById('submit-btn');
     submit_btn.onclick = function (eventObject) {
-        var user_code = myCodeMirror.getValue();
+        const {user_code, mode} = getCodeAndMode();
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'submit', code: user_code}),
+            data: JSON.stringify({type: 'submit', code: user_code, language: mode}),
             success: updateResponse
         });
     }
