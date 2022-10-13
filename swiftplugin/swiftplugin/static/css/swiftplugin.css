@@ -1,6 +1,6 @@
 /* CSS for SwiftPluginXBlock */
 .container {
-    min-height: 850px;
+    min-height: 950px;
 }
 .swiftplugin>div{
     border: 0 !important;
@@ -21,7 +21,7 @@
     color: #424242!important;
 }
 .nav-link.active#yoursolution2-tab:hover{
-    background-color: transparent!important;
+    background: none !important;
 }
 .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     display: block;
