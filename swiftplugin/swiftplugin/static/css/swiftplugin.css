@@ -2,8 +2,8 @@
 .container {
     min-height: 850px;
 }
-.swiftplugin{
-    border-width: 0 !important;
+.swiftplugin>div{
+    border: 0 !important;
 }
 .nav-tabs .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
     padding: 8px 16px;
