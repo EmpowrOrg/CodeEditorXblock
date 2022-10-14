@@ -146,6 +146,10 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
+
+        if (!showdown) { 
+            return;
+        }
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_description);
         myAssigmentTextArea.innerHTML = html;
@@ -153,6 +157,9 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemTitle(response) {
         const myAssigmentTextArea = document.getElementById("assignment-title");
+        if (!showdown) { 
+            return;
+        }
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_title);
         myAssigmentTextArea.innerHTML = html;
