@@ -130,3 +130,7 @@ dmypy.json
 
 .DS_Store
 .idea/
+
+
+# Node JS
+node_modules/
