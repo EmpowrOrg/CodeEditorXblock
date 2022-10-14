@@ -6,9 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Bootstrap CSS
+!bootstrap-css/build/*
+
 # Distribution / packaging
 .Python
-build/
+# build/
 develop-eggs/
 dist/
 downloads/
@@ -131,6 +134,6 @@ dmypy.json
 .DS_Store
 .idea/
 
-
 # Node JS
 node_modules/
+
