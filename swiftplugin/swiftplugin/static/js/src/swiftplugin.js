@@ -147,7 +147,7 @@ function SwiftPluginXBlock(runtime, element) {
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
 
-        if (!showdown) { 
+        if (typeof showdown != 'undefined') { 
             return;
         }
         const converter = new showdown.Converter();
@@ -157,7 +157,8 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemTitle(response) {
         const myAssigmentTextArea = document.getElementById("assignment-title");
-        if (!showdown) { 
+        
+        if (typeof showdown != 'undefined') { 
             return;
         }
         const converter = new showdown.Converter();
