@@ -123,7 +123,7 @@ class SwiftPluginXBlock(
         frag.add_css(self.resource_string("static/css/bootstrap.min.css"))
 
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
-        # frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
+        frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
 
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js")
         # frag.add_javascript(self.resource_string("static/js/src/bootstrap.min.js"))
