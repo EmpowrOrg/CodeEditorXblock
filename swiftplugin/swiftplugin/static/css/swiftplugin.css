@@ -9,10 +9,10 @@
     --bs-gutter-x: 0!important;
 }
 
-.nav-pills#myTab, .nav-link.active#yoursolution2-tab, .nav-link.active#empowrsolution-tab {
+.nav-link.active#yoursolution2-tab, .nav-link.active#empowrsolution-tab {
     background-color: transparent!important;
     border-radius: 16px 16px 0 0!important;
-    /* font-weight: bold; */
+    font-weight: bold;
     color: #424242!important;
 }
 
