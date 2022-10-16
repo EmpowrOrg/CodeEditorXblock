@@ -49,6 +49,10 @@ function SwiftPluginXBlock(runtime, element) {
 
     function on_init() {
         init_problem()
+        $("#yoursolution2-tab, #empowrsolution-tab").click(function(){
+            $("#yoursolution2-tab").toggleClass("active");
+            $("#empowrsolution-tab").toggleClass("active");
+        })
     }
 
     function init_code_mirror(response) {
