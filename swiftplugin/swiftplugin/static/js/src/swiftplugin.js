@@ -9,20 +9,14 @@ function SwiftPluginXBlock(runtime, element) {
     var solutionCodeMirror = null;
 
     const run_btn = document.getElementById('run-btn');
-
-    function getCodeAndMode() {
+    run_btn.onclick = function (eventObject) {
         var user_code = myCodeMirror.getValue()
         var code_mode = myCodeMirror.getMode()
         var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
-        return {user_code, mode};
-    }
-
-    run_btn.onclick = function (eventObject) {
-        const {user_code, mode} = getCodeAndMode();
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'run', code: user_code, language: mode}),
+            data: JSON.stringify({ type: 'run', code: user_code, language: mode }),
             success: updateResponse,
             error: handleError
         });
@@ -30,11 +24,11 @@ function SwiftPluginXBlock(runtime, element) {
 
     const submit_btn = document.getElementById('submit-btn');
     submit_btn.onclick = function (eventObject) {
-        const {user_code, mode} = getCodeAndMode();
+        var user_code = myCodeMirror.getValue();
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'submit', code: user_code, language: mode}),
+            data: JSON.stringify({ type: 'submit', code: user_code }),
             success: updateResponse
         });
     }
@@ -117,17 +111,19 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateValues(response) {
         $(`#select-lang-btn`).text(response.display_language);
-        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
+        if (!response || !response.allowed_languages || !response.length) {
+            $(`#select-lang-btn`).addClass("disabled")
+        };
         $.each(response.allowed_languages, function (key, value) {
             $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
                 value: value[1],
                 text: value[1],
                 'data-mark': key,
-                'click': function() { 
+                'click': function () {
                     $(`#select-lang-btn`).text(value[1])
                     myCodeMirror.setOption("mode", value[2])
-                 }
+                }
             }))
         })
     }
