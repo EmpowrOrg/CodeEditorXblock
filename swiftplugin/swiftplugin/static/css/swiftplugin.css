@@ -1,62 +1,66 @@
 /* CSS for SwiftPluginXBlock */
 
-.nav-tabs .nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
+.swiftplugin .nav-tabs .nav-link#yoursolution2-tab,
+.swiftplugin .nav-link#empowrsolution-tab {
     padding: 8px 16px;
-    color: #9E9E9E!important;
+    color: #9E9E9E !important;
 }
 
-.code-solution-row {
-    --bs-gutter-x: 0!important;
+.swiftplugin .code-solution-row {
+    --bs-gutter-x: 0 !important;
 }
 
-.nav-link.active#yoursolution2-tab, .nav-link.active#empowrsolution-tab {
-    background-color: transparent!important;
-    border-radius: 16px 16px 0 0!important;
+.swiftplugin .nav-pills#myTab,
+.swiftplugin .nav-link.active#yoursolution2-tab,
+.swiftplugin .nav-link.active#empowrsolution-tab {
+    background-color: transparent !important;
+    border-radius: 16px 16px 0 0 !important;
     font-weight: bold;
-    color: #424242!important;
+    color: #424242 !important;
 }
 
-.nav-link#yoursolution2-tab, .nav-link#empowrsolution-tab {
+.swiftplugin .nav-link#yoursolution2-tab,
+.swiftplugin .nav-link#empowrsolution-tab {
     display: block;
     padding: .5rem 1rem;
     /* color: white; */
-    color: #424242!important;
+    color: #424242 !important;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 }
 
 
-div#code-container-area {
+.swiftplugin div#code-container-area {
     border: 1px;
     border-style: solid;
     border-radius: 16px;
-    border-color: rgb(132, 132, 132)!important;
+    border-color: rgb(132, 132, 132) !important;
     height: calc(70vmin + 40px);
-    overflow:hidden;
+    overflow: hidden;
 }
 
-.response-txt {
+.swiftplugin .response-txt {
     color: black;
     white-space: pre-wrap;
 }
 
-.code-bottom {
+.swiftplugin .code-bottom {
     background: none;
     /* height: 30vh; */
     display: flex;
     flex-direction: column;
 }
 
-.tab-pane {
+.swiftplugin .tab-pane {
     min-height: 100px;
 }
 
-.instructions-container {
-    padding-left: 16px!important;
-    padding-right: 16px!important;
+.swiftplugin .instructions-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
 }
 
-.CodeMirror-wrap {
+.swiftplugin .CodeMirror-wrap {
     width: 50% !important;
     border-right: 1px solid #e6e6e6;
     /* min-height: 600px; */
@@ -64,74 +68,80 @@ div#code-container-area {
 
 }
 
-.btn-primary#run-btn, .btn-primary#submit-btn {
+.swiftplugin .btn-primary#run-btn,
+.swiftplugin .btn-primary#submit-btn {
     color: #fff !important;
     background-color: #5c0e81 !important;
     border-color: #5c0e81 !important;
 }
 
-.btn-primary#run-btn:hover, .btn-primary#submit-btn:hover {
+.swiftplugin .btn-primary#run-btn:hover,
+.swiftplugin .btn-primary#submit-btn:hover {
     background-color: #7730b0 !important;
     border-color: #7730b0 !important;
 }
 
-.btn-primary#select-lang-btn, .btn-primary#submit-btn {
+.swiftplugin .btn-primary#select-lang-btn,
+.swiftplugin .btn-primary#submit-btn {
     color: #fff !important;
     background-color: #5c0e81 !important;
     border-color: #5c0e81 !important;
 }
 
-.btn-primary#select-lang-btn:hover, .btn-primary#submit-btn:hover {
+.swiftplugin .btn-primary#select-lang-btn:hover,
+.swiftplugin .btn-primary#submit-btn:hover {
     background-color: #7730b0 !important;
     border-color: #7730b0 !important;
 }
 
-.CodeMirror{
+.swiftplugin .CodeMirror {
     height: auto !important;
 }
 
-.instructions-container, .CodeMirror-wrap{
+.swiftplugin .instructions-container,
+.swiftplugin .CodeMirror-wrap {
     height: 70vmin !important;
     overflow-y: scroll;
 }
 
-.heading-dropdown-wrapper {
+.swiftplugin .heading-dropdown-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.tab-pane.fade.show.active + .tab-pane.fade.hidden.active{
+.swiftplugin .tab-pane.fade.show.active+.tab-pane.fade.hidden.active {
     margin-bottom: -70vmin;
 }
 
-.CodeMirror.cm-s-default.CodeMirror-wrap{
+.swiftplugin .CodeMirror.cm-s-default.CodeMirror-wrap {
     width: 100% !important;
 }
 
-.tab-content-wrapper{
+.swiftplugin .tab-content-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-@media (max-width: 768px){
-    .CodeMirror-wrap{
+@media (max-width: 768px) {
+    .swiftplugin .CodeMirror-wrap {
         width: 100% !important;
         /* min-height: 400px; */
-	}
-    div#code-container-area {
-        /* height:100vh; */
-        overflow:hidden;
     }
-    
-    div#code-solution-area {
-        height:100vh;
-        overflow:hidden;
+
+    .swiftplugin div#code-container-area {
+        /* height:100vh; */
+        overflow: hidden;
+    }
+
+    .swiftplugin div#code-solution-area {
+        height: 100vh;
+        overflow: hidden;
     }
 }
 
 @media only screen and (max-width: 992px) {
-    .heading-dropdown-wrapper {
+    .swiftplugin .heading-dropdown-wrapper {
         flex-direction: column;
         align-items: flex-start;
     }

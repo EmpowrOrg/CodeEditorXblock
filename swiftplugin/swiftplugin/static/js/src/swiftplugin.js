@@ -11,12 +11,12 @@ function SwiftPluginXBlock(runtime, element) {
     const run_btn = document.getElementById('run-btn');
     run_btn.onclick = function (eventObject) {
         var user_code = myCodeMirror.getValue()
-        var code_mode  = myCodeMirror.getMode()
+        var code_mode = myCodeMirror.getMode()
         var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'run', code: user_code, language: mode}),
+            data: JSON.stringify({ type: 'run', code: user_code, language: mode }),
             success: updateResponse,
             error: handleError
         });
@@ -28,7 +28,7 @@ function SwiftPluginXBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({type: 'submit', code: user_code}),
+            data: JSON.stringify({ type: 'submit', code: user_code }),
             success: updateResponse
         });
     }
@@ -49,10 +49,6 @@ function SwiftPluginXBlock(runtime, element) {
 
     function on_init() {
         init_problem()
-        $("#yoursolution2-tab, #empowrsolution-tab").click(function(){
-            $("#yoursolution2-tab").toggleClass("active");
-            $("#empowrsolution-tab").toggleClass("active");
-        })
     }
 
     function init_code_mirror(response) {
@@ -115,17 +111,19 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateValues(response) {
         $(`#select-lang-btn`).text(response.display_language);
-        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
+        if (!response || !response.allowed_languages || !response.length) {
+            $(`#select-lang-btn`).addClass("disabled")
+        };
         $.each(response.allowed_languages, function (key, value) {
             $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
                 value: value[1],
                 text: value[1],
                 'data-mark': key,
-                'click': function() { 
+                'click': function () {
                     $(`#select-lang-btn`).text(value[1])
                     myCodeMirror.setOption("mode", value[2])
-                 }
+                }
             }))
         })
     }
@@ -150,10 +148,6 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
-
-        if (typeof showdown != 'undefined') { 
-            return;
-        }
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_description);
         myAssigmentTextArea.innerHTML = html;
@@ -161,10 +155,6 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblemTitle(response) {
         const myAssigmentTextArea = document.getElementById("assignment-title");
-        
-        if (typeof showdown != 'undefined') { 
-            return;
-        }
         const converter = new showdown.Converter();
         const html = converter.makeHtml(response.problem_title);
         myAssigmentTextArea.innerHTML = html;
