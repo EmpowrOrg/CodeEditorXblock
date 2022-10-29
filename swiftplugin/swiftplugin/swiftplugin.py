@@ -176,20 +176,28 @@ class SwiftPluginXBlock(
         if 'error' in response:
             response['error'] = response['error']
             return response
-        starter_code = self.get_starter_code(starterCodes=response['starterCodes'])
+        assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
+        solution_code = assignment_code["solutionCode"]
         return {
             'reference_id': self.reference_id,
             'problem_description': response['instructions'],
             'problem_title': response['title'],
-            'problem_language': starter_code['mime'],
-            'has_solution_defined': bool(response['solution'].strip()),
-            'problem_solution': response['solution'],
+            'problem_language': assignment_code['mime'],
+            'has_solution_defined': self.is_blank(solution_code),
+            'problem_solution': solution_code,
             'show_run_button': True,
             'show_submit_button': True,
-            'display_language': starter_code['displayName'],
-            'allowed_languages': self.get_allowed_languages(response['starterCodes']),
-            'starter_code': starter_code['starterCode'],
+            'display_language': assignment_code['displayName'],
+            'allowed_languages': self.get_allowed_languages(response['assignmentCodes']),
+            'starter_code': assignment_code['starterCode'],
         }
+
+    def is_blank(self, my_string):
+        if my_string and my_string.strip():
+            # myString is not None AND myString is not empty or blank
+            return False
+        # myString is None OR myString is empty or blank
+        return True
 
     def handle_assignment_request(self):
         try:
@@ -306,19 +314,19 @@ class SwiftPluginXBlock(
                             "Javascript"],
     }
 
-    def get_starter_code(self, starterCodes):
-        for starterCode in starterCodes:
-            if starterCode['primary']:
-                return starterCode
-        return starterCodes[0]
+    def get_starter_code(self, assignment_codes):
+        for assignment_code in assignment_codes:
+            if assignment_code['primary']:
+                return assignment_code
+        return assignment_codes[0]
 
-    def get_allowed_languages(self, starterCodes):
+    def get_allowed_languages(self, assignment_codes):
         keys = list(self._modeUrl.keys())
         values = []
-        for starterCode in starterCodes:
-            if starterCode['mime'] in keys:
-                key_values = self._modeUrl[starterCode['mime']]
-                key_values.append(starterCode['mime'])
+        for assignment_code in assignment_codes:
+            if assignment_code['mime'] in keys:
+                key_values = self._modeUrl[assignment_code['mime']]
+                key_values.append(assignment_code['mime'])
                 values.append(key_values)
 
         values.sort(key=self.myFunc)
