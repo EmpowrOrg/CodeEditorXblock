@@ -9,7 +9,7 @@ import requests
 import json
 
 
-def get_server_url(url: str):
+def get_normalized_url(url: str):
     if url.startswith("http"):
         return url
     else:
@@ -24,81 +24,45 @@ class SwiftPluginXBlock(
     TO-DO: document what your XBlock does.
     """
 
-    starter_code = String(
-        default="",
-        scope=Scope.settings,
-        help="Starter code for user"
-    )
-
     reference_id = String(
-        default="",
+        default="assignment-2",
         scope=Scope.settings,
         help="Problem id used by the Api to check the code"
     )
 
-    api_url_submit = String(
-        default="",
-        scope=Scope.content,
-        help="URL api used to check the code (submit final response)"
-    )
-
     api_url_run = String(
-        default="",
+        default="http://0.0.0.0:8080/run",
         scope=Scope.content,
         help="URL api used to run the code (run code by api)"
     )
 
-    problem_title = String(
-        default="Programming Exercise",
-        scope=Scope.settings,
-        help="Problem title",
+    api_url_assignment = String(
+        default="http://0.0.0.0:3000/assignment",
+        scope=Scope.content,
+        help="URL api used to submit the assignment"
     )
 
-    api_key = String(
-        default="",
+    api_run_key = String(
+        default="password",
         scope=Scope.content,
         help="Key to send to API",
     )
-
-    problem_description = String(
-        default="",
-        scope=Scope.settings,
-        help="Problem description in Markdown Language",
-        multiline_editor=True
-    )
-
-    allow_any_language = Boolean(
-        default=False,
-        scope=Scope.settings,
-        help="Allow users to complete the problem with any supported language",
+    api_assignment_key = String(
+        default="password",
+        scope=Scope.content,
+        help="Key to send to API",
     )
 
     has_score = True
     attempt = 1
     code = ""
 
-    problem_solution = String(
-        default="",
-        scope=Scope.settings,
-        help="Problem solution in code",
-        multiline_editor=True
-    )
-
-    problem_language = String(
-        default="text/x-swift",
-        scope=Scope.settings,
-        help="Example: text/x-kotlin. Supported languages can be found at https://codemirror.net/5/mode/"
-    )
-
     editable_fields = [
         'reference_id',
-        'problem_description',
-        'problem_title',
-        'problem_solution',
-        'problem_language',
         'api_url_run',
-        'api_url_submit',
-        'api_key'
+        'api_run_key'
+        'api_url_assignment',
+        'api_assignment_key'
     ]
 
     def resource_string(self, path):
@@ -118,7 +82,7 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
-        frag.add_css_url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css")
+        frag.add_css(self.resource_string("static/css/bootstrap.min.css"))
         frag.add_javascript_url(
             "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js")
         frag.add_css_url(
@@ -141,12 +105,9 @@ class SwiftPluginXBlock(
         return frag
 
     def initLanguages(self, frag):
-        if self.allow_any_language:
-            values = list(self._modeUrl.values())
-            for value in values:
-                frag.add_javascript_url(value[0])
-        else:
-            frag.add_javascript_url(self.get_mode_url())
+        values = list(self._modeUrl.values())
+        for value in values:
+            frag.add_javascript_url(value[0])
 
     @XBlock.json_handler
     def get_button_handler(self, data, suffix=''):
@@ -171,21 +132,28 @@ class SwiftPluginXBlock(
         language = data["language"]
 
         if 'run' in data['type']:
-            api_respo = self.handle_request(self.api_url_run, language)
-            response['response'] = api_respo
-            if 'error' in api_respo:
-                response['error'] = api_respo['error']
+            run_response = self.handle_run_request(language)
+            response['response'] = run_response
+            if 'error' in run_response:
+                response['error'] = run_response['error']
                 return response
 
         elif 'submit' in data['type']:
-            api_respo = self.handle_request(self.api_url_submit, language)
-            response['response'] = api_respo
-            if 'error' in api_respo:
-                response['error'] = api_respo['error']
+            run_response = self.handle_run_request(language)
+
+            if 'error' in run_response:
+                response['error'] = run_response['error']
                 return response
+            output = run_response['output']
+            assignment_response = self.handle_submit_request(language=language, output=output,
+                                                             execute_success=run_response['success'])
+            if 'error' in assignment_response:
+                response['error'] = assignment_response['error']
+                return response
+            response['response'] = assignment_response
             self.attempt = self.attempt + 1
-            is_final_attempt = api_respo['finalAttempt']
-            success = api_respo['success']
+            is_final_attempt = assignment_response['finalAttempt']
+            success = assignment_response['success']
             if success:
                 self.runtime.publish(self, "grade",
                                      {'value': 1.0,
@@ -203,34 +171,104 @@ class SwiftPluginXBlock(
 
     @XBlock.json_handler
     def get_problem_info(self, data, suffix=''):
-        show_run_button = bool(self.api_url_run and not self.api_url_run.isspace())
-        show_submit_button = bool(self.api_url_submit and not self.api_url_submit.isspace())
+        response = self.handle_assignment_request()
+        if 'error' in response:
+            response['error'] = response['error']
+            return response
+        assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
+        solution_code = assignment_code["solutionCode"]
         return {
             'reference_id': self.reference_id,
-            'problem_description': self.problem_description,
-            'problem_title': self.problem_title,
-            'problem_language': self.problem_language,
-            'has_solution_defined': bool(self.problem_solution.strip()),
-            'problem_solution': self.problem_solution,
-            'show_run_button': show_run_button,
-            'show_submit_button': show_submit_button,
-            'display_language': self.get_mode_display_language(),
-            'allowed_languages': self.get_allowed_languages(),
-            'starter_code': self.starter_code,
+            'problem_description': response['instructions'],
+            'problem_title': response['title'],
+            'problem_language': assignment_code['mime'],
+            'has_solution_defined': self.is_blank(solution_code),
+            'problem_solution': solution_code,
+            'show_run_button': True,
+            'show_submit_button': True,
+            'display_language': assignment_code['displayName'],
+            'allowed_languages': self.get_allowed_languages(response['assignmentCodes']),
+            'starter_code': assignment_code['starterCode'],
         }
 
-    def handle_request(self, url, language):
+    def is_blank(self, my_string):
+        if my_string and my_string.strip():
+            # myString is not None AND myString is not empty or blank
+            return False
+        # myString is None OR myString is empty or blank
+        return True
+
+    def handle_assignment_request(self):
         try:
-            r = requests.post(get_server_url(url), json=self.build_request_body(language), headers=self.build_headers())
-            return r.json()
+            body = {
+                'referenceId': self.reference_id,
+                'supportedLanguageMimes': list(self._modeUrl.keys())
+            }
+            url = self.buildApiUrl("request")
+            r = requests.post(url, json=body,
+                              headers=self.build_headers(False))
+            if r.ok:
+                return r.json()
+            else:
+                return json.loads(json.dumps({
+                    'error': 'Uh oh, we encountered an error. Inform your teacher of the following error message: {} {}'.format(
+                        r.status_code, r.reason)
+                }))
         except requests.exceptions.RequestException as e:
             return json.loads(json.dumps({
                 'error': str(e)
             }))
 
-    def build_headers(self):
+    def buildApiUrl(self, path):
+        url = self.api_url_assignment
+        if not self.api_url_assignment.endswith('/'):
+            url = url + "/"
+        url = url + path
+        return get_normalized_url(url)
+
+    def handle_submit_request(self, output, language, execute_success):
+        try:
+            url = self.buildApiUrl("submit")
+            body = self.build_request_body(language)
+            body['output'] = output
+            body['executeSuccess'] = execute_success
+            r = requests.post(url, json=body, headers=self.build_headers(False))
+            if r.ok:
+                return r.json()
+            else:
+                return json.loads(json.dumps({
+                    'error': 'Uh oh, we encountered an error. Inform your teacher of the following error message: {} {}'.format(
+                        r.status_code, r.reason)
+                }))
+        except requests.exceptions.RequestException as e:
+            return json.loads(json.dumps({
+                'error': str(e)
+            }))
+
+    def handle_run_request(self, language):
+        try:
+            r = requests.post(get_normalized_url(self.api_url_run), json=self.build_request_body(language),
+                              headers=self.build_headers(True))
+            if r.ok:
+                return r.json()
+            else:
+                return json.loads(json.dumps({
+                    'error': 'Uh oh, we encountered an error. Inform your teacher of the following error message: {} {}'.format(
+                        r.status_code, r.reason)
+                }))
+        except requests.exceptions.RequestException as e:
+            return json.loads(json.dumps({
+                'error': str(e)
+            }))
+
+    def build_headers(self, run):
+        api_key = ""
+        if run:
+            api_key = self.api_run_key
+        else:
+            api_key = self.api_assignment_key
         headers = {
-            'Authorization': 'Bearer {}'.format(self.api_key),
+            'Authorization': 'Bearer {}'.format(api_key),
             'Content-Type': "application/json",
             'Accept': 'application/json'
         }
@@ -256,13 +294,6 @@ class SwiftPluginXBlock(
             ("SwiftPluginXBlock",
              """<swiftplugin/>
              """),
-            ("Multiple SwiftPluginXBlock",
-             """<vertical_demo>
-                <swiftplugin/>
-                <swiftplugin/>
-                <swiftplugin/>
-                </vertical_demo>
-             """),
         ]
 
     _modeUrl = {
@@ -282,26 +313,23 @@ class SwiftPluginXBlock(
                             "Javascript"],
     }
 
-    def get_mode_url(self):
-        normalized_mode = self.problem_language.strip().lower()
-        return self._modeUrl[normalized_mode][0]
+    def get_starter_code(self, assignment_codes):
+        for assignment_code in assignment_codes:
+            if assignment_code['primary']:
+                return assignment_code
+        return assignment_codes[0]
 
-    def get_mode_display_language(self):
-        normalized_mode = self.problem_language.strip().lower()
-        return self._modeUrl[normalized_mode][1]
-
-    def get_allowed_languages(self):
-        if self.allow_any_language:
-            keys = list(self._modeUrl.keys())
-            values = []
-            for key in keys:
-                key_values = self._modeUrl[key]
-                key_values.append(key)
+    def get_allowed_languages(self, assignment_codes):
+        keys = list(self._modeUrl.keys())
+        values = []
+        for assignment_code in assignment_codes:
+            if assignment_code['mime'] in keys:
+                key_values = self._modeUrl[assignment_code['mime']]
+                key_values.append(assignment_code['mime'])
                 values.append(key_values)
-            values.sort(key=self.myFunc)
-            return values
-        else:
-            return []
+
+        values.sort(key=self.myFunc)
+        return values
 
     def myFunc(self, e):
         return e[1]
