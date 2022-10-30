@@ -133,7 +133,6 @@ class SwiftPluginXBlock(
 
         if 'run' in data['type']:
             run_response = self.handle_run_request(language)
-            print(run_response)
             response['response'] = run_response
             if 'error' in run_response:
                 response['error'] = run_response['error']
