@@ -24,6 +24,7 @@
     display: block;
     padding: .5rem 1rem;
     /* color: white; */
+    font-weight: 100;
     color: #424242 !important;
     text-decoration: none;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
@@ -145,4 +146,25 @@
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+.CodeMirror-line {
+    margin: -1px 20px;
+}
+
+.CodeMirror-gutter,
+.CodeMirror-linenumbers {
+    width: 26px;
+}
+
+.CodeMirror-line {
+    margin: 0px 32px;
+}
+
+.swiftplugin #code-container-area li {
+    list-style: none;
+}
+
+.swiftplugin .col-12 {
+    border: none;
 }
