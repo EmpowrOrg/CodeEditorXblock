@@ -60,9 +60,9 @@ class SwiftPluginXBlock(
     editable_fields = [
         'reference_id',
         'api_url_run',
-        'api_run_key'
+        'api_run_key',
         'api_url_assignment',
-        'api_assignment_key'
+        'api_assignment_key',
     ]
 
     def resource_string(self, path):
@@ -182,7 +182,7 @@ class SwiftPluginXBlock(
             'problem_description': response['instructions'],
             'problem_title': response['title'],
             'problem_language': assignment_code['mime'],
-            'has_solution_defined': self.is_blank(solution_code),
+            'has_solution_defined': not self.is_blank(solution_code),
             'problem_solution': solution_code,
             'show_run_button': True,
             'show_submit_button': True,
