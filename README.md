@@ -18,7 +18,6 @@ An XBlock for Empowr's course platform that allows for the input and checking of
 
 ## TODO
  - Add support for all CodeMirror languages. This is an easy task, just tedious.
- - Fix CSS. The Bootstrap css interferes with Open Edx CSS. This causes weird styling on pages that show the plugin.
 
 ## Installation
 
