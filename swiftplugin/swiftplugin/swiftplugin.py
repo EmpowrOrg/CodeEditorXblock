@@ -177,6 +177,9 @@ class SwiftPluginXBlock(
             return response
         assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
         solution_code = assignment_code["solutionCode"]
+        starter_code = assignment_code['starterCode']
+        if starter_code is None:
+            starter_code = ""
         return {
             'reference_id': self.reference_id,
             'problem_description': response['instructions'],
@@ -188,7 +191,7 @@ class SwiftPluginXBlock(
             'show_submit_button': True,
             'display_language': assignment_code['displayName'],
             'allowed_languages': self.get_allowed_languages(response['assignmentCodes']),
-            'starter_code': assignment_code['starterCode'],
+            'starter_code': starter_code,
         }
 
     def is_blank(self, my_string):

@@ -123,17 +123,17 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateValues(response) {
         $(`#select-lang-btn`).text(response.display_language);
-        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
+        if (!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
         $.each(response.allowed_languages, function (key, value) {
             $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
                 value: value[1],
                 text: value[1],
                 'data-mark': key,
-                'click': function() { 
+                'click': function () {
                     $(`#select-lang-btn`).text(value[1])
                     myCodeMirror.setOption("mode", value[2])
-                 }
+                }
             }))
         })
     }
