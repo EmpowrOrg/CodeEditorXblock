@@ -159,8 +159,10 @@ function SwiftPluginXBlock(runtime, element) {
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
+        let html = converter.makeHtml(response.problem_description);
+        const regex = /<table>/g;
+        html = html.replace(regex, '<table class="table table-striped table-sm">');
+        myAssigmentTextArea.innerHTML = `<div class="class table-responsive">${html}</div>`;
     }
 
     function updateProblemTitle(response) {
