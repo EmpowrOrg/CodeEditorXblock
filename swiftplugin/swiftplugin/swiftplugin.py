@@ -79,7 +79,7 @@ class SwiftPluginXBlock(
         html = self.resource_string("static/html/swiftplugin.html")
         frag = Fragment(html.format(self=self))
 
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js")
         frag.add_css(self.resource_string("static/css/swiftplugin.css"))
         frag.add_javascript(self.resource_string("static/js/src/swiftplugin.js"))
         frag.add_css(self.resource_string("static/css/bootstrap.min.css"))

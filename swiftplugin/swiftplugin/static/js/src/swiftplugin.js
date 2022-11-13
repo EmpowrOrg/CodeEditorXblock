@@ -54,6 +54,12 @@ function SwiftPluginXBlock(runtime, element) {
 
 
     function on_init() {
+        showdown.setOption('tables', true)
+        showdown.setOption('emoji', true)
+        showdown.setOption('tasklists', true)
+        showdown.setOption('strikethrough', true)
+        showdown.setOption('parseImgDimensions', true)
+        showdown.setOption('openLinksInNewWindow', true)
         init_problem()
     }
 
