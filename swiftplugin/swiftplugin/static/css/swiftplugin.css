@@ -115,6 +115,34 @@
     margin-bottom: -70vmin;
 }
 
+.swiftplugin table {
+    background: #fff;
+    border: solid 1px #ddd;
+    margin-bottom: 1.25rem;
+    table-layout: auto;
+}
+
+.swiftplugin table thead tr th, table tfoot tr th, table tfoot tr td, table tbody tr th, table tbody tr td, table tr td {
+    display: table-cell;
+    line-height: 1.125rem;
+}
+
+.swiftplugin table tr th, table tr td {
+    color: #222;
+    font-size: 0.875rem;
+    padding: 0.5625rem 0.625rem;
+    text-align: left;
+}
+
+.swiftplugin code {
+    color: #c7254e !important;
+    background-color: #f9f2f4 !important;
+    border-radius: 4px !important;
+    font-family: monospace, monospace !important;
+    font-size: 0.8em !important;
+    padding: 2px 4px !important;
+}
+
 .swiftplugin .CodeMirror.cm-s-default.CodeMirror-wrap {
     width: 100% !important;
 }
@@ -159,10 +187,6 @@
 
 .CodeMirror-line {
     margin: 0px 32px;
-}
-
-.swiftplugin #code-container-area li {
-    list-style: none;
 }
 
 .swiftplugin .col-12 {

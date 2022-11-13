@@ -54,6 +54,12 @@ function SwiftPluginXBlock(runtime, element) {
 
 
     function on_init() {
+        showdown.setOption('tables', true)
+        showdown.setOption('emoji', true)
+        showdown.setOption('tasklists', true)
+        showdown.setOption('strikethrough', true)
+        showdown.setOption('parseImgDimensions', true)
+        showdown.setOption('openLinksInNewWindow', true)
         init_problem()
     }
 
@@ -117,17 +123,17 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateValues(response) {
         $(`#select-lang-btn`).text(response.display_language);
-        if(!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
+        if (!response?.allowed_languages?.length) $(`#select-lang-btn`).addClass("disabled");
         $.each(response.allowed_languages, function (key, value) {
             $(`#ul-1`).append($('<li>', {
                 class: "dropdown-item",
                 value: value[1],
                 text: value[1],
                 'data-mark': key,
-                'click': function() { 
+                'click': function () {
                     $(`#select-lang-btn`).text(value[1])
                     myCodeMirror.setOption("mode", value[2])
-                 }
+                }
             }))
         })
     }
@@ -153,8 +159,10 @@ function SwiftPluginXBlock(runtime, element) {
     function updateProblemDescription(response) {
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter();
-        const html = converter.makeHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
+        let html = converter.makeHtml(response.problem_description);
+        const regex = /<table>/g;
+        html = html.replace(regex, '<table class="table table-striped table-sm">');
+        myAssigmentTextArea.innerHTML = `<div class="class table-responsive">${html}</div>`;
     }
 
     function updateProblemTitle(response) {
