@@ -3,7 +3,7 @@
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from xblock.fields import String, Scope, Boolean
+from xblock.fields import String, Scope
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 import requests
 import json
@@ -86,7 +86,8 @@ class SwiftPluginXBlock(
         frag.add_javascript_url(
             "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js")
         frag.add_css_url(
-            "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap")
+            "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,400;0,700;1,400;1,"
+            "700&display=swap")
 
         # Code Mirror
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.js")
@@ -100,11 +101,11 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        self.initLanguages(frag)
+        self.init_languages(frag)
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
-    def initLanguages(self, frag):
+    def init_languages(self, frag):
         values = list(self._modeUrl.values())
         for value in values:
             frag.add_javascript_url(value[0])
@@ -139,14 +140,8 @@ class SwiftPluginXBlock(
                 return response
 
         elif 'submit' in data['type']:
-            run_response = self.handle_run_request(language)
 
-            if 'error' in run_response:
-                response['error'] = run_response['error']
-                return response
-            output = run_response['output']
-            assignment_response = self.handle_submit_request(language=language, output=output,
-                                                             execute_success=run_response['success'])
+            assignment_response = self.handle_submit_request(language=language)
             if 'error' in assignment_response:
                 response['error'] = assignment_response['error']
                 return response
@@ -162,7 +157,6 @@ class SwiftPluginXBlock(
                 self.runtime.publish(self, "grade",
                                      {'value': 0.0,
                                       'max_value': 1.0})
-
 
         else:
             response["status"] = "No valid type request"
@@ -229,12 +223,10 @@ class SwiftPluginXBlock(
         url = url + path
         return get_normalized_url(url)
 
-    def handle_submit_request(self, output, language, execute_success):
+    def handle_submit_request(self, language):
         try:
             url = self.buildApiUrl("submit")
             body = self.build_request_body(language)
-            body['output'] = output
-            body['executeSuccess'] = execute_success
             r = requests.post(url, json=body, headers=self.build_headers(False))
             if r.ok:
                 return r.json()
@@ -265,7 +257,6 @@ class SwiftPluginXBlock(
             }))
 
     def build_headers(self, run):
-        api_key = ""
         if run:
             api_key = self.api_run_key
         else:
