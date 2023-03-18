@@ -165,6 +165,10 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblemDescription(response) {
+        if (!response.problem_description) {
+            console.log('No problem description')
+            return
+        }
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
         const converter = new showdown.Converter(showdownOptions);
         let html = converter.makeHtml(response.problem_description);
@@ -174,6 +178,10 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblemTitle(response) {
+        if (!response.problem_title) {
+            console.log('No problem title')
+            return
+        }
         const myAssigmentTextArea = document.getElementById("assignment-title");
         const converter = new showdown.Converter(showdownOptions);
         const html = converter.makeHtml(response.problem_title);
@@ -181,6 +189,10 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblemSolution(response) {
+        if (!response.problem_solution) {
+            console.log('No problem solution')
+            return
+        }
         solutionCodeMirror.setValue(response.problem_solution)
     }
 
