@@ -54,8 +54,6 @@ class SwiftPluginXBlock(
         'reference_id',
         'api_url_run',
         'api_run_key',
-        'api_url_assignment',
-        'api_assignment_key',
     ]
 
     @staticmethod
