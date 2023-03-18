@@ -65,7 +65,7 @@ function SwiftPluginXBlock(runtime, element) {
         init_problem()
     }
 
-    function init_code_mirror(response) {
+    function initCodeMirror(response) {
         const codemirror_config = {
             value: response.starter_code,
             lineNumbers: true,
@@ -138,7 +138,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     function updateProblem(response) {
         updateValues(response)
-        init_code_mirror(response)
+        initCodeMirror(response)
         updateProblemDescription(response)
         updateProblemTitle(response)
         if (response.has_solution_defined) {
