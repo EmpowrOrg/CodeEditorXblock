@@ -253,13 +253,9 @@ class SwiftPluginXBlock(
                 'error': str(e)
             }))
 
-    def build_headers(self, run):
-        if run:
-            api_key = self.api_run_key
-        else:
-            api_key = self.api_assignment_key
+    def build_headers(self):
         headers = {
-            'Authorization': 'Bearer {}'.format(api_key),
+            'Authorization': 'Bearer {}'.format(self.api_key),
             'Content-Type': "application/json",
             'Accept': 'application/json'
         }
