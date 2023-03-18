@@ -58,7 +58,8 @@ class SwiftPluginXBlock(
         'api_assignment_key',
     ]
 
-    def resource_string(self, path):
+    @staticmethod
+    def resource_string(path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
@@ -181,7 +182,8 @@ class SwiftPluginXBlock(
             'starter_code': starter_code,
         }
 
-    def is_blank(self, my_string):
+    @staticmethod
+    def is_blank(my_string):
         if my_string and my_string.strip():
             # myString is not None AND myString is not empty or blank
             return False
@@ -194,9 +196,9 @@ class SwiftPluginXBlock(
                 'referenceId': self.reference_id,
                 'supportedLanguageMimes': list(self._modeUrl.keys())
             }
-            url = self.buildApiUrl("request")
+            url = self.build_api_url("request")
             r = requests.post(url, json=body,
-                              headers=self.build_headers(False))
+                              headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -209,18 +211,21 @@ class SwiftPluginXBlock(
                 'error': str(e)
             }))
 
-    def buildApiUrl(self, path):
-        url = self.api_url_assignment
-        if not self.api_url_assignment.endswith('/'):
+    def build_api_url(self, path):
+        url = self.api_url
+        if not url.endswith('/'):
             url = url + "/"
         url = url + path
-        return get_normalized_url(url)
+        if url.startswith("http"):
+            return url
+        else:
+            return "https://" + url
 
     def handle_submit_request(self, language):
         try:
-            url = self.buildApiUrl("submit")
+            url = self.build_api_url("submit")
             body = self.build_request_body(language)
-            r = requests.post(url, json=body, headers=self.build_headers(False))
+            r = requests.post(url, json=body, headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -235,8 +240,9 @@ class SwiftPluginXBlock(
 
     def handle_run_request(self, language):
         try:
-            r = requests.post(get_normalized_url(self.api_url_run), json=self.build_request_body(language),
-                              headers=self.build_headers(True))
+            url = self.build_api_url("run")
+            r = requests.post(url, json=self.build_request_body(language),
+                              headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -300,7 +306,8 @@ class SwiftPluginXBlock(
                             "Javascript"],
     }
 
-    def get_starter_code(self, assignment_codes):
+    @staticmethod
+    def get_starter_code(assignment_codes):
         for assignment_code in assignment_codes:
             if assignment_code['primary']:
                 return assignment_code
