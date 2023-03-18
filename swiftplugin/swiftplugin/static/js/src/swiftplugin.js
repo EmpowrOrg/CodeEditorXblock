@@ -76,16 +76,12 @@ function SwiftPluginXBlock(runtime, element) {
             autoCloseBrackets: true,
         }
         var myTextArea = document.getElementById("code-area");
-        myCodeMirror = CodeMirror(function (elt) {
-            myTextArea.parentNode.replaceChild(elt, myTextArea);
-        }, codemirror_config);
+        myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
         myCodeMirror.setSize('100%');
         const solutionmirror_config = codemirror_config
         solutionmirror_config.readOnly = true
         const solutionTextArea = document.getElementById("code-solution-area");
-        solutionCodeMirror = CodeMirror(function (elt) {
-            solutionTextArea.parentNode.replaceChild(elt, solutionTextArea);
-        }, solutionmirror_config);
+        solutionCodeMirror = CodeMirror.fromTextArea(solutionTextArea, solutionmirror_config);
         solutionCodeMirror.setSize('100%');
     }
 
