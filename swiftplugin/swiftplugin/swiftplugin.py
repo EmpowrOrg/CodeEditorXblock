@@ -9,13 +9,6 @@ import requests
 import json
 
 
-def get_normalized_url(url: str):
-    if url.startswith("http"):
-        return url
-    else:
-        return "https://" + url
-
-
 @XBlock.wants('user')
 class SwiftPluginXBlock(
     StudioEditableXBlockMixin,
