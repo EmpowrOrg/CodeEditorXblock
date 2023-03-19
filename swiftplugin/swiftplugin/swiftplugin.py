@@ -40,11 +40,6 @@ class SwiftPluginXBlock(
         scope=Scope.content,
         help="Key to send to API",
     )
-    api_assignment_key = String(
-        default="password",
-        scope=Scope.content,
-        help="Key to send to API",
-    )
 
     has_score = True
     attempt = 1
@@ -52,8 +47,8 @@ class SwiftPluginXBlock(
 
     editable_fields = [
         'reference_id',
-        'api_url_run',
-        'api_run_key',
+        'api_url',
+        'api_key',
     ]
 
     @staticmethod
