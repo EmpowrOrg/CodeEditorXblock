@@ -18,24 +18,18 @@ class SwiftPluginXBlock(
     """
 
     reference_id = String(
-        default="assignment-2",
+        default="assignment-id",
         scope=Scope.settings,
         help="Problem id used by the Api to check the code"
     )
 
-    api_url_run = String(
-        default="http://0.0.0.0:8080/run",
-        scope=Scope.content,
-        help="URL api used to run the code (run code by api)"
-    )
-
-    api_url_assignment = String(
+    api_url = String(
         default="http://0.0.0.0:3000/assignment",
         scope=Scope.content,
         help="URL api used to submit the assignment"
     )
 
-    api_run_key = String(
+    api_key = String(
         default="password",
         scope=Scope.content,
         help="Key to send to API",
