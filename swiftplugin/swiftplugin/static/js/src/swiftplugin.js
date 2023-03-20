@@ -18,6 +18,9 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     run_btn.onclick = function (eventObject) {
+        run_btn.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>Running Code"
+        submit_btn.disabled = true
+        run_btn.disabled = true
         const {user_code, mode} = getCodeAndMode();
         $.ajax({
             type: "POST",
@@ -30,6 +33,9 @@ function SwiftPluginXBlock(runtime, element) {
 
     const submit_btn = document.getElementById('submit-btn');
     submit_btn.onclick = function (eventObject) {
+        submit_btn.disabled = true
+        run_btn.disabled = true
+        submit_btn.innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>Testing Code"
         const {user_code, mode} = getCodeAndMode();
         $.ajax({
             type: "POST",
@@ -43,7 +49,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     const response_title = document.getElementById('response-title')
 
-    function init_problem() {
+    function initProblem() {
         $.ajax({
             type: "POST",
             url: handlerProblemUrl,
@@ -59,10 +65,6 @@ function SwiftPluginXBlock(runtime, element) {
         strikethrough: true,
         parseImgDimensions: true,
         openLinksInNewWindow: true
-    }
-
-    function on_init() {
-        init_problem()
     }
 
     function initCodeMirror(response) {
@@ -100,6 +102,10 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateResponse(response) {
+        submit_btn.disabled = false
+        run_btn.disabled = false
+        run_btn.innerHTML = "Run Code"
+        submit_btn.innerHTML = "Submit Code"
         if (response.error) {
             setError(response.error)
         } else {
@@ -188,7 +194,7 @@ function SwiftPluginXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
-        on_init()
+        initProblem()
     });
 }
 

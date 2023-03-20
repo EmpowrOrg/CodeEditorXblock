@@ -20,17 +20,17 @@
                 <div class="tab-content-wrapper">
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="yoursolution2" role="tabpanel"
-                            aria-labelledby="yoursolution2-tab">
+                             aria-labelledby="yoursolution2-tab">
                             <div class="row code-solution-row">
                                 <textarea id="code-area" rows="25"
-                                    class="col-sm-12 col-md-6 col-lg-12"></textarea>
+                                          class="col-sm-12 col-md-6 col-lg-12"></textarea>
                             </div>
                         </div>
                         <div class="tab-pane fade active" id="empowrsolution" role="tabpanel"
-                            aria-labelledby="empowrsolution-tab">
+                             aria-labelledby="empowrsolution-tab">
                             <div class="row code-solution-row">
                                 <textarea id="code-solution-area" rows="25" class="col-sm-12 col-md-6"
-                                    readonly></textarea>
+                                          readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -40,8 +40,8 @@
                                 <h1 class="mb-2">Instructions</h1>
                                 <div class="dropdown">
                                     <a class="btn btn-primary dropdown-toggle" id="select-lang-btn" href="#"
-                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                       role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                       aria-expanded="false">
                                         Select Language
                                     </a>
                                     <ul id="ul-1" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -49,12 +49,16 @@
                                 </div>
                             </div>
                             <p id="assigment-instructions-text"></p>
-                            <a id="run-btn" class="btn btn-primary btn-shadow-primary-100"
-                                href="javascript:void(0);">Run Code
-                            </a>
-                            <a id="submit-btn" class="btn btn-primary btn-shadow-primary-100"
-                                href="javascript:void(0);">Submit Code
-                            </a>
+                            <button type="button" id="run-btn"
+                                    class="btn btn-primary btn-shadow-primary-100"
+                                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Assigning. Please Wait">
+                                Run Code
+                            </button>
+                            <button type="button" id="submit-btn"
+                                    class="btn btn-primary btn-shadow-primary-100"
+                                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Assigning. Please Wait">
+                                Run Code
+                            </button>
                         </div>
                         <h1 id="response-title" class="mt-2 mb-2">Output</h1>
                         <div class="code-bottom mb-4">
@@ -67,7 +71,6 @@
                 </div>
             </div>
         </div>
-        </div><!-- end col -->
     </div><!-- end container-lg -->
 </section>
 
