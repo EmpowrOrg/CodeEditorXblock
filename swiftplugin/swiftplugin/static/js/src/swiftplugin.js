@@ -88,14 +88,15 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function setOutput(response) {
-        const compilation_response = response.response.output
+        const compilationResponse = response.response.output
         let color = response.response.success ? "#33691E" : "#B00020"
+        const html = getMarkdownHtml(compilationResponse);
         if (response.response.success) {
-            document.getElementById('response-txt').innerHTML = compilation_response;
+            document.getElementById('response-txt').innerHTML = html;
         } else if (response.response.diff) {
             document.getElementById('response-txt').innerHTML = response.response.diff;
         } else {
-            document.getElementById('response-txt').innerHTML = compilation_response;
+            document.getElementById('response-txt').innerHTML = html;
         }
 
         document.getElementById('response-title').style.color = color;
@@ -162,17 +163,22 @@ function SwiftPluginXBlock(runtime, element) {
         response_title.hidden = is_submit_hidden && is_run_hidden
     }
 
+    function getMarkdownHtml(response) {
+        const converter = new showdown.Converter(showdownOptions);
+        let html = converter.makeHtml(response);
+        const regex = /<table>/g;
+        html = html.replace(regex, '<table class="table table-striped table-sm">');
+        return `<div class="class table-responsive">${html}</div>`
+    }
+
     function updateProblemDescription(response) {
         if (!response.problem_description) {
             console.log('No problem description')
             return
         }
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
-        const converter = new showdown.Converter(showdownOptions);
-        let html = converter.makeHtml(response.problem_description);
-        const regex = /<table>/g;
-        html = html.replace(regex, '<table class="table table-striped table-sm">');
-        myAssigmentTextArea.innerHTML = `<div class="class table-responsive">${html}</div>`;
+        const html = getMarkdownHtml(response.problem_description);
+        myAssigmentTextArea.innerHTML = html;
     }
 
     function updateProblemTitle(response) {
