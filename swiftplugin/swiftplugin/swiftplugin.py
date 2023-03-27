@@ -32,7 +32,7 @@ class SwiftPluginXBlock(
     api_key = String(
         default="password",
         scope=Scope.content,
-        help="Key to send to API",
+        help="Access Key to send to API",
     )
 
     has_score = True
