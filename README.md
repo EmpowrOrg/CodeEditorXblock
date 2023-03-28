@@ -6,18 +6,10 @@ An XBlock for Empowr's course platform that allows for the input and checking of
 
 <!-- TOC -->
 * [CodeEditorXblock](#codeeditorxblock)
-  * [TODO](#todo)
   * [Installation](#installation)
     * [Run the Django development server](#run-the-django-development-server)
-  * [Supported Languages](#supported-languages)
-    * [Adding support for a language](#adding-support-for-a-language)
-      * [To find the mime-type](#to-find-the-mime-type)
-      * [To find the url](#to-find-the-url)
 <!-- TOC -->
 
-
-## TODO
- - Add support for all CodeMirror languages. This is an easy task, just tedious.
 
 ## Installation
 
