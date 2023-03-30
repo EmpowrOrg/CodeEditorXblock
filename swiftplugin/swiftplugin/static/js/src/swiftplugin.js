@@ -5,15 +5,15 @@ function SwiftPluginXBlock(runtime, element) {
     const handlerUrl = runtime.handlerUrl(element, 'get_button_handler');
     const handlerProblemUrl = runtime.handlerUrl(element, 'get_problem_info')
 
-    var myCodeMirror = null;
-    var solutionCodeMirror = null;
+    let myCodeMirror = null;
+    let solutionCodeMirror = null;
 
     const run_btn = document.getElementById('run-btn');
 
     function getCodeAndMode() {
-        var user_code = myCodeMirror.getValue()
-        var code_mode = myCodeMirror.getMode()
-        var mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
+        const user_code = myCodeMirror.getValue();
+        const code_mode = myCodeMirror.getMode();
+        const mode = code_mode.helperType ? code_mode.helperType : code_mode.name;
         return {user_code, mode};
     }
 
@@ -202,8 +202,7 @@ function SwiftPluginXBlock(runtime, element) {
             return
         }
         const myAssigmentTextArea = document.getElementById("assigment-instructions-text");
-        const html = getMarkdownHtml(response.problem_description);
-        myAssigmentTextArea.innerHTML = html;
+        myAssigmentTextArea.innerHTML = getMarkdownHtml(response.problem_description);
     }
 
     function updateProblemTitle(response) {
@@ -213,8 +212,7 @@ function SwiftPluginXBlock(runtime, element) {
         }
         const myAssigmentTextArea = document.getElementById("assignment-title");
         const converter = new showdown.Converter(showdownOptions);
-        const html = converter.makeHtml(response.problem_title);
-        myAssigmentTextArea.innerHTML = html;
+        myAssigmentTextArea.innerHTML = converter.makeHtml(response.problem_title);
     }
 
     function updateProblemSolution(response) {
