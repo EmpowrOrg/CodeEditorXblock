@@ -24,7 +24,7 @@ def package_data(pkg, roots):
 
 setup(
     name='swiftplugin-xblock',
-    version='0.1',
+    version='0.2',
     description='swiftplugin XBlock',   # TODO: write a better description.
     license='AGPL v3',
     packages=[
