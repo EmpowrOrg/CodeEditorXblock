@@ -82,14 +82,9 @@ class SwiftPluginXBlock(
         frag.add_javascript_url("https://codemirror.net/5/addon/dialog/dialog.js")
         frag.add_javascript_url("https://codemirror.net/5/addon/fold/foldcode.js")
         frag.add_css_url("https://codemirror.net/5/addon/dialog/dialog.css")
-        self.init_languages(frag)
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
-    def init_languages(self, frag):
-        values = list(self._modeUrl.values())
-        for value in values:
-            frag.add_javascript_url(value[0])
 
     @XBlock.json_handler
     def get_button_handler(self, data, suffix=''):
@@ -181,7 +176,6 @@ class SwiftPluginXBlock(
         try:
             body = {
                 'referenceId': self.reference_id,
-                'supportedLanguageMimes': list(self._modeUrl.keys())
             }
             url = self.build_api_url("request")
             r = requests.post(url, json=body,
@@ -272,23 +266,6 @@ class SwiftPluginXBlock(
              """),
         ]
 
-    _modeUrl = {
-        "text/x-swift": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/swift/swift.js", "Swift"],
-        "text/x-csrc": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C"],
-        "text/x-c++src": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C++"],
-        "text/x-csharp": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "C#"],
-        "text/x-java": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Java"],
-        "text/x-objectivec": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js",
-                              "Objective-C"],
-        "text/x-squirrel": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Squirrel"],
-        "text/apl": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/apl/apl.js", "APL"],
-        "text/x-ttcn-asn": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/asn.1/asn.1.js", "ASN"],
-        "text/x-python": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.js", "Python"],
-        "text/x-kotlin": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.js", "Kotlin"],
-        "text/javascript": ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.js",
-                            "Javascript"],
-    }
-
     @staticmethod
     def get_starter_code(assignment_codes):
         for assignment_code in assignment_codes:
@@ -297,13 +274,10 @@ class SwiftPluginXBlock(
         return assignment_codes[0]
 
     def get_allowed_languages(self, assignment_codes):
-        keys = list(self._modeUrl.keys())
         values = []
         for assignment_code in assignment_codes:
-            if assignment_code['mime'] in keys:
-                key_values = self._modeUrl[assignment_code['mime']]
-                key_values.append(assignment_code['mime'])
-                values.append(key_values)
+            key_values = [assignment_code['url'], assignment_code['mime']]
+            values.append(key_values)
 
         values.sort(key=self.myFunc)
         return values

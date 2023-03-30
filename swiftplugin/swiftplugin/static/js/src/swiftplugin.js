@@ -68,23 +68,54 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function initCodeMirror(response) {
-        const codemirror_config = {
-            value: response.starter_code,
-            lineNumbers: true,
-            mode: response.problem_language,
-            lineWrapping: true,
-            indentWithTabs: true,
-            lineWiseCopyCut: true,
-            autoCloseBrackets: true,
-        }
-        var myTextArea = document.getElementById("code-area");
-        myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
-        myCodeMirror.setSize('100%');
-        const solutionmirror_config = codemirror_config
-        solutionmirror_config.readOnly = true
-        const solutionTextArea = document.getElementById("code-solution-area");
-        solutionCodeMirror = CodeMirror.fromTextArea(solutionTextArea, solutionmirror_config);
-        solutionCodeMirror.setSize('100%');
+        let promises = []
+        response.allowed_languages.forEach(function (fileUrl) {
+            let promise = new Promise((resolve, reject) => {
+                const scriptEle = document.createElement("script");
+                scriptEle.type = "text/javascript";
+                scriptEle.async = true;
+                scriptEle.src = fileUrl[0];
+
+                scriptEle.addEventListener("load", (ev) => {
+                    resolve({status: true});
+                });
+
+                scriptEle.addEventListener("error", (ev) => {
+                    reject({
+                        status: false,
+                        message: `Failed to load the script ＄{FILE_URL}`
+                    });
+                });
+
+                document.body.appendChild(scriptEle);
+            });
+            promises.push(promise)
+        });
+        Promise.all(promises).then(r => {
+            const codemirror_config = {
+                value: response.starter_code,
+                lineNumbers: true,
+                mode: response.problem_language,
+                lineWrapping: true,
+                indentWithTabs: true,
+                lineWiseCopyCut: true,
+                autoCloseBrackets: true,
+            }
+            const myTextArea = document.getElementById("code-area");
+            myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
+            myCodeMirror.setSize('100%');
+            const solutionmirror_config = codemirror_config
+            solutionmirror_config.readOnly = true
+            const solutionTextArea = document.getElementById("code-solution-area");
+            solutionCodeMirror = CodeMirror.fromTextArea(solutionTextArea, solutionmirror_config);
+            solutionCodeMirror.setSize('100%');
+            if (response.has_solution_defined) {
+                solution_btn.hidden = false
+                updateProblemSolution(response)
+            } else {
+                solution_btn.hidden = true
+            }
+        });
     }
 
     function setOutput(response) {
@@ -150,12 +181,6 @@ function SwiftPluginXBlock(runtime, element) {
         initCodeMirror(response)
         updateProblemDescription(response)
         updateProblemTitle(response)
-        if (response.has_solution_defined) {
-            solution_btn.hidden = false
-            updateProblemSolution(response)
-        } else {
-            solution_btn.hidden = true
-        }
         const is_run_hidden = response.show_run_button === false
         const is_submit_hidden = response.show_submit_button === false
         run_btn.hidden = is_run_hidden
