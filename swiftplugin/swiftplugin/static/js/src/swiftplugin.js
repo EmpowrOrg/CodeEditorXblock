@@ -93,7 +93,6 @@ function SwiftPluginXBlock(runtime, element) {
         });
         Promise.all(promises).then(r => {
             const codemirror_config = {
-                value: response.starter_code,
                 lineNumbers: true,
                 mode: response.problem_language,
                 lineWrapping: true,
@@ -104,6 +103,9 @@ function SwiftPluginXBlock(runtime, element) {
             const myTextArea = document.getElementById("code-area");
             myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
             myCodeMirror.setSize('100%');
+            if (response.starter_code) {
+                myCodeMirror.setValue(response.starter_code)
+            }
             const solutionmirror_config = codemirror_config
             solutionmirror_config.readOnly = true
             const solutionTextArea = document.getElementById("code-solution-area");
