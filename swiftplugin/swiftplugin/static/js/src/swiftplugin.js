@@ -179,6 +179,10 @@ function SwiftPluginXBlock(runtime, element) {
     }
 
     function updateProblem(response) {
+        if (response.error) {
+            setError(response.error)
+            return
+        }
         updateValues(response)
         initCodeMirror(response)
         updateProblemDescription(response)
