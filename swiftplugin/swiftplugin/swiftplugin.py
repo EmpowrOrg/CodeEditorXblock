@@ -267,9 +267,9 @@ class SwiftPluginXBlock(
         print(xb_user)
         print(xb_user.emails)
         print(xb_user.opt_attrs)
-        student_id = xb_user.opt_attrs.get('edx-platform.user_id')
+        student_id = xb_user.opt_attrs.get('edx-platform.username')
         if student_id is None:
-            student_id = xb_user.opt_attrs.get('xblock-workbench.user_id')
+            student_id = xb_user.opt_attrs.get('xblock-workbench.username')
         return student_id
 
     @staticmethod
