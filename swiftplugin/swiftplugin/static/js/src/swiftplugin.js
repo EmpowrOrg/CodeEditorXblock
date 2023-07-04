@@ -103,7 +103,9 @@ function SwiftPluginXBlock(runtime, element) {
             const myTextArea = document.getElementById("code-area");
             myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
             myCodeMirror.setSize('100%');
-            if (response.starter_code) {
+            if (response.user_code) {
+              myCodeMirror.setValue(response.user_code)
+            } else if (response.starter_code) {
                 myCodeMirror.setValue(response.starter_code)
             }
             const solutionmirror_config = codemirror_config

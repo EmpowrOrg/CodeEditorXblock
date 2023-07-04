@@ -18,20 +18,20 @@ class SwiftPluginXBlock(
     """
 
     reference_id = String(
-        default="assignment-id",
+        default="hello-world",
         scope=Scope.settings,
         help="Problem id used by the Api to check the code"
     )
 
     api_url = String(
-        default="http://0.0.0.0:3000/assignment",
-        scope=Scope.content,
+        default="http://localhost:3000/assignment",
+        scope=Scope.preferences,
         help="URL api used to submit the assignment"
     )
 
     api_key = String(
-        default="password",
-        scope=Scope.content,
+        default="MjFmOGY3NTgtNGZiOC00NjJjLWFjMmMtODA2ZmViMDlmOWY0.WEpZUGhRa0JtT3ZzZ2c3bk15UGxvTkpyQmdTb1RhMGI=",
+        scope=Scope.preferences,
         help="Access Key to send to API",
     )
 
@@ -148,6 +148,7 @@ class SwiftPluginXBlock(
         assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
         solution_code = assignment_code.get('solutionCode')
         starter_code = assignment_code['starterCode']
+        user_code = assignment_code.get('userCode')
         if starter_code is None:
             starter_code = ""
         return {
@@ -162,6 +163,7 @@ class SwiftPluginXBlock(
             'display_language': assignment_code['displayName'],
             'allowed_languages': self.get_allowed_languages(response['assignmentCodes']),
             'starter_code': starter_code,
+            'user_code': user_code,
         }
 
     @staticmethod
