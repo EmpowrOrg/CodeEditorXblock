@@ -25,13 +25,13 @@ class SwiftPluginXBlock(
 
     api_url = String(
         default="http://localhost:3000/assignment",
-        scope=Scope.preferences,
+        scope=Scope.settings,
         help="URL api used to submit the assignment"
     )
 
     api_key = String(
         default="MjFmOGY3NTgtNGZiOC00NjJjLWFjMmMtODA2ZmViMDlmOWY0.WEpZUGhRa0JtT3ZzZ2c3bk15UGxvTkpyQmdTb1RhMGI=",
-        scope=Scope.preferences,
+        scope=Scope.settings,
         help="Access Key to send to API",
     )
 
