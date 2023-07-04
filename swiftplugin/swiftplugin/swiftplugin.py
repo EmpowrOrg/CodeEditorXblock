@@ -146,7 +146,7 @@ class SwiftPluginXBlock(
             response['error'] = response['error']
             return response
         assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
-        solution_code = assignment_code["solutionCode"]
+        solution_code = assignment_code.get('solutionCode')
         starter_code = assignment_code['starterCode']
         if starter_code is None:
             starter_code = ""
