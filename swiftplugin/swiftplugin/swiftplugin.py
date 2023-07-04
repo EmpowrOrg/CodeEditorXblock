@@ -176,6 +176,7 @@ class SwiftPluginXBlock(
         try:
             body = {
                 'referenceId': self.reference_id,
+                'studentId': self.student_id(),
             }
             url = self.build_api_url("request")
             r = requests.post(url, json=body,
@@ -253,9 +254,21 @@ class SwiftPluginXBlock(
             'language': language,
             'attempt': self.attempt,
             'referenceId': self.reference_id,
+            'studentId': self.student_id(),
             'email': email,
         }
         return body
+
+    def student_id(self):
+        user_service = self.runtime.service(self, 'user')
+        xb_user = user_service.get_current_user()
+        print(xb_user)
+        print(xb_user.emails)
+        print(xb_user.opt_attrs)
+        student_id = xb_user.opt_attrs.get('edx-platform.user_id')
+        if student_id is None:
+            student_id = xb_user.opt_attrs.get('xblock-workbench.user_id')
+        return student_id
 
     @staticmethod
     def workbench_scenarios():
