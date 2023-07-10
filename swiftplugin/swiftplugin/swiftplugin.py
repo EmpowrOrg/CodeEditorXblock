@@ -179,6 +179,7 @@ class SwiftPluginXBlock(
             body = {
                 'referenceId': self.reference_id,
                 'studentId': self.student_id(),
+                'blockId': self.scope_ids.usage_id
             }
             url = self.build_api_url("request")
             r = requests.post(url, json=body,
