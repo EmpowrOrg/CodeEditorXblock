@@ -143,6 +143,8 @@ class SwiftPluginXBlock(
     def get_problem_info(self, data, suffix=''):
         response = self.handle_assignment_request()
         if 'error' in response:
+            print('error response with problem info')
+            print(response)
             response['error'] = response['error']
             return response
         assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
@@ -180,22 +182,30 @@ class SwiftPluginXBlock(
                 'referenceId': self.reference_id,
                 'studentId': self.student_id(),
                 'blockId': self.xblock_id(),
-                'studentExtras': self.student_extras(),
             }
+            print('body')
+            print(body)
             url = self.build_api_url("request")
-            r = requests.post(url, json=json.dumps(body),
+            r = requests.post(url, json=body,
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
-                return json.loads(json.dumps({
+                error = json.loads(json.dumps({
                     'error': 'Uh oh, we encountered an error. Inform your teacher of the following error message: {} {}'.format(
                         r.status_code, r.reason)
                 }))
+                print('error in handle_assignment_request')
+                print(error)
+                print(r)
+                return error
         except requests.exceptions.RequestException as e:
-            return json.loads(json.dumps({
+            error = json.loads(json.dumps({
                 'error': str(e)
             }))
+            print('error in handle_assignment_request')
+            print(error)
+            return error
 
     def build_api_url(self, path):
         url = self.api_url
@@ -211,7 +221,7 @@ class SwiftPluginXBlock(
         try:
             url = self.build_api_url("submit")
             body = self.build_request_body(language)
-            r = requests.post(url, json=json.dumps(body), headers=self.build_headers())
+            r = requests.post(url, json=body, headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -227,7 +237,7 @@ class SwiftPluginXBlock(
     def handle_run_request(self, language):
         try:
             url = self.build_api_url("run")
-            r = requests.post(url, json=json.dumps(self.build_request_body(language)),
+            r = requests.post(url, json=self.build_request_body(language),
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
@@ -250,16 +260,12 @@ class SwiftPluginXBlock(
         return headers
 
     def build_request_body(self, language):
-        user_service = self.runtime.service(self, 'user')
-        xb_user = user_service.get_current_user()
-        email = xb_user.emails[0]
         body = {
             'code': self.code,
             'language': language,
             'attempt': self.attempt,
             'referenceId': self.reference_id,
             'studentId': self.student_id(),
-            'email': email,
             'studentExtras': self.student_extras(),
         }
         return body
