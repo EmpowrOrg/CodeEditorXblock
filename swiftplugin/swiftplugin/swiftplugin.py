@@ -183,8 +183,10 @@ class SwiftPluginXBlock(
                 'studentId': self.student_id(),
                 'blockId': self.xblock_id(),
             }
+            print('body')
+            print(body)
             url = self.build_api_url("request")
-            r = requests.post(url, json=json.dumps(body),
+            r = requests.post(url, json=body,
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
@@ -195,6 +197,8 @@ class SwiftPluginXBlock(
                 }))
                 print('error in handle_assignment_request')
                 print(error)
+                print(r)
+                return error
         except requests.exceptions.RequestException as e:
             error = json.loads(json.dumps({
                 'error': str(e)
