@@ -179,10 +179,11 @@ class SwiftPluginXBlock(
             body = {
                 'referenceId': self.reference_id,
                 'studentId': self.student_id(),
-                'blockId': self.scope_ids.usage_id
+                'blockId': self.xblock_id(),
+                'studentExtras': self.student_extras(),
             }
             url = self.build_api_url("request")
-            r = requests.post(url, json=body,
+            r = requests.post(url, json=json.dumps(body),
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
@@ -210,7 +211,7 @@ class SwiftPluginXBlock(
         try:
             url = self.build_api_url("submit")
             body = self.build_request_body(language)
-            r = requests.post(url, json=body, headers=self.build_headers())
+            r = requests.post(url, json=json.dumps(body), headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -226,7 +227,7 @@ class SwiftPluginXBlock(
     def handle_run_request(self, language):
         try:
             url = self.build_api_url("run")
-            r = requests.post(url, json=self.build_request_body(language),
+            r = requests.post(url, json=json.dumps(self.build_request_body(language)),
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
@@ -259,19 +260,32 @@ class SwiftPluginXBlock(
             'referenceId': self.reference_id,
             'studentId': self.student_id(),
             'email': email,
+            'studentExtras': self.student_extras(),
         }
         return body
 
     def student_id(self):
         user_service = self.runtime.service(self, 'user')
         xb_user = user_service.get_current_user()
-        print(xb_user)
-        print(xb_user.emails)
-        print(xb_user.opt_attrs)
         student_id = xb_user.opt_attrs.get('edx-platform.username')
         if student_id is None:
             student_id = xb_user.opt_attrs.get('xblock-workbench.username')
+        if student_id is None:
+            student_id = ''
         return student_id
+
+    def student_extras(self):
+        user_service = self.runtime.service(self, 'user')
+        xb_user = user_service.get_current_user()
+        if xb_user is None:
+            return {}
+        if xb_user.opt_attrs is None:
+            return {}
+        return xb_user.opt_attrs
+
+    def xblock_id(self):
+        usage_id = self.scope_ids.usage_id
+        return str(usage_id)
 
     @staticmethod
     def workbench_scenarios():
