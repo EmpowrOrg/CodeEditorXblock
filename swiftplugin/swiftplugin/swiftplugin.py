@@ -143,6 +143,8 @@ class SwiftPluginXBlock(
     def get_problem_info(self, data, suffix=''):
         response = self.handle_assignment_request()
         if 'error' in response:
+            print('error response with problem info')
+            print(response)
             response['error'] = response['error']
             return response
         assignment_code = self.get_starter_code(assignment_codes=response['assignmentCodes'])
@@ -180,7 +182,6 @@ class SwiftPluginXBlock(
                 'referenceId': self.reference_id,
                 'studentId': self.student_id(),
                 'blockId': self.xblock_id(),
-                'studentExtras': self.student_extras(),
             }
             url = self.build_api_url("request")
             r = requests.post(url, json=json.dumps(body),
@@ -188,14 +189,19 @@ class SwiftPluginXBlock(
             if r.ok:
                 return r.json()
             else:
-                return json.loads(json.dumps({
+                error = json.loads(json.dumps({
                     'error': 'Uh oh, we encountered an error. Inform your teacher of the following error message: {} {}'.format(
                         r.status_code, r.reason)
                 }))
+                print('error in handle_assignment_request')
+                print(error)
         except requests.exceptions.RequestException as e:
-            return json.loads(json.dumps({
+            error = json.loads(json.dumps({
                 'error': str(e)
             }))
+            print('error in handle_assignment_request')
+            print(error)
+            return error
 
     def build_api_url(self, path):
         url = self.api_url
