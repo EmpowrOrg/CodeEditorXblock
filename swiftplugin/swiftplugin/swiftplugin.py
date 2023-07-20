@@ -221,7 +221,7 @@ class SwiftPluginXBlock(
         try:
             url = self.build_api_url("submit")
             body = self.build_request_body(language)
-            r = requests.post(url, json=json.dumps(body), headers=self.build_headers())
+            r = requests.post(url, json=body, headers=self.build_headers())
             if r.ok:
                 return r.json()
             else:
@@ -237,7 +237,7 @@ class SwiftPluginXBlock(
     def handle_run_request(self, language):
         try:
             url = self.build_api_url("run")
-            r = requests.post(url, json=json.dumps(self.build_request_body(language)),
+            r = requests.post(url, json=self.build_request_body(language),
                               headers=self.build_headers())
             if r.ok:
                 return r.json()
@@ -260,16 +260,12 @@ class SwiftPluginXBlock(
         return headers
 
     def build_request_body(self, language):
-        user_service = self.runtime.service(self, 'user')
-        xb_user = user_service.get_current_user()
-        email = xb_user.emails[0]
         body = {
             'code': self.code,
             'language': language,
             'attempt': self.attempt,
             'referenceId': self.reference_id,
             'studentId': self.student_id(),
-            'email': email,
             'studentExtras': self.student_extras(),
         }
         return body
