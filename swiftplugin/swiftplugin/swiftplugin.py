@@ -36,7 +36,6 @@ class SwiftPluginXBlock(
     )
 
     has_score = True
-    attempt = 1
     code = ""
 
     editable_fields = [
@@ -122,7 +121,6 @@ class SwiftPluginXBlock(
                 response['error'] = assignment_response['error']
                 return response
             response['response'] = assignment_response
-            self.attempt = self.attempt + 1
             is_final_attempt = assignment_response['finalAttempt']
             success = assignment_response['success']
             if success:
@@ -263,7 +261,6 @@ class SwiftPluginXBlock(
         body = {
             'code': self.code,
             'language': language,
-            'attempt': self.attempt,
             'referenceId': self.reference_id,
             'studentId': self.student_id(),
             'studentExtras': self.student_extras(),
