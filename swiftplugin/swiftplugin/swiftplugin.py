@@ -37,6 +37,7 @@ class SwiftPluginXBlock(
 
     has_score = True
     code = ""
+    points = 1.0
 
     editable_fields = [
         'reference_id',
@@ -125,12 +126,12 @@ class SwiftPluginXBlock(
             success = assignment_response['success']
             if success:
                 self.runtime.publish(self, "grade",
-                                     {'value': 1.0,
-                                      'max_value': 1.0})
+                                     {'value': grade_points,
+                                      'max_value': self.points})
             elif is_final_attempt:
                 self.runtime.publish(self, "grade",
                                      {'value': 0.0,
-                                      'max_value': 1.0})
+                                      'max_value': self.points})
 
         else:
             response["status"] = "No valid type request"
@@ -149,6 +150,7 @@ class SwiftPluginXBlock(
         solution_code = assignment_code.get('solutionCode')
         starter_code = assignment_code['starterCode']
         user_code = assignment_code.get('userCode')
+        self.points = response['points']
         if starter_code is None:
             starter_code = ""
         return {
