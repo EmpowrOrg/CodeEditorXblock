@@ -85,7 +85,6 @@ class SwiftPluginXBlock(
         frag.initialize_js('SwiftPluginXBlock')
         return frag
 
-
     @XBlock.json_handler
     def get_button_handler(self, data, suffix=''):
         """
@@ -124,6 +123,9 @@ class SwiftPluginXBlock(
             response['response'] = assignment_response
             is_final_attempt = assignment_response['finalAttempt']
             success = assignment_response['success']
+            grade_points = assignment_response['gradePoints']
+            if 'solutionCode' in assignment_response:
+                response['problem_solution'] = assignment_response['solutionCode']
             if success:
                 self.runtime.publish(self, "grade",
                                      {'value': grade_points,

@@ -104,7 +104,7 @@ function SwiftPluginXBlock(runtime, element) {
             myCodeMirror = CodeMirror.fromTextArea(myTextArea, codemirror_config);
             myCodeMirror.setSize('100%');
             if (response.user_code) {
-              myCodeMirror.setValue(response.user_code)
+                myCodeMirror.setValue(response.user_code)
             } else if (response.starter_code) {
                 myCodeMirror.setValue(response.starter_code)
             }
@@ -114,7 +114,6 @@ function SwiftPluginXBlock(runtime, element) {
             solutionCodeMirror = CodeMirror.fromTextArea(solutionTextArea, solutionmirror_config);
             solutionCodeMirror.setSize('100%');
             if (response.has_solution_defined) {
-                solution_btn.hidden = false
                 updateProblemSolution(response)
             } else {
                 solution_btn.hidden = true
@@ -146,6 +145,9 @@ function SwiftPluginXBlock(runtime, element) {
             setError(response.error)
         } else {
             setOutput(response)
+        }
+        if (response.problem_solution) {
+            updateProblemSolution(response)
         }
     }
 
@@ -228,6 +230,7 @@ function SwiftPluginXBlock(runtime, element) {
             console.log('No problem solution')
             return
         }
+        solution_btn.hidden = false
         solutionCodeMirror.setValue(response.problem_solution)
     }
 
