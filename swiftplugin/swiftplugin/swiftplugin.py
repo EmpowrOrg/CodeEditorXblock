@@ -268,6 +268,7 @@ class SwiftPluginXBlock(
             'referenceId': self.reference_id,
             'studentId': self.student_id(),
             'studentExtras': self.student_extras(),
+            'studentEmails': self.student_emails(),
         }
         return body
 
@@ -289,6 +290,19 @@ class SwiftPluginXBlock(
         if xb_user.opt_attrs is None:
             return {}
         return xb_user.opt_attrs
+
+    def student_emails(self):
+        user_service = self.runtime.service(self, 'user')
+        xb_user = user_service.get_current_user()
+        if xb_user is None:
+            return []
+        if xb_user.emails is not None:
+            return xb_user.emails
+        if xb_user.opt_attrs.get('xblock-workbench.emails') is not None:
+            return xb_user.opt_attrs.get('xblock-workbench.emails')
+        if xb_user.opt_attrs.get('edx-platform.emails') is not None:
+            return xb_user.opt_attrs.get('edx-platform.emails')
+        return []
 
     def xblock_id(self):
         usage_id = self.scope_ids.usage_id
