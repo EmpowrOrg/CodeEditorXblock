@@ -36,7 +36,7 @@
     border-style: solid;
     border-radius: 16px;
     border-color: rgb(132, 132, 132) !important;
-    height: calc(70vmin + 40px);
+    min-height: calc(70vmin + 40px);
     overflow: hidden;
 }
 
@@ -101,7 +101,7 @@
 
 .swiftplugin .instructions-container,
 .swiftplugin .CodeMirror-wrap {
-    height: 70vmin !important;
+    min-height: 70vmin !important;
     overflow-y: scroll;
 }
 
