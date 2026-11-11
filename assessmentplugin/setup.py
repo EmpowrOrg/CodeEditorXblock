@@ -23,7 +23,7 @@ def package_data(pkg, roots):
 setup(
     name='assessmentplugin-xblock',
     version='0.1.0',
-    description='Assessment XBlock — interactive Coppin assessments rendered with shared React UI',
+    description='Assessment XBlock: interactive Coppin assessments rendered with shared React UI',
     license='AGPL v3',
     packages=[
         'assessmentplugin',
